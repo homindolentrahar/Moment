@@ -1,8 +1,9 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 buildscript {
     ext {
+        arrow_version = "1.0.1"
         hilt_version = "2.40.5"
-        bom_version = "29.3.1"
+        bom_firebase_version = "29.3.1"
     }
 
     dependencies {
