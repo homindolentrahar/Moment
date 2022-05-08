@@ -1,9 +1,10 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 buildscript {
     ext {
+        coroutines_version = "1.6.1"
         arrow_version = "1.0.1"
         hilt_version = "2.40.5"
-        bom_firebase_version = "29.3.1"
+        bom_firebase_version = "30.0.0"
     }
 
     dependencies {

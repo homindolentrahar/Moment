@@ -1,19 +1,17 @@
 package com.homindolentrahar.moment.features.auth.data.repository
 
-import arrow.core.getOrElse
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.homindolentrahar.moment.core.util.Resource
 import com.homindolentrahar.moment.features.auth.data.mapper.toDocumentSnapshot
-import com.homindolentrahar.moment.features.auth.domain.model.User
 import com.homindolentrahar.moment.features.auth.domain.repository.AuthRepository
-import com.homindolentrahar.moment.features.auth.util.EmailAddress
-import com.homindolentrahar.moment.features.auth.util.Password
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 import com.homindolentrahar.moment.features.auth.data.remote.dto.AuthUserDto
 import com.homindolentrahar.moment.features.auth.data.remote.dto.UserDto
+import com.homindolentrahar.moment.features.auth.domain.model.AuthUser
+import kotlinx.coroutines.tasks.await
 
 class AuthRepositoryImpl @Inject constructor(
     private val auth: FirebaseAuth,
@@ -21,63 +19,46 @@ class AuthRepositoryImpl @Inject constructor(
 ) : AuthRepository {
 
     override suspend fun signInWithEmailAndPassword(
-        email: EmailAddress,
-        password: Password
+        email: String,
+        password: String
     ): Flow<Resource<Unit>> {
         TODO("Not yet implemented")
     }
 
-    override suspend fun signInWithGoogle(email: EmailAddress): Flow<Resource<Unit>> {
+    override suspend fun signInWithGoogle(email: String): Flow<Resource<Unit>> {
         TODO("Not yet implemented")
     }
 
     override suspend fun registerWithEmailAndPassword(
-        email: EmailAddress,
-        password: Password
-    ): Flow<Resource<Unit>> {
-        return flow {
-            emit(Resource.Loading())
+        email: String,
+        password: String
+    ): Flow<Resource<Unit>> =
+        flow {
+            try {
+                emit(Resource.Loading())
 
-            val emailStr = email.value.getOrElse {
-                emit(Resource.Error("Invalid email address"))
-            }.toString()
-            val passwordStr = password.value.getOrElse {
-                emit(Resource.Error("Invalid password"))
-            }.toString()
+                val authResult = auth.createUserWithEmailAndPassword(email, password).await()
+                val authUserDto = AuthUserDto.fromFirebaseUser(authResult.user!!)
+                val userDto = UserDto.fromAuthUserDto(authUserDto)
 
-            val registerTask = auth.createUserWithEmailAndPassword(
-                emailStr, passwordStr
-            )
-
-            if (registerTask.isSuccessful) {
-                auth.currentUser?.let { currentUser ->
-                    val authUserDto = AuthUserDto.fromFirebaseUser(currentUser)
-                    val userDto = UserDto.fromAuthUserDto(authUserDto)
-
-                    val storingUserDataTask =
-                        firestore.document(userDto.id).set(userDto.toDocumentSnapshot())
-
-                    if (storingUserDataTask.isSuccessful) {
-                        emit(Resource.Success(Unit))
-                    } else {
-                        val errorMessage = storingUserDataTask.exception!!.localizedMessage!!
-
-                        emit(Resource.Error(errorMessage))
-                    }
+                if (authResult.additionalUserInfo!!.isNewUser) {
+                    firestore
+                        .document(userDto.id)
+                        .set(userDto.toDocumentSnapshot())
+                        .await()
                 }
-            } else {
-                val errorMessage = registerTask.exception!!.localizedMessage!!
 
-                emit(Resource.Error(errorMessage))
+                emit(Resource.Success(Unit))
+            } catch (exception: Exception) {
+                emit(Resource.Error(exception.localizedMessage ?: "Unexpected error"))
             }
         }
-    }
 
-    override fun getCurrentUser(): Resource<User> {
+    override fun getCurrentUser(): Resource<AuthUser> {
         TODO("Not yet implemented")
     }
 
-    override fun signOut(): Resource<Unit> {
+    override suspend fun signOut(): Flow<Resource<Unit>> {
         TODO("Not yet implemented")
     }
 
