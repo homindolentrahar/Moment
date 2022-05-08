@@ -1,8 +1,12 @@
 package com.homindolentrahar.moment.features.auth.data.repository
 
+import arrow.core.None
+import arrow.core.Option
+import arrow.core.Some
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.homindolentrahar.moment.core.util.Resource
+import com.homindolentrahar.moment.features.auth.data.mapper.toAuthUser
 import com.homindolentrahar.moment.features.auth.data.mapper.toDocumentSnapshot
 import com.homindolentrahar.moment.features.auth.domain.repository.AuthRepository
 import kotlinx.coroutines.flow.Flow
@@ -21,9 +25,18 @@ class AuthRepositoryImpl @Inject constructor(
     override suspend fun signInWithEmailAndPassword(
         email: String,
         password: String
-    ): Flow<Resource<Unit>> {
-        TODO("Not yet implemented")
-    }
+    ): Flow<Resource<Unit>> =
+        flow {
+            try {
+                emit(Resource.Loading())
+
+                auth.signInWithEmailAndPassword(email, password).await()
+
+                emit(Resource.Success(Unit))
+            } catch (exception: Exception) {
+                emit(Resource.Error(exception.localizedMessage ?: "Unexpected error"))
+            }
+        }
 
     override suspend fun signInWithGoogle(email: String): Flow<Resource<Unit>> {
         TODO("Not yet implemented")
@@ -54,12 +67,31 @@ class AuthRepositoryImpl @Inject constructor(
             }
         }
 
-    override fun getCurrentUser(): Resource<AuthUser> {
-        TODO("Not yet implemented")
+    override fun getCurrentUser(): Option<AuthUser> {
+        val currentUser = auth.currentUser
+
+        currentUser?.let { user ->
+            val authUserDto = AuthUserDto.fromFirebaseUser(user)
+
+            return Some(authUserDto.toAuthUser())
+        }
+
+        return None
     }
 
-    override suspend fun signOut(): Flow<Resource<Unit>> {
-        TODO("Not yet implemented")
-    }
+    override suspend fun signOut(): Flow<Resource<Unit>> =
+        flow {
+            try {
+                emit(Resource.Loading())
+
+                auth.currentUser?.apply {
+                    delete().await()
+
+                    emit(Resource.Success(Unit))
+                }
+            } catch (exception: Exception) {
+                emit(Resource.Error(exception.localizedMessage ?: "Unexpected error"))
+            }
+        }
 
 }

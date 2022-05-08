@@ -1,10 +1,8 @@
 package com.homindolentrahar.moment.features.auth.domain.repository
 
+import arrow.core.Option
 import com.homindolentrahar.moment.core.util.Resource
 import com.homindolentrahar.moment.features.auth.domain.model.AuthUser
-import com.homindolentrahar.moment.features.auth.domain.model.User
-import com.homindolentrahar.moment.features.auth.util.EmailAddress
-import com.homindolentrahar.moment.features.auth.util.Password
 import kotlinx.coroutines.flow.Flow
 
 interface AuthRepository {
@@ -22,5 +20,5 @@ interface AuthRepository {
 
     suspend fun signOut(): Flow<Resource<Unit>>
 
-    fun getCurrentUser(): Resource<AuthUser>
+    fun getCurrentUser(): Option<AuthUser>
 }
