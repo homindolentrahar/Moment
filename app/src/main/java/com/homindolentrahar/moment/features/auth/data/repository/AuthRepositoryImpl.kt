@@ -15,6 +15,8 @@ import javax.inject.Inject
 import com.homindolentrahar.moment.features.auth.data.remote.dto.AuthUserDto
 import com.homindolentrahar.moment.features.auth.data.remote.dto.UserDto
 import com.homindolentrahar.moment.features.auth.domain.model.AuthUser
+import kotlinx.coroutines.channels.awaitClose
+import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.tasks.await
 
 class AuthRepositoryImpl @Inject constructor(
@@ -67,18 +69,6 @@ class AuthRepositoryImpl @Inject constructor(
             }
         }
 
-    override fun getCurrentUser(): Option<AuthUser> {
-        val currentUser = auth.currentUser
-
-        currentUser?.let { user ->
-            val authUserDto = AuthUserDto.fromFirebaseUser(user)
-
-            return Some(authUserDto.toAuthUser())
-        }
-
-        return None
-    }
-
     override suspend fun signOut(): Flow<Resource<Unit>> =
         flow {
             try {
@@ -93,5 +83,37 @@ class AuthRepositoryImpl @Inject constructor(
                 emit(Resource.Error(exception.localizedMessage ?: "Unexpected error"))
             }
         }
+
+    override fun getCurrentUser(): Option<AuthUser> {
+        val currentUser = auth.currentUser
+
+        currentUser?.let { user ->
+            val authUserDto = AuthUserDto.fromFirebaseUser(user)
+
+            return Some(authUserDto.toAuthUser())
+        }
+
+        return None
+    }
+
+    override fun getAuthState(): Flow<Option<AuthUser>> =
+        callbackFlow {
+            val authStateListener = FirebaseAuth.AuthStateListener {
+                val authUser = it.currentUser?.let { user ->
+                    val authUserDto = AuthUserDto.fromFirebaseUser(user)
+
+                    Some(authUserDto.toAuthUser())
+                } ?: None
+
+                trySend(authUser)
+            }
+
+            auth.addAuthStateListener(authStateListener)
+
+            awaitClose {
+                auth.removeAuthStateListener(authStateListener)
+            }
+        }
+
 
 }
