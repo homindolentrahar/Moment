@@ -4,6 +4,7 @@ import arrow.core.None
 import arrow.core.Option
 import arrow.core.Some
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.firestore.FirebaseFirestore
 import com.homindolentrahar.moment.core.util.Resource
 import com.homindolentrahar.moment.features.auth.data.mapper.toAuthUser
@@ -21,7 +22,7 @@ import kotlinx.coroutines.tasks.await
 
 class AuthRepositoryImpl @Inject constructor(
     private val auth: FirebaseAuth,
-    private val firestore: FirebaseFirestore
+    private val firestore: FirebaseFirestore,
 ) : AuthRepository {
 
     override suspend fun signInWithEmailAndPassword(
@@ -40,9 +41,31 @@ class AuthRepositoryImpl @Inject constructor(
             }
         }
 
-    override suspend fun signInWithGoogle(email: String): Flow<Resource<Unit>> {
-        TODO("Not yet implemented")
-    }
+    override suspend fun signInWithGoogle(
+        idToken: String,
+        accessToken: String?
+    ): Flow<Resource<Unit>> =
+        flow {
+            try {
+                emit(Resource.Loading())
+
+                val googleCredential = GoogleAuthProvider.getCredential(idToken, accessToken)
+                val authResult = auth.signInWithCredential(googleCredential).await()
+                val authUserDto = AuthUserDto.fromFirebaseUser(authResult.user!!)
+                val userDto = UserDto.fromAuthUserDto(authUserDto)
+
+                if (authResult.additionalUserInfo!!.isNewUser) {
+                    firestore
+                        .document(userDto.id)
+                        .set(userDto.toDocumentSnapshot())
+                        .await()
+                }
+
+                emit(Resource.Success(Unit))
+            } catch (exception: Exception) {
+                emit(Resource.Error(exception.localizedMessage ?: "Unexpected error"))
+            }
+        }
 
     override suspend fun registerWithEmailAndPassword(
         email: String,
@@ -76,6 +99,8 @@ class AuthRepositoryImpl @Inject constructor(
 
                 auth.currentUser?.apply {
                     delete().await()
+
+                    auth.signOut()
 
                     emit(Resource.Success(Unit))
                 }

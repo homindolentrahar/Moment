@@ -11,7 +11,10 @@ interface AuthRepository {
         password: String
     ): Flow<Resource<Unit>>
 
-    suspend fun signInWithGoogle(email: String): Flow<Resource<Unit>>
+    suspend fun signInWithGoogle(
+        idToken: String,
+        accessToken: String?
+    ): Flow<Resource<Unit>>
 
     suspend fun registerWithEmailAndPassword(
         email: String,
