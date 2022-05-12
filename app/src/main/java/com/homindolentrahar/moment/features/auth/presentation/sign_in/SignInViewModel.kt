@@ -41,7 +41,8 @@ class SignInViewModel @Inject constructor(
                     }
                     is Resource.Success -> {
                         _state.value = _state.value.copy(
-                            loading = false
+                            loading = false,
+                            error = ""
                         )
                     }
                 }
