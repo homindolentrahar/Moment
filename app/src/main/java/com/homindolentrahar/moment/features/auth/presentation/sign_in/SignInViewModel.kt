@@ -49,6 +49,35 @@ class SignInViewModel @Inject constructor(
             }
         }
     }
+
+    fun googleSignIn(idToken: String, accessToken: String? = null) {
+        viewModelScope.launch {
+            signInWithGoogle(
+                idToken = idToken,
+                accessToken = accessToken
+            ).collect { resource ->
+                when (resource) {
+                    is Resource.Error -> {
+                        _state.value = _state.value.copy(
+                            error = resource.message ?: "Unexpected error",
+                            loading = false
+                        )
+                    }
+                    is Resource.Loading -> {
+                        _state.value = _state.value.copy(
+                            loading = resource.isLoading
+                        )
+                    }
+                    is Resource.Success -> {
+                        _state.value = _state.value.copy(
+                            loading = false,
+                            error = ""
+                        )
+                    }
+                }
+            }
+        }
+    }
 }
 
 

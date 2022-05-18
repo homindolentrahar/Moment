@@ -18,7 +18,7 @@ android {
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
-        buildConfigField "String", "WEB_CLIENT_ID", "\"PLACE YOUR WEB CLIENT ID HERE\""
+        buildConfigField "String", "WEB_CLIENT_ID", WEB_CLIENT_ID
     }
 
     buildTypes {

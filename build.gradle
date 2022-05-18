@@ -1,7 +1,7 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 buildscript {
     ext {
-        activity_fragment_ktx_version = "1.4.1"
+        activity_fragment_ktx_version = "1.4.0"
         lifecycle_ktx_version = "2.4.1"
         coroutines_version = "1.6.1"
         arrow_version = "1.0.1"
