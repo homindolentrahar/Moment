@@ -3,6 +3,7 @@ package com.homindolentrahar.moment.features.transaction.data.repository
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.homindolentrahar.moment.core.util.Resource
+import com.homindolentrahar.moment.features.transaction.data.mapper.toDocumentSnapshot
 import com.homindolentrahar.moment.features.transaction.data.mapper.toTransaction
 import com.homindolentrahar.moment.features.transaction.data.remote.dto.TransactionDto
 import com.homindolentrahar.moment.features.transaction.domain.model.Transaction
@@ -53,18 +54,65 @@ class TransactionRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun addTransaction(transaction: Transaction): Flow<Resource<Unit>> {
-        TODO("Not yet implemented")
+    override suspend fun addTransaction(transaction: Transaction): Flow<Resource<Unit>> = flow {
+        try {
+            emit(Resource.Loading())
+
+            val currentUser = auth.currentUser!!
+            val transactionDto = TransactionDto.fromTransaction(transaction)
+
+            firestore
+                .document(currentUser.uid)
+                .collection(TransactionDto.COLLECTION)
+                .document(transactionDto.id)
+                .set(transactionDto.toDocumentSnapshot())
+                .await()
+
+            emit(Resource.Success(Unit))
+        } catch (exception: Exception) {
+            emit(Resource.Error(exception.localizedMessage ?: "Unexpected error"))
+        }
     }
 
     override suspend fun editTransaction(
         id: String,
         transaction: Transaction
-    ): Flow<Resource<Unit>> {
-        TODO("Not yet implemented")
+    ): Flow<Resource<Unit>> = flow {
+        try {
+            emit(Resource.Loading())
+
+            val currentUser = auth.currentUser!!
+            val transactionDto = TransactionDto.fromTransaction(transaction)
+
+            firestore
+                .document(currentUser.uid)
+                .collection(TransactionDto.COLLECTION)
+                .document(id)
+                .update(transactionDto.toDocumentSnapshot())
+                .await()
+
+            emit(Resource.Success(Unit))
+        } catch (exception: Exception) {
+            emit(Resource.Error(exception.localizedMessage ?: "Unexpected error"))
+        }
     }
 
-    override suspend fun deleteTransaction(id: String): Flow<Resource<Unit>> {
-        TODO("Not yet implemented")
+    override suspend fun deleteTransaction(id: String): Flow<Resource<Unit>> = flow {
+        try {
+            emit(Resource.Loading())
+
+            val currentUser = auth.currentUser!!
+
+            firestore
+                .document(currentUser.uid)
+                .collection(TransactionDto.COLLECTION)
+                .document(id)
+                .delete()
+                .await()
+
+            emit(Resource.Success(Unit))
+        } catch (exception: Exception) {
+            emit(Resource.Error(exception.localizedMessage ?: "Unexpected error"))
+        }
     }
 }

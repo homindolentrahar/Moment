@@ -10,6 +10,18 @@ import com.homindolentrahar.moment.features.transaction.domain.model.Transaction
 import java.time.LocalDateTime
 import java.time.ZoneOffset
 
+fun TransactionDto.toDocumentSnapshot(): Map<String, Any> {
+    return hashMapOf(
+        "id" to id,
+        "name" to name,
+        "desc" to desc,
+        "type" to type,
+        "category" to category,
+        "account" to account,
+        "timestamp" to timestamp
+    )
+}
+
 fun TransactionDto.toTransaction(): Transaction {
     return Transaction(
         id = id,
@@ -22,6 +34,16 @@ fun TransactionDto.toTransaction(): Transaction {
     )
 }
 
+fun TransactionCategoryDto.toDocumentSnapshot(): Map<String, Any> {
+    return hashMapOf(
+        "id" to id,
+        "name" to name,
+        "icon" to icon,
+        "slug" to slug,
+        "timestamp" to timestamp
+    )
+}
+
 fun TransactionCategoryDto.toTransactionCategory(): TransactionCategory {
     return TransactionCategory(
         id = id,
@@ -29,6 +51,15 @@ fun TransactionCategoryDto.toTransactionCategory(): TransactionCategory {
         icon = icon,
         slug = slug,
         timestamp = LocalDateTime.ofEpochSecond(timestamp, 0, ZoneOffset.UTC)
+    )
+}
+
+fun TransactionAccountDto.toDocumentSnapshot(): Map<String, Any> {
+    return hashMapOf(
+        "id" to id,
+        "name" to name,
+        "icon" to icon,
+        "timestamp" to timestamp
     )
 }
 
