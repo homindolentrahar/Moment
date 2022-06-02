@@ -7,6 +7,17 @@ import com.homindolentrahar.moment.features.wishlist.domain.model.WishlistSaving
 import java.time.LocalDateTime
 import java.time.ZoneOffset
 
+fun WishlistDto.toDocumentSnapshot(): Map<String, Any> =
+    hashMapOf(
+        "id" to id,
+        "name" to name,
+        "description" to description,
+        "price" to price,
+        "current" to current,
+        "period" to period,
+        "imageUrl" to imageUrl
+    )
+
 fun WishlistDto.toWishlist(): Wishlist = Wishlist(
     id = id,
     name = name,

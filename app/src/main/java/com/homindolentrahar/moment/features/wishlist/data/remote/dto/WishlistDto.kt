@@ -14,13 +14,13 @@ data class WishlistDto(
     companion object {
         const val COLLECTION = "wishlist"
 
-        fun fromWishlist(wishlist: Wishlist): Wishlist = Wishlist(
+        fun fromWishlist(wishlist: Wishlist): WishlistDto = WishlistDto(
             id = wishlist.id,
             name = wishlist.name,
             description = wishlist.description,
             price = wishlist.price,
             current = wishlist.current,
-            _period = wishlist.period,
+            period = wishlist.period,
             imageUrl = wishlist.imageUrl
         )
     }

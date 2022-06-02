@@ -3,6 +3,7 @@ package com.homindolentrahar.moment.features.wishlist.data.repository
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.homindolentrahar.moment.core.util.Resource
+import com.homindolentrahar.moment.features.wishlist.data.mapper.toDocumentSnapshot
 import com.homindolentrahar.moment.features.wishlist.data.mapper.toWishlist
 import com.homindolentrahar.moment.features.wishlist.data.mapper.toWishlistSaving
 import com.homindolentrahar.moment.features.wishlist.data.remote.dto.WishlistDto
@@ -102,15 +103,63 @@ class WishlistRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun saveWishlist(wishlist: Wishlist): Flow<Resource<Unit>> {
-        TODO("Not yet implemented")
+    override suspend fun saveWishlist(wishlist: Wishlist): Flow<Resource<Unit>> = flow {
+        try {
+            emit(Resource.Loading())
+
+            val currentUser = auth.currentUser!!
+            val wishlistDto = WishlistDto.fromWishlist(wishlist)
+
+            firestore
+                .document(currentUser.uid)
+                .collection(WishlistDto.COLLECTION)
+                .document(wishlistDto.id)
+                .set(wishlistDto.toDocumentSnapshot())
+                .await()
+
+            emit(Resource.Success(Unit))
+        } catch (exception: Exception) {
+            emit(Resource.Error(exception.localizedMessage ?: "Unexpected error"))
+        }
     }
 
-    override suspend fun updateWishlist(id: String, wishlist: Wishlist): Flow<Resource<Unit>> {
-        TODO("Not yet implemented")
-    }
+    override suspend fun updateWishlist(id: String, wishlist: Wishlist): Flow<Resource<Unit>> =
+        flow {
+            try {
+                emit(Resource.Loading())
 
-    override suspend fun removeWishlist(id: String): Flow<Resource<Unit>> {
-        TODO("Not yet implemented")
+                val currentUser = auth.currentUser!!
+                val wishlistDto = WishlistDto.fromWishlist(wishlist)
+
+                firestore
+                    .document(currentUser.uid)
+                    .collection(WishlistDto.COLLECTION)
+                    .document(id)
+                    .update(wishlistDto.toDocumentSnapshot())
+                    .await()
+
+                emit(Resource.Success(Unit))
+            } catch (exception: Exception) {
+                emit(Resource.Error(exception.localizedMessage ?: "Unexpected error"))
+            }
+        }
+
+    override suspend fun removeWishlist(id: String): Flow<Resource<Unit>> = flow {
+        try {
+            emit(Resource.Loading())
+
+            val currentUser = auth.currentUser!!
+
+            firestore
+                .document(currentUser.uid)
+                .collection(WishlistDto.COLLECTION)
+                .document(id)
+                .delete()
+                .await()
+
+            emit(Resource.Success(Unit))
+        } catch (exception: Exception) {
+            emit(Resource.Error(exception.localizedMessage ?: "Unexpected error"))
+        }
     }
 }
