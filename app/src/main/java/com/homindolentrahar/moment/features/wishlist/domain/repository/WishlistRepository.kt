@@ -16,7 +16,17 @@ interface WishlistRepository {
 
     suspend fun saveWishlist(wishlist: Wishlist): Flow<Resource<Unit>>
 
+    suspend fun saveSaving(wishlistId: String, saving: WishlistSaving): Flow<Resource<Unit>>
+
     suspend fun updateWishlist(id: String, wishlist: Wishlist): Flow<Resource<Unit>>
 
-    suspend fun removeWishlist(id: String): Flow<Resource<Unit>>
+    suspend fun updateSaving(
+        wishlistId: String,
+        savingId: String,
+        saving: WishlistSaving
+    ): Flow<Resource<Unit>>
+
+    suspend fun removeWishlist(wishlistId: String, savingId: String): Flow<Resource<Unit>>
+
+    suspend fun removeSaving(wishlistId: String, savingId: String): Flow<Resource<Unit>>
 }

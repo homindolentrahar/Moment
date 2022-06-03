@@ -28,6 +28,12 @@ fun WishlistDto.toWishlist(): Wishlist = Wishlist(
     imageUrl = imageUrl
 )
 
+fun WishlistSavingDto.toDocumentSnapshot(): Map<String, Any> = hashMapOf(
+    "id" to id,
+    "amount" to amount,
+    "timestamp" to timestamp
+)
+
 fun WishlistSavingDto.toWishlistSaving(): WishlistSaving = WishlistSaving(
     id = id,
     amount = amount,
