@@ -8,6 +8,6 @@ import javax.inject.Inject
 class RemoveSaving @Inject constructor(
     private val repository: WishlistRepository
 ) {
-    suspend operator fun invoke(wishlistId: String, removeId: String): Flow<Resource<Unit>> =
-        repository.removeSaving(wishlistId, removeId)
+    suspend operator fun invoke(wishlistId: String, savingId: String): Flow<Resource<Unit>> =
+        repository.removeSaving(wishlistId, savingId)
 }
