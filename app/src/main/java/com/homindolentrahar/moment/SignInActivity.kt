@@ -3,9 +3,9 @@ package com.homindolentrahar.moment
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 
-class SignUpActivity : AppCompatActivity() {
+class SignInActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_sign_up)
+        setContentView(R.layout.activity_sign_in)
     }
 }

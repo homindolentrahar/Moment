@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".SignUpActivity"
+    tools:context=".SignInActivity"
     android:layout_marginStart="24dp"
     android:layout_marginEnd="24dp"
     >
@@ -106,7 +106,7 @@
                 android:layout_centerVertical="true"
                 android:layout_gravity="center"
                 android:layout_marginEnd="20dp"
-                android:background="@drawable/ic_mail"
+                android:background="@drawable/ic_eye"
                 android:src="@drawable/ic_mail" />
         </RelativeLayout>
 
@@ -123,70 +123,80 @@
 
     <Button
         android:id="@+id/SignInBtnSignIn"
-        android:layout_marginTop="64dp"
         android:layout_width="match_parent"
         android:layout_height="59dp"
         android:layout_below="@+id/linearLayoutAtasSignIn"
+        android:layout_marginTop="64dp"
         android:background="@drawable/inputan"
-        android:text="Sign In"
-        android:textColor="@color/white"
-        android:textAllCaps="false"
         android:fontFamily="@font/inter_bold"
-        />
+        android:text="Sign In"
+        android:textAllCaps="false"
+        android:textColor="@color/white" />
 
     <RelativeLayout
-        android:layout_marginTop="52dp"
-        android:layout_below="@+id/SignInBtnSignIn"
         android:id="@+id/signInBtnRLSignInWithGoogle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:gravity="center"
+        android:layout_below="@+id/SignInBtnSignIn"
+        android:layout_marginTop="32dp"
         android:background="@drawable/inputan"
-        >
-    <LinearLayout
-        android:layout_gravity="center"
         android:gravity="center"
-        android:layout_centerHorizontal="true"
-        android:layout_width="wrap_content"
-        android:layout_height="59dp"
-        android:orientation="horizontal"
+        android:orientation="vertical">
 
-        >
-
-        <ImageView
-            android:layout_width="16dp"
-            android:layout_height="16dp"
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="59dp"
+            android:layout_centerHorizontal="true"
             android:layout_gravity="center"
-            android:src="@drawable/ic_flat_color_icons_google"
-            />
-        <TextView
-            android:layout_marginStart="16dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/inter"
-            android:text="Sign In with Google"
-            android:textColor="@color/dark"
-            android:textStyle="bold"
-            android:textSize="14dp"
-            android:layout_gravity="center"
+            android:gravity="center"
+            android:orientation="horizontal"
 
-            />
+            >
 
-    </LinearLayout>
+            <ImageView
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:layout_gravity="center"
+                android:src="@drawable/ic_flat_color_icons_google" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginStart="16dp"
+                android:fontFamily="@font/inter"
+                android:text="Sign In with Google"
+                android:textColor="@color/dark"
+                android:textSize="14dp"
+                android:textStyle="bold"
+
+                />
+
+        </LinearLayout>
     </RelativeLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        >
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Don't have an account?"
-                android:textColor="@color/old_grey"
-                android:fontFamily="@font/inter"
-                />
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="48dp"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/inter"
+            android:text="Don't have an account?"
+            android:textColor="@color/dark" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:fontFamily="@font/inter"
+            android:text="Sign Up"
+            android:textColor="@color/biru"
+            android:textStyle="bold" />
     </LinearLayout>
 </RelativeLayout>
