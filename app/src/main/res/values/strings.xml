@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Moment</string>
+    <string name="forgotpass_desc">Chill, we got your back. Enter your registered email below to recover</string>
 </resources>
