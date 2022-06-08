@@ -5,9 +5,13 @@
       <map>
         <entry key="..\:/Perkuliahan/Semester 4/BP II/FP/Moment/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.1" />
         <entry key="..\:/Perkuliahan/Semester 4/BP II/FP/Moment/app/src/main/res/drawable/button.xml" value="0.1" />
+        <entry key="..\:/Perkuliahan/Semester 4/BP II/FP/Moment/app/src/main/res/drawable/ic_eye.xml" value="0.1" />
+        <entry key="..\:/Perkuliahan/Semester 4/BP II/FP/Moment/app/src/main/res/drawable/ic_icon.xml" value="0.1" />
         <entry key="..\:/Perkuliahan/Semester 4/BP II/FP/Moment/app/src/main/res/drawable/ic_launcher_background.xml" value="0.1" />
+        <entry key="..\:/Perkuliahan/Semester 4/BP II/FP/Moment/app/src/main/res/drawable/ic_mail.xml" value="0.1" />
         <entry key="..\:/Perkuliahan/Semester 4/BP II/FP/Moment/app/src/main/res/drawable/inputan.xml" value="0.1" />
-        <entry key="..\:/Perkuliahan/Semester 4/BP II/FP/Moment/app/src/main/res/layout/activity_sign_up.xml" value="0.15" />
+        <entry key="..\:/Perkuliahan/Semester 4/BP II/FP/Moment/app/src/main/res/font/inter.xml" value="0.11296296296296296" />
+        <entry key="..\:/Perkuliahan/Semester 4/BP II/FP/Moment/app/src/main/res/layout/activity_sign_up.xml" value="0.2515923566878981" />
       </map>
     </option>
   </component>

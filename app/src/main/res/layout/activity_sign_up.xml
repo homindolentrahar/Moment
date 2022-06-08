@@ -1,9 +1,192 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".SignUpActivity">
+    tools:context=".SignUpActivity"
+    android:layout_marginStart="24dp"
+    android:layout_marginEnd="24dp"
+    >
 
-</LinearLayout>
+    <LinearLayout
+        android:id="@+id/linearLayoutAtasSignIn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="90dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:fontFamily="@font/inter_semibold"
+                android:text="Greetings"
+                android:textColor="@color/black"
+                android:textSize="28dp" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:src="@drawable/ic_greeting" />
+
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="It's been a while, sign in to your account"
+            android:textColor="@color/old_grey"
+            android:textSize="14dp"
+
+            />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_marginTop="64dp"
+            android:background="@drawable/inputan">
+
+            <EditText
+                android:id="@+id/signInEmail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_gravity="center"
+                android:layout_marginStart="20dp"
+                android:background="@null"
+                android:fontFamily="@font/inter_regular"
+
+                android:hint="Email Address" />
+
+            <ImageView
+                android:id="@+id/iconEmail"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:layout_gravity="center"
+                android:layout_marginEnd="20dp"
+                android:background="@drawable/ic_mail"
+                android:src="@drawable/ic_mail" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_marginTop="24dp"
+            android:background="@drawable/inputan">
+
+            <EditText
+                android:id="@+id/signInPassword"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+                android:layout_gravity="center"
+
+                android:layout_marginStart="20dp"
+
+                android:layout_toStartOf="@+id/iconPass"
+                android:background="@null"
+                android:fontFamily="@font/inter_regular"
+                android:hint="Password" />
+
+            <ImageView
+                android:id="@+id/iconPass"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:layout_gravity="center"
+                android:layout_marginEnd="20dp"
+                android:background="@drawable/ic_mail"
+                android:src="@drawable/ic_mail" />
+        </RelativeLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:layout_marginTop="16dp"
+            android:fontFamily="@font/inter_bold"
+            android:text="Forgot Password?"
+            android:textColor="@color/biru"
+            android:textSize="14dp" />
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/SignInBtnSignIn"
+        android:layout_marginTop="64dp"
+        android:layout_width="match_parent"
+        android:layout_height="59dp"
+        android:layout_below="@+id/linearLayoutAtasSignIn"
+        android:background="@drawable/inputan"
+        android:text="Sign In"
+        android:textColor="@color/white"
+        android:textAllCaps="false"
+        android:fontFamily="@font/inter_bold"
+        />
+
+    <RelativeLayout
+        android:layout_marginTop="52dp"
+        android:layout_below="@+id/SignInBtnSignIn"
+        android:id="@+id/signInBtnRLSignInWithGoogle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:background="@drawable/inputan"
+        >
+    <LinearLayout
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:layout_centerHorizontal="true"
+        android:layout_width="wrap_content"
+        android:layout_height="59dp"
+        android:orientation="horizontal"
+
+        >
+
+        <ImageView
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:layout_gravity="center"
+            android:src="@drawable/ic_flat_color_icons_google"
+            />
+        <TextView
+            android:layout_marginStart="16dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/inter"
+            android:text="Sign In with Google"
+            android:textColor="@color/dark"
+            android:textStyle="bold"
+            android:textSize="14dp"
+            android:layout_gravity="center"
+
+            />
+
+    </LinearLayout>
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        >
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Don't have an account?"
+                android:textColor="@color/old_grey"
+                android:fontFamily="@font/inter"
+                />
+    </LinearLayout>
+</RelativeLayout>

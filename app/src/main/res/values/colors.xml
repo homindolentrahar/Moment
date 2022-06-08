@@ -5,4 +5,5 @@
     <color name="old_grey">#A8B5C7</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="dark">#404E63</color>
 </resources>
