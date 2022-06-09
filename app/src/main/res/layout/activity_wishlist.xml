@@ -80,35 +80,66 @@
         android:layout_height="60dp"
         android:layout_marginTop="24dp"
         android:background="@drawable/inputan">
-        <ImageView
-            android:id="@+id/icon_wishlist_initial_amount"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:layout_alignParentStart="true"
-            android:layout_centerVertical="true"
-            android:layout_gravity="center"
-            android:layout_marginStart="20dp"
-            android:background="@drawable/ic_mail"
-            android:src="@drawable/ic_mail" />
 
-        <EditText
-            android:id="@+id/wishlist_initial_amount"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_gravity="center"
-            android:layout_marginStart="50dp"
-            android:layout_marginEnd="20dp"
-            android:background="@null"
-            android:fontFamily="@font/inter_regular"
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-            android:hint="Initial Amount" />
+            <ImageView
+                android:id="@+id/icon_wishlist_initial_amount"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+                android:layout_gravity="center"
+                android:layout_marginStart="20dp"
+                android:background="@drawable/ic_fi_sr_money"
+                android:src="@drawable/ic_fi_sr_money" />
+
+            <EditText
+                android:id="@+id/wishlist_initial_amount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_gravity="center"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="20dp"
+                android:background="@null"
+                android:fontFamily="@font/inter_regular"
+
+                android:hint="Initial Amount" />
+
+            <ImageView
+                android:id="@+id/icon_wishlist_period"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+                android:layout_gravity="center"
+                android:layout_marginStart="10dp"
+                android:background="@drawable/ic_fi_sr_time_forward"
+                android:src="@drawable/ic_fi_sr_time_forward" />
+
+            <EditText
+                android:id="@+id/wishlist_period"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_gravity="center"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="20dp"
+                android:background="@null"
+                android:fontFamily="@font/inter_regular"
+
+                android:hint="Period" />
+        </LinearLayout>
     </RelativeLayout>
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:layout_marginTop="24dp"
         android:background="@drawable/inputan">
+
         <ImageView
             android:id="@+id/icon_goal_amount"
             android:layout_width="20dp"
@@ -117,8 +148,8 @@
             android:layout_centerVertical="true"
             android:layout_gravity="center"
             android:layout_marginStart="20dp"
-            android:background="@drawable/ic_mail"
-            android:src="@drawable/ic_mail" />
+            android:background="@drawable/ic_rp"
+            android:src="@drawable/ic_rp" />
 
         <EditText
             android:id="@+id/goal_amount"
@@ -134,36 +165,30 @@
             android:hint="Goal Amount" />
     </RelativeLayout>
     <RelativeLayout
-        android:id="@+id/signInBtnRLSignInWithGoogle"
+        android:id="@+id/BtnWishlist"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/SignInBtnSignIn"
+        android:layout_below="@+id/WishlistBtnSave"
         android:layout_marginTop="32dp"
         android:background="@drawable/inputan"
         android:gravity="center"
         android:orientation="vertical">
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="59dp"
-            android:layout_centerHorizontal="true"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:orientation="horizontal"
             >
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginStart="16dp"
-                android:fontFamily="@font/inter"
-                android:text="Save"
-                android:textColor="@color/dark"
-                android:textSize="14dp"
-                android:textStyle="bold"
-                />
 
-        </LinearLayout>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginBottom="24dp"
+            android:gravity="center"
+            android:fontFamily="@font/inter"
+            android:text="Save"
+            android:textColor="@color/dark"
+            android:textSize="14dp"
+            android:textStyle="bold" />
+
     </RelativeLayout>
 </LinearLayout>
 </RelativeLayout>
