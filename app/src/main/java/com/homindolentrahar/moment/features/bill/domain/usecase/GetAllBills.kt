@@ -10,12 +10,7 @@ import javax.inject.Inject
 class GetAllBills @Inject constructor(
     private val repository: BillRepository
 ) {
-    suspend operator fun invoke(): Resource<List<Bill>> =
-        try {
-            val allBills = repository.getAllBills()
-
-            Resource.Success(allBills)
-        } catch (exception: Exception) {
-            Resource.Error(exception.localizedMessage ?: "Unexpected error")
-        }
+    suspend operator fun invoke(): Flow<List<Bill>> = flow {
+        emit(repository.getAllBills())
+    }
 }
