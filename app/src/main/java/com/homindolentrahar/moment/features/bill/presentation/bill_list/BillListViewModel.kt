@@ -71,7 +71,7 @@ class BillListViewModel @Inject constructor(
                         loading = false
                     )
                 }
-                .collect { data ->
+                .collect {
                     _state.value = _state.value.copy(
                         error = "",
                         loading = false
