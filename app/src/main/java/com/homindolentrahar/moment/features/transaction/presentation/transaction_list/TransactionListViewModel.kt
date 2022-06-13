@@ -2,7 +2,6 @@ package com.homindolentrahar.moment.features.transaction.presentation.transactio
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.homindolentrahar.moment.features.transaction.domain.model.Transaction
 import com.homindolentrahar.moment.features.transaction.domain.usecase.*
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
@@ -11,35 +10,27 @@ import javax.inject.Inject
 
 @HiltViewModel
 class TransactionListViewModel @Inject constructor(
-    private val getMonthlyTransactions: GetMonthlyTransactions,
-    private val saveTransaction: SaveTransaction,
+    private val getAllTransactions: GetAllTransactions,
+    private val getTransactionsByCategory: GetTransactionsByCategory,
+    private val searchTransaction: SearchTransaction,
     private val getExpenses: GetExpenses,
-    private val getIncome: GetIncome
+    private val getIncome: GetIncome,
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(TransactionListState())
     val state: StateFlow<TransactionListState>
         get() = _state
 
-    fun allTransactions() {
+    init {
+        allTransactions()
+    }
+
+    private fun allTransactions() {
         viewModelScope.launch {
-            getMonthlyTransactions()
+            getAllTransactions()
                 .onStart {
                     _state.value = _state.value.copy(
                         loading = true
-                    )
-                }
-                .zip(getExpenses()) { monthly, expenses ->
-                    hashMapOf(
-                        "monthly" to monthly,
-                        "expenses" to expenses,
-                    )
-                }
-                .zip(getIncome()) { pair, income ->
-                    hashMapOf(
-                        "income" to income,
-                        pair.map { it.toPair() }.first(),
-                        pair.map { it.toPair() }.last(),
                     )
                 }
                 .catch { error ->
@@ -48,21 +39,19 @@ class TransactionListViewModel @Inject constructor(
                         loading = false
                     )
                 }
-                .collect { data ->
+                .collect { transactions ->
                     _state.value = _state.value.copy(
                         error = "",
-                        transactions = data["monthly"] ?: emptyList(),
-                        expenses = data["expenses"] ?: emptyList(),
-                        income = data["income"] ?: emptyList(),
+                        transactions = transactions,
                         loading = false,
                     )
                 }
         }
     }
 
-    fun save(transaction: Transaction) {
+    fun byCategory(id: String) {
         viewModelScope.launch {
-            saveTransaction(transaction)
+            getTransactionsByCategory(id)
                 .onStart {
                     _state.value = _state.value.copy(
                         loading = true
@@ -74,10 +63,84 @@ class TransactionListViewModel @Inject constructor(
                         loading = false
                     )
                 }
-                .collect {
+                .collect { transactions ->
                     _state.value = _state.value.copy(
                         error = "",
+                        transactions = transactions,
+                        loading = false,
+                    )
+                }
+        }
+    }
+
+    fun search(query: String) {
+        viewModelScope.launch {
+            searchTransaction(query)
+                .debounce(300)
+                .onStart {
+                    _state.value = _state.value.copy(
+                        loading = true
+                    )
+                }
+                .catch { error ->
+                    _state.value = _state.value.copy(
+                        error = error.localizedMessage!!.toString(),
                         loading = false
+                    )
+                }
+                .collect { transactions ->
+                    _state.value = _state.value.copy(
+                        error = "",
+                        transactions = transactions,
+                        loading = false,
+                    )
+                }
+        }
+    }
+
+    fun expenses() {
+        viewModelScope.launch {
+            getExpenses()
+                .onStart {
+                    _state.value = _state.value.copy(
+                        loading = true
+                    )
+                }
+                .catch { error ->
+                    _state.value = _state.value.copy(
+                        error = error.localizedMessage!!.toString(),
+                        loading = false
+                    )
+                }
+                .collect { transactions ->
+                    _state.value = _state.value.copy(
+                        error = "",
+                        transactions = transactions,
+                        loading = false,
+                    )
+                }
+        }
+    }
+
+    fun income() {
+        viewModelScope.launch {
+            getIncome()
+                .onStart {
+                    _state.value = _state.value.copy(
+                        loading = true
+                    )
+                }
+                .catch { error ->
+                    _state.value = _state.value.copy(
+                        error = error.localizedMessage!!.toString(),
+                        loading = false
+                    )
+                }
+                .collect { transactions ->
+                    _state.value = _state.value.copy(
+                        error = "",
+                        transactions = transactions,
+                        loading = false,
                     )
                 }
         }
