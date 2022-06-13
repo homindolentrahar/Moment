@@ -1,14 +1,15 @@
 package com.homindolentrahar.moment.features.wishlist.domain.usecase
 
-import com.homindolentrahar.moment.core.util.Resource
 import com.homindolentrahar.moment.features.wishlist.domain.model.Wishlist
 import com.homindolentrahar.moment.features.wishlist.domain.repository.WishlistRepository
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
 class GetSingleWishlist @Inject constructor(
     private val repository: WishlistRepository
 ) {
-    suspend operator fun invoke(id: String): Flow<Resource<Wishlist>> =
-        repository.getSingleWishlist(id)
+    suspend operator fun invoke(id: String): Flow<Wishlist?> = flow {
+        emit(repository.getSingleWishlist(id))
+    }
 }
