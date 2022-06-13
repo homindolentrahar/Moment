@@ -2,17 +2,23 @@ package com.homindolentrahar.moment.features.transaction.presentation.transactio
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.homindolentrahar.moment.core.util.Resource
+import com.homindolentrahar.moment.features.transaction.domain.model.Transaction
+import com.homindolentrahar.moment.features.transaction.domain.usecase.RemoveTransaction
+import com.homindolentrahar.moment.features.transaction.domain.usecase.UpdateTransaction
 import com.homindolentrahar.moment.features.transaction.domain.usecase.GetSingleTransaction
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class TransactionDetailViewModel @Inject constructor(
-    private val getSingleTransaction: GetSingleTransaction
+    private val getSingleTransaction: GetSingleTransaction,
+    private val updateTransaction: UpdateTransaction,
+    private val removeTransaction: RemoveTransaction
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(TransactionDetailState())
@@ -22,29 +28,70 @@ class TransactionDetailViewModel @Inject constructor(
     fun singleTransaction(id: String) {
         viewModelScope.launch {
             getSingleTransaction(id)
-                .collect { resource ->
-                    when (resource) {
-                        is Resource.Error -> {
-                            _state.value = _state.value.copy(
-                                error = resource.message ?: "Unexpected error",
-                                loading = false
-                            )
-                        }
-                        is Resource.Loading -> {
-                            _state.value = _state.value.copy(
-                                loading = resource.isLoading
-                            )
-                        }
-                        is Resource.Success -> {
-                            _state.value = _state.value.copy(
-                                transaction = resource.data,
-                                error = "",
-                                loading = false
-                            )
-                        }
-                    }
+                .onStart {
+                    _state.value = _state.value.copy(
+                        loading = true
+                    )
+                }
+                .catch { error ->
+                    _state.value = _state.value.copy(
+                        error = error.localizedMessage!!.toString(),
+                        loading = false
+                    )
+                }
+                .collect { transaction ->
+                    _state.value = _state.value.copy(
+                        error = "",
+                        transaction = transaction,
+                        loading = false,
+                    )
                 }
         }
     }
 
+    fun update(id: String, transaction: Transaction) {
+        viewModelScope.launch {
+            updateTransaction(id, transaction)
+                .onStart {
+                    _state.value = _state.value.copy(
+                        loading = true
+                    )
+                }
+                .catch { error ->
+                    _state.value = _state.value.copy(
+                        error = error.localizedMessage!!.toString(),
+                        loading = false
+                    )
+                }
+                .collect {
+                    _state.value = _state.value.copy(
+                        error = "",
+                        loading = false,
+                    )
+                }
+        }
+    }
+
+    fun remove(id: String) {
+        viewModelScope.launch {
+            removeTransaction(id)
+                .onStart {
+                    _state.value = _state.value.copy(
+                        loading = true
+                    )
+                }
+                .catch { error ->
+                    _state.value = _state.value.copy(
+                        error = error.localizedMessage!!.toString(),
+                        loading = false
+                    )
+                }
+                .collect {
+                    _state.value = _state.value.copy(
+                        error = "",
+                        loading = false,
+                    )
+                }
+        }
+    }
 }

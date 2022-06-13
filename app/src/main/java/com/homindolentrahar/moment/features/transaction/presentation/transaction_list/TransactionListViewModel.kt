@@ -12,7 +12,7 @@ import javax.inject.Inject
 @HiltViewModel
 class TransactionListViewModel @Inject constructor(
     private val getMonthlyTransactions: GetMonthlyTransactions,
-    private val addTransaction: AddTransaction,
+    private val saveTransaction: SaveTransaction,
     private val getExpenses: GetExpenses,
     private val getIncome: GetIncome
 ) : ViewModel() {
@@ -60,9 +60,9 @@ class TransactionListViewModel @Inject constructor(
         }
     }
 
-    fun newTransaction(transaction: Transaction) {
+    fun save(transaction: Transaction) {
         viewModelScope.launch {
-            addTransaction(transaction)
+            saveTransaction(transaction)
                 .onStart {
                     _state.value = _state.value.copy(
                         loading = true
