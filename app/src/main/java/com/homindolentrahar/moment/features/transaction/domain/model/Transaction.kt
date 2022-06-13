@@ -12,6 +12,7 @@ data class Transaction(
     val name: String,
     val desc: String,
     val type: TransactionType,
+    val amount: Double,
     val category: TransactionCategory,
     val account: TransactionAccount,
     val timestamp: LocalDateTime

@@ -9,6 +9,7 @@ data class TransactionDto(
     val name: String,
     val desc: String,
     val type: String,
+    val amount:Double,
     val category: Map<String, Any>,
     val account: Map<String, Any>,
     val timestamp: Long
@@ -22,6 +23,7 @@ data class TransactionDto(
                 name = transaction.name,
                 desc = transaction.desc,
                 type = transaction.type.name,
+                amount =transaction.amount,
                 category = TransactionCategoryDto.fromTransactionCategory(transaction.category)
                     .toDocumentSnapshot(),
                 account = TransactionAccountDto.fromTransactionAccount(transaction.account)
