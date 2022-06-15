@@ -15,7 +15,7 @@ class GetIncome @Inject constructor(
         flow {
             val income = repository.getAllTransactions()
                 .filter { it.type == TransactionType.INCOME }
-                .filter { it.timestamp.month == date.month }
+                .filter { it.createdAt.month == date.month }
 
             emit(income)
         }

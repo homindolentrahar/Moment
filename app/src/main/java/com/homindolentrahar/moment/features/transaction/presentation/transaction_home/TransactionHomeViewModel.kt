@@ -21,6 +21,10 @@ class TransactionHomeViewModel @Inject constructor(
     val state: StateFlow<TransactionHomeState>
         get() = _state
 
+    init {
+        allTransactions()
+    }
+
     fun allTransactions() {
         viewModelScope.launch {
             getMonthlyTransactions()

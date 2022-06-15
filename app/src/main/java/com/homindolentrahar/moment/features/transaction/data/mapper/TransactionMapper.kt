@@ -19,7 +19,8 @@ fun TransactionDto.toDocumentSnapshot(): Map<String, Any> {
         "amount" to amount,
         "category" to category,
         "account" to account,
-        "timestamp" to timestamp
+        "createdAt" to createdAt,
+        "updatedAt" to updatedAt,
     )
 }
 
@@ -32,7 +33,8 @@ fun TransactionDto.toTransaction(): Transaction {
         amount = amount,
         category = TransactionCategoryDto.fromDocumentSnapshot(category).toTransactionCategory(),
         account = TransactionAccountDto.fromDocumentSnapshot(account).toTransactionAccount(),
-        timestamp = LocalDateTime.ofEpochSecond(timestamp, 0, ZoneOffset.UTC)
+        createdAt = LocalDateTime.ofEpochSecond(createdAt, 0, ZoneOffset.UTC),
+        updatedAt = LocalDateTime.ofEpochSecond(updatedAt, 0, ZoneOffset.UTC)
     )
 }
 

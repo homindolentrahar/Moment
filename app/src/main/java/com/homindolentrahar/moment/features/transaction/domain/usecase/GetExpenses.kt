@@ -15,7 +15,7 @@ class GetExpenses @Inject constructor(
         flow {
             val expenses = repository.getAllTransactions()
                 .filter { it.type == TransactionType.EXPENSE }
-                .filter { it.timestamp.month == date.month }
+                .filter { it.createdAt.month == date.month }
 
             emit(expenses)
         }

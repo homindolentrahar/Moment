@@ -9,10 +9,11 @@ data class TransactionDto(
     val name: String,
     val desc: String,
     val type: String,
-    val amount:Double,
+    val amount: Double,
     val category: Map<String, Any>,
     val account: Map<String, Any>,
-    val timestamp: Long
+    val createdAt: Long,
+    val updatedAt: Long,
 ) {
     companion object {
         const val COLLECTION = "transactions"
@@ -23,12 +24,13 @@ data class TransactionDto(
                 name = transaction.name,
                 desc = transaction.desc,
                 type = transaction.type.name,
-                amount =transaction.amount,
+                amount = transaction.amount,
                 category = TransactionCategoryDto.fromTransactionCategory(transaction.category)
                     .toDocumentSnapshot(),
                 account = TransactionAccountDto.fromTransactionAccount(transaction.account)
                     .toDocumentSnapshot(),
-                timestamp = transaction.timestamp.toEpochSecond(ZoneOffset.UTC)
+                createdAt = transaction.createdAt.toEpochSecond(ZoneOffset.UTC),
+                updatedAt = transaction.updatedAt.toEpochSecond(ZoneOffset.UTC),
             )
         }
     }
