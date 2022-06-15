@@ -2,13 +2,11 @@ package com.homindolentrahar.moment.features.wishlist.presentation.wishlist_deta
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.homindolentrahar.moment.core.util.Resource
 import com.homindolentrahar.moment.features.wishlist.domain.model.Wishlist
 import com.homindolentrahar.moment.features.wishlist.domain.model.WishlistSaving
 import com.homindolentrahar.moment.features.wishlist.domain.usecase.*
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -30,84 +28,31 @@ class WishlistDetailViewModel @Inject constructor(
     fun singleWishlist(wishlistId: String) {
         viewModelScope.launch {
             getSingleWishlist(wishlistId)
-                .collect { resource ->
-                    when (resource) {
-                        is Resource.Error -> {
-                            _state.value = _state.value.copy(
-                                wishlist = null,
-                                error = resource.message ?: "Unexpected error",
-                                loading = false
-                            )
-                        }
-                        is Resource.Loading -> {
-                            _state.value = _state.value.copy(
-                                loading = true
-                            )
-                        }
-                        is Resource.Success -> {
-                            _state.value = _state.value.copy(
-                                wishlist = resource.data,
-                                error = "",
-                                loading = false
-                            )
-                        }
-                    }
+                .zip(getWishlistSavings(wishlistId)) { wishlist, savings ->
+                    hashMapOf(
+                        "wishlist" to wishlist,
+                        "savings" to savings,
+                    )
                 }
-        }
-    }
-
-    fun allSavings(wishlistId: String) {
-        viewModelScope.launch {
-            getWishlistSavings(wishlistId)
-                .collect { resource ->
-                    when (resource) {
-                        is Resource.Error -> {
-                            _state.value = _state.value.copy(
-                                savings = emptyList(),
-                                error = resource.message ?: "Unexpected error",
-                                loading = false
-                            )
-                        }
-                        is Resource.Loading -> {
-                            _state.value = _state.value.copy(
-                                loading = true
-                            )
-                        }
-                        is Resource.Success -> {
-                            _state.value = _state.value.copy(
-                                savings = resource.data ?: emptyList(),
-                                error = "",
-                                loading = false
-                            )
-                        }
-                    }
+                .onStart {
+                    _state.value = _state.value.copy(
+                        loading = true,
+                        error = "",
+                    )
                 }
-        }
-    }
-
-    fun savingSave(wishlistId: String, saving: WishlistSaving) {
-        viewModelScope.launch {
-            saveSaving(wishlistId, saving)
-                .collect { resource ->
-                    when (resource) {
-                        is Resource.Error -> {
-                            _state.value = _state.value.copy(
-                                error = resource.message ?: "Unexpected error",
-                                loading = false
-                            )
-                        }
-                        is Resource.Loading -> {
-                            _state.value = _state.value.copy(
-                                loading = true
-                            )
-                        }
-                        is Resource.Success -> {
-                            _state.value = _state.value.copy(
-                                error = "",
-                                loading = false
-                            )
-                        }
-                    }
+                .catch { error ->
+                    _state.value = _state.value.copy(
+                        loading = false,
+                        error = error.localizedMessage!!.toString(),
+                    )
+                }
+                .collect {
+                    _state.value = _state.value.copy(
+                        loading = false,
+                        error = "",
+                        wishlist = it["wishlist"] as Wishlist,
+                        savings = it["savings"] as List<WishlistSaving>,
+                    )
                 }
         }
     }
@@ -115,53 +60,23 @@ class WishlistDetailViewModel @Inject constructor(
     fun update(wishlistId: String, wishlist: Wishlist) {
         viewModelScope.launch {
             updateWishlist(wishlistId, wishlist)
-                .collect { resource ->
-                    when (resource) {
-                        is Resource.Error -> {
-                            _state.value = _state.value.copy(
-                                error = resource.message ?: "Unexpected error",
-                                loading = false
-                            )
-                        }
-                        is Resource.Loading -> {
-                            _state.value = _state.value.copy(
-                                loading = true
-                            )
-                        }
-                        is Resource.Success -> {
-                            _state.value = _state.value.copy(
-                                error = "",
-                                loading = false
-                            )
-                        }
-                    }
+                .onStart {
+                    _state.value = _state.value.copy(
+                        loading = true,
+                        error = "",
+                    )
                 }
-        }
-    }
-
-    fun savingUpdate(wishlistId: String, saving: WishlistSaving) {
-        viewModelScope.launch {
-            updateSaving(wishlistId, saving)
-                .collect { resource ->
-                    when (resource) {
-                        is Resource.Error -> {
-                            _state.value = _state.value.copy(
-                                error = resource.message ?: "Unexpected error",
-                                loading = false
-                            )
-                        }
-                        is Resource.Loading -> {
-                            _state.value = _state.value.copy(
-                                loading = true
-                            )
-                        }
-                        is Resource.Success -> {
-                            _state.value = _state.value.copy(
-                                error = "",
-                                loading = false
-                            )
-                        }
-                    }
+                .catch { error ->
+                    _state.value = _state.value.copy(
+                        loading = false,
+                        error = error.localizedMessage!!.toString(),
+                    )
+                }
+                .collect {
+                    _state.value = _state.value.copy(
+                        loading = false,
+                        error = "",
+                    )
                 }
         }
     }
@@ -169,26 +84,71 @@ class WishlistDetailViewModel @Inject constructor(
     fun remove(wishlistId: String) {
         viewModelScope.launch {
             removeWishlist(wishlistId)
-                .collect { resource ->
-                    when (resource) {
-                        is Resource.Error -> {
-                            _state.value = _state.value.copy(
-                                error = resource.message ?: "Unexpected error",
-                                loading = false
-                            )
-                        }
-                        is Resource.Loading -> {
-                            _state.value = _state.value.copy(
-                                loading = true
-                            )
-                        }
-                        is Resource.Success -> {
-                            _state.value = _state.value.copy(
-                                error = "",
-                                loading = false
-                            )
-                        }
-                    }
+                .onStart {
+                    _state.value = _state.value.copy(
+                        loading = true,
+                        error = "",
+                    )
+                }
+                .catch { error ->
+                    _state.value = _state.value.copy(
+                        loading = false,
+                        error = error.localizedMessage!!.toString(),
+                    )
+                }
+                .collect {
+                    _state.value = _state.value.copy(
+                        loading = false,
+                        error = "",
+                    )
+                }
+        }
+    }
+
+    fun savingSave(wishlistId: String, saving: WishlistSaving) {
+        viewModelScope.launch {
+            saveSaving(wishlistId, saving)
+                .onStart {
+                    _state.value = _state.value.copy(
+                        loading = true,
+                        error = "",
+                    )
+                }
+                .catch { error ->
+                    _state.value = _state.value.copy(
+                        loading = false,
+                        error = error.localizedMessage!!.toString(),
+                    )
+                }
+                .collect {
+                    _state.value = _state.value.copy(
+                        loading = false,
+                        error = "",
+                    )
+                }
+        }
+    }
+
+    fun savingUpdate(wishlistId: String, saving: WishlistSaving) {
+        viewModelScope.launch {
+            updateSaving(wishlistId, saving)
+                .onStart {
+                    _state.value = _state.value.copy(
+                        loading = true,
+                        error = "",
+                    )
+                }
+                .catch { error ->
+                    _state.value = _state.value.copy(
+                        loading = false,
+                        error = error.localizedMessage!!.toString(),
+                    )
+                }
+                .collect {
+                    _state.value = _state.value.copy(
+                        loading = false,
+                        error = "",
+                    )
                 }
         }
     }
@@ -196,26 +156,23 @@ class WishlistDetailViewModel @Inject constructor(
     fun savingRemove(wishlistId: String, savingId: String) {
         viewModelScope.launch {
             removeSaving(wishlistId, savingId)
-                .collect { resource ->
-                    when (resource) {
-                        is Resource.Error -> {
-                            _state.value = _state.value.copy(
-                                error = resource.message ?: "Unexpected error",
-                                loading = false
-                            )
-                        }
-                        is Resource.Loading -> {
-                            _state.value = _state.value.copy(
-                                loading = true
-                            )
-                        }
-                        is Resource.Success -> {
-                            _state.value = _state.value.copy(
-                                error = "",
-                                loading = false
-                            )
-                        }
-                    }
+                .onStart {
+                    _state.value = _state.value.copy(
+                        loading = true,
+                        error = "",
+                    )
+                }
+                .catch { error ->
+                    _state.value = _state.value.copy(
+                        loading = false,
+                        error = error.localizedMessage!!.toString(),
+                    )
+                }
+                .collect {
+                    _state.value = _state.value.copy(
+                        loading = false,
+                        error = "",
+                    )
                 }
         }
     }
