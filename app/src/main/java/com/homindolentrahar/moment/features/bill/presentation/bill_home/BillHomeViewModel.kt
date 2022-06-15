@@ -1,4 +1,4 @@
-package com.homindolentrahar.moment.features.bill.presentation.bill_list
+package com.homindolentrahar.moment.features.bill.presentation.bill_home
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -9,32 +9,33 @@ import com.homindolentrahar.moment.features.bill.domain.usecase.SaveBill
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
+import java.time.LocalDateTime
 import javax.inject.Inject
 
 @HiltViewModel
-class BillListViewModel @Inject constructor(
+class BillHomeViewModel @Inject constructor(
     private val getDueBills: GetDueBills,
     private val getMonthlyBills: GetMonthlyBills,
     private val saveBill: SaveBill,
 ) : ViewModel() {
 
-    private val _state = MutableStateFlow(BillListState())
-    val state: MutableStateFlow<BillListState>
+    private val _state = MutableStateFlow(BillHomeState())
+    val state: MutableStateFlow<BillHomeState>
         get() = _state
 
     init {
         getBillData()
     }
 
-    private fun getBillData() {
+    private fun getBillData(date: LocalDateTime = LocalDateTime.now()) {
         viewModelScope.launch {
-            getDueBills()
+            getDueBills(date)
                 .onStart {
                     _state.value = _state.value.copy(
                         loading = true
                     )
                 }
-                .zip(getMonthlyBills()) { due, monthly ->
+                .zip(getMonthlyBills(date)) { due, monthly ->
                     hashMapOf(
                         "due" to due,
                         "monthly" to monthly

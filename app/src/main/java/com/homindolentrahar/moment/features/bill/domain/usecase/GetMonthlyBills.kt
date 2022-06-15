@@ -10,7 +10,7 @@ import javax.inject.Inject
 class GetMonthlyBills @Inject constructor(
     private val repository: BillRepository
 ) {
-    suspend operator fun invoke(date: LocalDateTime = LocalDateTime.now()): Flow<List<Bill>> =
+    suspend operator fun invoke(date: LocalDateTime): Flow<List<Bill>> =
         flow {
             val filteredBills = repository.getAllBills()
                 .filter { bill -> bill.timestamp.month == date.month }

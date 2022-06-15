@@ -9,9 +9,9 @@ data class BillDto(
     val name: String,
     val category: Map<String, Any>,
     val due: Long,
-    val period: Map<String, Any>,
+    val period: String,
     val amount: Double,
-    val status: Map<String, Any>,
+    val status: String,
     val timestamp: Long
 ) {
     companion object {
@@ -23,9 +23,9 @@ data class BillDto(
                 name = bill.name,
                 category = BillCategoryDto.fromBillCategory(bill.category).toDocumentSnapshot(),
                 due = bill.due.toEpochSecond(ZoneOffset.UTC),
-                period = BillPeriodDto.fromBillPeriod(bill.period).toDocumentSnapshot(),
+                period = bill.period.name,
                 amount = bill.amount,
-                status = BillStatusDto.fromBillStatus(bill.status).toDocumentSnapshot(),
+                status = bill.status.name,
                 timestamp = bill.timestamp.toEpochSecond(ZoneOffset.UTC)
             )
         }

@@ -2,8 +2,10 @@ package com.homindolentrahar.moment.features.wishlist.domain.model
 
 import java.time.LocalDateTime
 
-enum class WishlistStatus {
-    all, progress, reached
+enum class WishlistStatus(name: String) {
+    ALL("all"),
+    PROGRESS("progess"),
+    REACHED("reached")
 }
 
 data class Wishlist(
