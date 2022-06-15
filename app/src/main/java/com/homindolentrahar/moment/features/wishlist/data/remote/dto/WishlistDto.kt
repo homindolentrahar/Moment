@@ -1,6 +1,7 @@
 package com.homindolentrahar.moment.features.wishlist.data.remote.dto
 
 import com.homindolentrahar.moment.features.wishlist.domain.model.Wishlist
+import java.time.ZoneOffset
 
 data class WishlistDto(
     val id: String,
@@ -10,6 +11,8 @@ data class WishlistDto(
     val current: Double,
     val period: String,
     val imageUrl: String,
+    val created_at: Long,
+    val updated_at: Long,
 ) {
     companion object {
         const val COLLECTION = "wishlist"
@@ -21,7 +24,9 @@ data class WishlistDto(
             price = wishlist.price,
             current = wishlist.current,
             period = wishlist.period,
-            imageUrl = wishlist.imageUrl
+            imageUrl = wishlist.imageUrl,
+            created_at = wishlist.created_at.toEpochSecond(ZoneOffset.UTC),
+            updated_at = wishlist.updated_at.toEpochSecond(ZoneOffset.UTC),
         )
     }
 }

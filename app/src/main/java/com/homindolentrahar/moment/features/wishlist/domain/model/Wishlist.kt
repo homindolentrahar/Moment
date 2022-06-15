@@ -1,5 +1,11 @@
 package com.homindolentrahar.moment.features.wishlist.domain.model
 
+import java.time.LocalDateTime
+
+enum class WishlistStatus {
+    all, progress, reached
+}
+
 data class Wishlist(
     val id: String,
     val name: String,
@@ -7,7 +13,9 @@ data class Wishlist(
     val price: Double,
     val current: Double,
     private val _period: String,
-    val imageUrl: String
+    val imageUrl: String,
+    val created_at: LocalDateTime,
+    val updated_at: LocalDateTime
 ) {
     val period: String
         get() = _period.replaceFirstChar { it.uppercase() }
