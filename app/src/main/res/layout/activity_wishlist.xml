@@ -37,7 +37,7 @@
         android:layout_width="128dp"
         android:layout_gravity="center"
         android:layout_height="128dp"
-        android:src="@drawable/ic_close"
+        android:src="@drawable/ic_image"
         />
     <RelativeLayout
         android:layout_width="match_parent"
