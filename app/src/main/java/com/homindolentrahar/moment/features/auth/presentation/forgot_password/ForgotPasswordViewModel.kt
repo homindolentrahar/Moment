@@ -1,8 +1,8 @@
-package com.homindolentrahar.moment.features.auth.presentation.sign_up
+package com.homindolentrahar.moment.features.auth.presentation.forgot_password
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.homindolentrahar.moment.features.auth.domain.usecase.RegisterWithEmailAndPassword
+import com.homindolentrahar.moment.features.auth.domain.usecase.SendPasswordResetEmail
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -12,17 +12,17 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class SignUpViewModel @Inject constructor(
-    private val registerWithEmailAndPassword: RegisterWithEmailAndPassword
+class ForgotPasswordViewModel @Inject constructor(
+    private val sendPasswordResetEmail: SendPasswordResetEmail
 ) : ViewModel() {
 
-    private val _state = MutableStateFlow(SignUpState())
-    val state: StateFlow<SignUpState>
+    private val _state = MutableStateFlow(ForgotPasswordState())
+    val state: StateFlow<ForgotPasswordState>
         get() = _state
 
-    fun register(email: String, password: String) {
+    fun resetPassword(email: String) {
         viewModelScope.launch {
-            registerWithEmailAndPassword(email, password)
+            sendPasswordResetEmail(email)
                 .onStart {
                     _state.value = _state.value.copy(
                         loading = true,
@@ -43,4 +43,5 @@ class SignUpViewModel @Inject constructor(
                 }
         }
     }
+
 }
