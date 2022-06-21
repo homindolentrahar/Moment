@@ -1,10 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="purple_200">#FFBB86FC</color>
-    <color name="purple_500">#FF6200EE</color>
-    <color name="purple_700">#FF3700B3</color>
-    <color name="teal_200">#FF03DAC5</color>
-    <color name="teal_700">#FF018786</color>
-    <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
+    <!--    <color name="purple_200">#FFBB86FC</color>-->
+    <!--    <color name="purple_500">#FF6200EE</color>-->
+    <!--    <color name="purple_700">#FF3700B3</color>-->
+    <!--    <color name="teal_200">#FF03DAC5</color>-->
+    <!--    <color name="teal_700">#FF018786</color>-->
+    <!--    <color name="black">#FF000000</color>-->
+    <!--    <color name="white">#FFFFFFFF</color>-->
+
+    <color name="primary">#59AEF8</color>
+    <color name="accent">#F8CE59</color>
+    <color name="black">#212121</color>
+    <color name="white">#FAFCFF</color>
+    <color name="dark">#404E63</color>
+    <color name="light">#F2F6FD</color>
+    <color name="gray">#A8B5C7</color>
+
+    <color name="expense">#8776F9</color>
+    <color name="income">#F976B3</color>
+    <color name="red_bg">#F85959</color>
+    <color name="red_fg">#CE0909</color>
+    <color name="green_bg">#59F8A3</color>
+    <color name="green_fg">#09CE65</color>
+    <color name="field_bg">#F7F9FC</color>
 </resources>
