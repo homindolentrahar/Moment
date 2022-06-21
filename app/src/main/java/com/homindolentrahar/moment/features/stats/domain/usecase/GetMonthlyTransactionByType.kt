@@ -1,6 +1,5 @@
 package com.homindolentrahar.moment.features.stats.domain.usecase
 
-import arrow.core.computations.result
 import com.homindolentrahar.moment.features.transaction.domain.model.TransactionType
 import com.homindolentrahar.moment.features.transaction.domain.repository.TransactionRepository
 import kotlinx.coroutines.flow.Flow
