@@ -10,10 +10,15 @@
         <entry key="..\:/Perkuliahan/Semester 4/BP II/FP/Moment/app/src/main/res/drawable/ic_launcher_background.xml" value="0.1" />
         <entry key="..\:/Perkuliahan/Semester 4/BP II/FP/Moment/app/src/main/res/drawable/ic_mail.xml" value="0.1" />
         <entry key="..\:/Perkuliahan/Semester 4/BP II/FP/Moment/app/src/main/res/drawable/inputan.xml" value="0.1" />
+        <entry key="..\:/Perkuliahan/Semester 4/BP II/FP/Moment/app/src/main/res/drawable/select_state_bnv.xml" value="0.1" />
         <entry key="..\:/Perkuliahan/Semester 4/BP II/FP/Moment/app/src/main/res/font/inter.xml" value="0.11296296296296296" />
         <entry key="..\:/Perkuliahan/Semester 4/BP II/FP/Moment/app/src/main/res/layout/activity_forgot_password.xml" value="0.22" />
+        <entry key="..\:/Perkuliahan/Semester 4/BP II/FP/Moment/app/src/main/res/layout/activity_main.xml" value="0.14" />
         <entry key="..\:/Perkuliahan/Semester 4/BP II/FP/Moment/app/src/main/res/layout/activity_sign_in.xml" value="0.22" />
-        <entry key="..\:/Perkuliahan/Semester 4/BP II/FP/Moment/app/src/main/res/layout/activity_sign_up.xml" value="0.2" />
+        <entry key="..\:/Perkuliahan/Semester 4/BP II/FP/Moment/app/src/main/res/layout/activity_sign_up.xml" value="0.18" />
+        <entry key="..\:/Perkuliahan/Semester 4/BP II/FP/Moment/app/src/main/res/layout/fragment_main__home.xml" value="0.33" />
+        <entry key="..\:/Perkuliahan/Semester 4/BP II/FP/Moment/app/src/main/res/layout/list_transaction_layout.xml" value="0.33" />
+        <entry key="..\:/Perkuliahan/Semester 4/BP II/FP/Moment/app/src/main/res/menu/bottom_nav.xml" value="0.22" />
       </map>
     </option>
   </component>

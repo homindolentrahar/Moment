@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">Moment</string>
+    <dimen name="margin">24dp</dimen>
     <string name="forgotpass_desc">Chill, we got your back. Enter your registered email below to recover</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

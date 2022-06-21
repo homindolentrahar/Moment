@@ -8,6 +8,7 @@
     tools:context=".SignInActivity"
     android:layout_marginStart="24dp"
     android:layout_marginEnd="24dp"
+
     >
 
     <LinearLayout
@@ -57,12 +58,14 @@
                 android:id="@+id/signInEmail"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
                 android:layout_centerVertical="true"
                 android:layout_gravity="center"
                 android:layout_marginStart="20dp"
+
+                android:layout_toStartOf="@+id/iconEmail"
                 android:background="@null"
                 android:fontFamily="@font/inter_regular"
-
                 android:hint="Email Address" />
 
             <ImageView
