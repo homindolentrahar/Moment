@@ -77,16 +77,16 @@
     </RelativeLayout>
     <LinearLayout
         android:orientation="horizontal"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="60dp"
         android:layout_marginTop="24dp"
-        android:background="@drawable/inputan"
         android:weightSum="2">
 
         <LinearLayout
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_weight="1">
+            android:layout_weight="1"
+            android:background="@drawable/inputan">
 
             <ImageView
                 android:id="@+id/icon_wishlist_initial_amount"
@@ -113,9 +113,10 @@
                 android:hint="Initial Amount" />
         </LinearLayout>
         <LinearLayout
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_weight="1">
+            android:layout_weight="1"
+            android:background="@drawable/inputan">
             <ImageView
                 android:id="@+id/icon_wishlist_period"
                 android:layout_width="20dp"

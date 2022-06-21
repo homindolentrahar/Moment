@@ -103,14 +103,15 @@
             android:layout_marginTop="24dp"
             android:orientation="horizontal"
 
-            android:weightSum="4"
-            >
+            android:weightSum="4">
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:background="@color/dark">
+                android:background="@drawable/inputan"
+                android:backgroundTint="@color/dark"
+                >
 
                 <ImageView
                     android:id="@+id/iconBillDuedate"
@@ -141,10 +142,9 @@
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_weight="3"
                 android:layout_marginStart="20dp"
-                android:background="@drawable/inputan"
-                >
+                android:layout_weight="3"
+                android:background="@drawable/inputan">
 
                 <ImageView
                     android:id="@+id/iconBillPeriode"
@@ -208,17 +208,16 @@
 
         <LinearLayout
             android:layout_width="wrap_content"
-            android:orientation="horizontal"
-            android:layout_height="60dp"
+            android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
-            android:weightSum="3"
-            >
+            android:orientation="horizontal"
+            android:weightSum="3">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@drawable/inputan"
-                android:layout_weight="1">
+                android:layout_weight="1"
+                android:background="@drawable/inputan">
 
                 <EditText
                     android:id="@+id/bill_using"
@@ -233,11 +232,11 @@
 
                     android:hint="using" />
             </LinearLayout>
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@drawable/inputan"
-                    >
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/inputan">
 
                 <EditText
                     android:id="@+id/bill_paid"
@@ -252,11 +251,12 @@
 
                     android:hint="Paid" />
             </LinearLayout>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@drawable/inputan"
-                >
+                android:background="@drawable/inputan">
+
                 <EditText
                     android:id="@+id/bill_missing"
                     android:layout_width="wrap_content"
@@ -270,7 +270,8 @@
 
                     android:hint="missing" />
             </LinearLayout>
-            </LinearLayout>
+        </LinearLayout>
+
         <RelativeLayout
             android:id="@+id/BtnWishlist"
             android:layout_width="match_parent"
@@ -296,7 +297,7 @@
                 android:textStyle="bold" />
 
         </RelativeLayout>
-        </LinearLayout>
+    </LinearLayout>
 
 
 </RelativeLayout>
