@@ -9,6 +9,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import com.google.android.gms.auth.api.identity.BeginSignInRequest
 import com.google.android.gms.auth.api.identity.SignInClient
 import com.homindolentrahar.moment.R
+import com.homindolentrahar.moment.databinding.ActivitySignInBinding
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -20,6 +21,7 @@ class SignInActivity : AppCompatActivity() {
     @Inject
     lateinit var signInRequest: BeginSignInRequest
 
+    private lateinit var binding: ActivitySignInBinding
     private val TAG = SignInActivity::class.java.simpleName
 
     private val activityForResult = registerForActivityResult(
@@ -40,7 +42,10 @@ class SignInActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_sign_in)
+
+        binding = ActivitySignInBinding.inflate(layoutInflater)
+
+        setContentView(binding.root)
 
         oneTapClient.beginSignIn(signInRequest)
             .addOnSuccessListener { result ->
