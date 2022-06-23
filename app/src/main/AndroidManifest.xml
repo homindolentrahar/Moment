@@ -10,6 +10,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Moment">
         <activity
+            android:name=".detailTransaction"
+            android:exported="false" />
+        <activity
             android:name=".BillActivity"
             android:exported="false" />
         <activity
