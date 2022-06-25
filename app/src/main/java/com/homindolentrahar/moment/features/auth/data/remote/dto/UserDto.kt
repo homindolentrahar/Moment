@@ -11,6 +11,8 @@ data class UserDto(
     val updatedAt: Long
 ) {
     companion object {
+        const val COLLECTION = "users"
+
         fun fromDocumentSnapshot(data: Map<String, Any>): UserDto {
             return UserDto(
                 id = data["id"] as String,
@@ -24,7 +26,7 @@ data class UserDto(
             )
         }
 
-        fun fromAuthUserDto(authUserDto: AuthUserDto, updatedAt: Long? = 0L): UserDto {
+        fun fromAuthUserDto(authUserDto: AuthUserDto, updatedAt: Long? = null): UserDto {
             return UserDto(
                 id = authUserDto.uid,
                 name = authUserDto.name ?: "No Name",

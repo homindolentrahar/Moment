@@ -45,12 +45,13 @@
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/edit_layout_email"
-            style="@style/Widget.Material3.TextInputLayout.FilledBox"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColorHint="@color/gray"
-            android:theme="@style/EditHint"
-            app:boxBackgroundColor="@color/field_bg">
+            app:boxBackgroundColor="@color/field_bg"
+            app:hintAnimationEnabled="false"
+            app:hintTextAppearance="@style/EditHint">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/edit_text_email"
@@ -58,31 +59,37 @@
                 android:layout_height="wrap_content"
                 android:background="@color/field_bg"
                 android:drawableEnd="@drawable/email"
+                android:fontFamily="@font/inter_medium"
                 android:hint="@string/email_field_hint"
                 android:imeOptions="actionNext"
                 android:inputType="textEmailAddress"
-                android:padding="@dimen/spacing" />
+                android:padding="@dimen/spacing"
+                android:textColor="@color/black" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/edit_layout_password"
-            style="@style/Widget.Material3.TextInputLayout.FilledBox"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/edit_layout_email"
             android:layout_marginTop="@dimen/spacing_l"
             android:textColorHint="@color/gray"
-            android:theme="@style/EditHint"
-            app:endIconMode="password_toggle">
+            app:endIconMode="password_toggle"
+            app:hintAnimationEnabled="false"
+            app:hintTextAppearance="@style/EditHint">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/edit_text_password"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/field_bg"
+                android:fontFamily="@font/inter_medium"
                 android:hint="@string/password_field_hint"
-                android:padding="@dimen/spacing" />
+                android:inputType="textPassword"
+                android:padding="@dimen/spacing"
+                android:textColor="@color/black" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -99,6 +106,7 @@
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_login"
+            style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/tv_btn_forgot_password"
@@ -115,6 +123,7 @@
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_google_login"
+            style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/btn_login"
@@ -128,7 +137,8 @@
             android:textColor="@color/dark"
             android:textSize="14sp"
             app:elevation="0dp"
-            app:icon="@drawable/google_icon" />
+            app:icon="@drawable/google_icon"
+            app:iconTint="@null" />
 
     </RelativeLayout>
 
@@ -153,7 +163,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/spacing_s"
-            android:layout_toRightOf="@id/text_footer"
+            android:layout_toEndOf="@id/text_footer"
             android:fontFamily="@font/inter_bold"
             android:text="Sign Up"
             android:textColor="@color/primary" />

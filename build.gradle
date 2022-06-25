@@ -5,7 +5,7 @@ buildscript {
         lifecycle_ktx_version = "2.4.1"
         coroutines_version = "1.6.1"
         arrow_version = "1.0.1"
-        hilt_version = "2.40.5"
+        hilt_version = "2.42"
         bom_firebase_version = "30.0.0"
     }
 

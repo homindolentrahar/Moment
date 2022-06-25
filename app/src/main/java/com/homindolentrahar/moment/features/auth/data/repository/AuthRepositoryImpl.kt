@@ -41,6 +41,7 @@ class AuthRepositoryImpl @Inject constructor(
 
         if (authResult.additionalUserInfo!!.isNewUser) {
             firestore
+                .collection(UserDto.COLLECTION)
                 .document(userDto.id)
                 .set(userDto.toDocumentSnapshot())
                 .await()

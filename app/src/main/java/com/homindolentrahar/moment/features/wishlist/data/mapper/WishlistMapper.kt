@@ -25,7 +25,9 @@ fun WishlistDto.toWishlist(): Wishlist = Wishlist(
     price = price,
     current = current,
     _period = period,
-    imageUrl = imageUrl
+    imageUrl = imageUrl,
+    created_at = LocalDateTime.ofEpochSecond(created_at, 0, ZoneOffset.UTC),
+    updated_at = LocalDateTime.ofEpochSecond(updated_at, 0, ZoneOffset.UTC)
 )
 
 fun WishlistSavingDto.toDocumentSnapshot(): Map<String, Any> = hashMapOf(
