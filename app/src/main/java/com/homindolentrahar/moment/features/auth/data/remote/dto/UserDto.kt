@@ -26,10 +26,14 @@ data class UserDto(
             )
         }
 
-        fun fromAuthUserDto(authUserDto: AuthUserDto, updatedAt: Long? = null): UserDto {
+        fun fromAuthUserDto(
+            authUserDto: AuthUserDto,
+            name: String? = null,
+            updatedAt: Long? = null
+        ): UserDto {
             return UserDto(
                 id = authUserDto.uid,
-                name = authUserDto.name ?: "No Name",
+                name = name ?: authUserDto.name ?: "No Name",
                 bio = "No Bio Available",
                 email = authUserDto.email ?: "",
                 phone = authUserDto.phone ?: "",

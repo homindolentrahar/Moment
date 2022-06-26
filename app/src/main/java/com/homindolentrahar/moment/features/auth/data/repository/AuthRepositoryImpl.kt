@@ -49,15 +49,17 @@ class AuthRepositoryImpl @Inject constructor(
     }
 
     override suspend fun registerWithEmailAndPassword(
+        name: String,
         email: String,
         password: String
     ) {
         val authResult = auth.createUserWithEmailAndPassword(email, password).await()
         val authUserDto = AuthUserDto.fromFirebaseUser(authResult.user!!)
-        val userDto = UserDto.fromAuthUserDto(authUserDto)
+        val userDto = UserDto.fromAuthUserDto(authUserDto, name = name)
 
         if (authResult.additionalUserInfo!!.isNewUser) {
             firestore
+                .collection(UserDto.COLLECTION)
                 .document(userDto.id)
                 .set(userDto.toDocumentSnapshot())
                 .await()

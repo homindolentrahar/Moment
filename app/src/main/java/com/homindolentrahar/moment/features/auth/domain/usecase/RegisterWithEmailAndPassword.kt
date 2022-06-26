@@ -8,7 +8,7 @@ import javax.inject.Inject
 class RegisterWithEmailAndPassword @Inject constructor(
     private val repository: AuthRepository
 ) {
-    suspend operator fun invoke(email: String, password: String): Flow<Unit> = flow {
-        emit(repository.registerWithEmailAndPassword(email, password))
+    suspend operator fun invoke(name: String, email: String, password: String): Flow<Unit> = flow {
+        emit(repository.registerWithEmailAndPassword(name, email, password))
     }
 }

@@ -17,6 +17,7 @@ interface AuthRepository {
     )
 
     suspend fun registerWithEmailAndPassword(
+        name:String,
         email: String,
         password: String
     )

@@ -20,9 +20,9 @@ class SignUpViewModel @Inject constructor(
     val state: StateFlow<SignUpState>
         get() = _state
 
-    fun register(email: String, password: String) {
+    fun register(name: String, email: String, password: String) {
         viewModelScope.launch {
-            registerWithEmailAndPassword(email, password)
+            registerWithEmailAndPassword(name, email, password)
                 .onStart {
                     _state.value = _state.value.copy(
                         loading = true,

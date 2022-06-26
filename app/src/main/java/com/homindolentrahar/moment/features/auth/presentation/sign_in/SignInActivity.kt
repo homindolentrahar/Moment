@@ -18,6 +18,8 @@ import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.common.api.CommonStatusCodes
 import com.homindolentrahar.moment.MainActivity
 import com.homindolentrahar.moment.databinding.ActivitySignInBinding
+import com.homindolentrahar.moment.features.auth.presentation.forgot_password.ForgotPasswordActivity
+import com.homindolentrahar.moment.features.auth.presentation.sign_up.SignUpActivity
 import com.homindolentrahar.moment.features.auth.util.RegexPattern
 import dagger.hilt.android.AndroidEntryPoint
 import es.dmoral.toasty.Toasty
@@ -46,12 +48,20 @@ class SignInActivity : AppCompatActivity() {
 
         signWithGoogle()
 
-        binding.btnLogin.setOnClickListener {
+        binding.btnSignIn.setOnClickListener {
             signIn()
         }
 
         binding.btnGoogleLogin.setOnClickListener {
             signWithGoogle()
+        }
+
+        binding.tvBtnForgotPassword.setOnClickListener {
+            startActivity(Intent(this, ForgotPasswordActivity::class.java))
+        }
+
+        binding.tvBtnSignup.setOnClickListener {
+            startActivity(Intent(this, SignUpActivity::class.java))
         }
 
         lifecycleScope.launch {

@@ -51,13 +51,13 @@ class SignUpActivity : AppCompatActivity() {
 
                         Toasty.error(
                             this@SignUpActivity,
-                            "Register Failed",
+                            "Sign Up Failed",
                             Toast.LENGTH_LONG,
                             true
                         )
                             .show()
                     } else {
-                        Log.d(TAG, "Login success!")
+                        Log.d(TAG, "Sign Up success!")
 
                         startActivity(Intent(this@SignUpActivity, MainActivity::class.java))
                         finish()
