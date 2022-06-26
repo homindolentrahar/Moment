@@ -11,6 +11,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Moment">
         <activity
+            android:name=".features.auth.presentation.sign_up.SignUpActivity"
+            android:exported="false" />
+        <activity
             android:name=".core.presentation.splash.SplashActivity"
             android:exported="true"
             android:theme="@style/SplashScreen">

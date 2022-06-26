@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:paddingHorizontal="@dimen/spacing_l"
     android:paddingVertical="@dimen/spacing_2xl"
-    tools:context=".features.auth.presentation.sign_in.SignInActivity">
+    tools:context=".features.auth.presentation.sign_up.SignUpActivity">
 
     <RelativeLayout
         android:id="@+id/heading"
@@ -20,7 +20,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/inter_semibold"
-            android:text="Greetings 👋"
+            android:text="Let’s Go! ✊"
             android:textColor="@color/black"
             android:textSize="28sp" />
 
@@ -31,7 +31,7 @@
             android:layout_below="@id/text_title"
             android:layout_marginTop="@dimen/spacing_s"
             android:fontFamily="@font/inter"
-            android:text="It’s been a while, sign in to your account"
+            android:text="Join to start manage your budget"
             android:textColor="@color/gray" />
 
     </RelativeLayout>
@@ -44,10 +44,37 @@
         app:layout_constraintTop_toBottomOf="@id/heading">
 
         <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/edit_layout_name"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColorHint="@color/gray"
+            app:boxBackgroundColor="@color/field_bg"
+            app:hintAnimationEnabled="false"
+            app:hintTextAppearance="@style/EditHint">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edit_text_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/field_bg"
+                android:drawableEnd="@drawable/user"
+                android:fontFamily="@font/inter_medium"
+                android:hint="@string/name_field_hint"
+                android:imeOptions="actionNext"
+                android:inputType="textEmailAddress"
+                android:padding="@dimen/spacing"
+                android:textColor="@color/black" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/edit_layout_email"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_below="@id/edit_layout_name"
+            android:layout_marginTop="@dimen/spacing_l"
             android:textColorHint="@color/gray"
             app:boxBackgroundColor="@color/field_bg"
             app:hintAnimationEnabled="false"
@@ -93,52 +120,22 @@
 
         </com.google.android.material.textfield.TextInputLayout>
 
-        <TextView
-            android:id="@+id/tv_btn_forgot_password"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/edit_layout_password"
-            android:layout_alignEnd="@id/edit_layout_password"
-            android:layout_marginTop="@dimen/spacing"
-            android:fontFamily="@font/inter_bold"
-            android:text="@string/forgot_password_text_button"
-            android:textColor="@color/primary" />
-
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/btn_sign_in"
+            android:id="@+id/btn_sign_up"
             style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/tv_btn_forgot_password"
+            android:layout_below="@id/edit_layout_password"
             android:layout_marginTop="@dimen/spacing_2xl"
             android:elevation="0dp"
             android:fontFamily="@font/inter_bold"
             android:padding="@dimen/spacing"
-            android:text="@string/sign_in_button"
+            android:text="@string/sign_up_button"
             android:textAllCaps="false"
             android:textColor="@color/white"
             android:textSize="16sp"
             app:cornerRadius="8dp"
             app:elevation="0dp" />
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btn_google_login"
-            style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/btn_sign_in"
-            android:layout_marginTop="@dimen/spacing"
-            android:backgroundTint="@color/light"
-            android:elevation="0dp"
-            android:fontFamily="@font/inter_semibold"
-            android:padding="@dimen/spacing"
-            android:text="Sign In with Google"
-            android:textAllCaps="false"
-            android:textColor="@color/dark"
-            android:textSize="14sp"
-            app:elevation="0dp"
-            app:icon="@drawable/google_icon"
-            app:iconTint="@null" />
 
     </RelativeLayout>
 
@@ -155,17 +152,17 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/inter"
-            android:text="Don’t have an account?"
+            android:text="Already have an account?"
             android:textColor="@color/gray" />
 
         <TextView
-            android:id="@+id/tv_btn_signup"
+            android:id="@+id/tv_btn_signin"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/spacing_s"
             android:layout_toEndOf="@id/text_footer"
             android:fontFamily="@font/inter_bold"
-            android:text="Sign Up"
+            android:text="Sign In"
             android:textColor="@color/primary" />
 
     </RelativeLayout>

@@ -3,5 +3,7 @@
     <string name="email_field_hint">Email Address</string>
     <string name="password_field_hint">Password</string>
     <string name="forgot_password_text_button">Forgot Password?</string>
-    <string name="login_button">Login</string>
+    <string name="sign_in_button">Sign In</string>
+    <string name="name_field_hint">Full Name</string>
+    <string name="sign_up_button">Sign Up</string>
 </resources>
