@@ -78,6 +78,9 @@ dependencies {
     implementation "com.google.firebase:firebase-firestore-ktx"
     implementation "com.google.firebase:firebase-storage-ktx"
 
+//    Splash
+    implementation "androidx.core:core-splashscreen:1.0.0-beta01"
+
 //    Snackbar
     implementation 'com.github.GrenderG:Toasty:1.5.2'
 }

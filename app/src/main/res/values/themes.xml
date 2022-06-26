@@ -15,8 +15,11 @@
         <!-- Customize your theme here. -->
     </style>
 
-    <style name="SplashTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
-        <item name="android:windowBackground">@drawable/splash_background</item>
+    <style name="SplashScreen" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenBackground">@color/white</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/splash_bg</item>
+        <item name="windowSplashScreenAnimationDuration">750</item>
+        <item name="postSplashScreenTheme">@style/Theme.Moment</item>
     </style>
 
     <style name="EditHint" parent="TextAppearance.MaterialComponents.Body1">
