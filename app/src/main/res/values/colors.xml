@@ -15,6 +15,7 @@
     <color name="dark">#404E63</color>
     <color name="light">#F2F6FD</color>
     <color name="gray">#A8B5C7</color>
+    <color name="pure_white">#FFFFFF</color>
 
     <color name="expense">#8776F9</color>
     <color name="income">#F976B3</color>

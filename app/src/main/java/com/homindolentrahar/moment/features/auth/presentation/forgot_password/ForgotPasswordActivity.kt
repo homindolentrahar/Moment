@@ -9,12 +9,14 @@ import androidx.activity.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import com.homindolentrahar.moment.R
 import com.homindolentrahar.moment.databinding.ActivityForgotPasswordBinding
+import dagger.hilt.android.AndroidEntryPoint
 import dagger.hilt.android.HiltAndroidApp
 import es.dmoral.toasty.Toasty
 import kotlinx.coroutines.launch
 
-@HiltAndroidApp
+@AndroidEntryPoint
 class ForgotPasswordActivity : AppCompatActivity() {
     private lateinit var binding: ActivityForgotPasswordBinding
     private val viewModel: ForgotPasswordViewModel by viewModels()
@@ -41,6 +43,17 @@ class ForgotPasswordActivity : AppCompatActivity() {
                 viewModel.state.collect { state ->
                     if (state.loading) {
                         Log.d(TAG, "Loading...")
+
+                        Toasty.custom(
+                            this@ForgotPasswordActivity,
+                            "Sending Reset Email",
+                            R.drawable.loading,
+                            R.color.black,
+                            Toast.LENGTH_LONG,
+                            true,
+                            true
+                        )
+                            .show()
                     } else if (state.error.isNotBlank()) {
                         Log.d(TAG, "Error: ${state.error}")
 

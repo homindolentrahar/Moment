@@ -17,14 +17,17 @@ import com.google.android.gms.auth.api.identity.SignInClient
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.common.api.CommonStatusCodes
 import com.homindolentrahar.moment.MainActivity
+import com.homindolentrahar.moment.R
 import com.homindolentrahar.moment.databinding.ActivitySignInBinding
 import com.homindolentrahar.moment.features.auth.presentation.forgot_password.ForgotPasswordActivity
 import com.homindolentrahar.moment.features.auth.presentation.sign_up.SignUpActivity
 import com.homindolentrahar.moment.features.auth.util.RegexPattern
+import com.homindolentrahar.moment.features.transaction.presentation.transaction_home.TransactionHomeActivity
 import dagger.hilt.android.AndroidEntryPoint
 import es.dmoral.toasty.Toasty
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+import kotlin.time.Duration
 
 @AndroidEntryPoint
 class SignInActivity : AppCompatActivity() {
@@ -69,6 +72,17 @@ class SignInActivity : AppCompatActivity() {
                 viewModel.state.collect { state ->
                     if (state.loading) {
                         Log.d(TAG, "Loading...")
+
+                        Toasty.custom(
+                            this@SignInActivity,
+                            "Signing In",
+                            R.drawable.loading,
+                            R.color.black,
+                            Toast.LENGTH_LONG,
+                            true,
+                            true
+                        )
+                            .show()
                     } else if (state.error.isNotBlank()) {
                         Log.d(TAG, "Error: ${state.error}")
 
@@ -77,7 +91,12 @@ class SignInActivity : AppCompatActivity() {
                     } else {
                         Log.d(TAG, "Login success!")
 
-                        startActivity(Intent(this@SignInActivity, MainActivity::class.java))
+                        startActivity(
+                            Intent(
+                                this@SignInActivity,
+                                TransactionHomeActivity::class.java
+                            )
+                        )
                         finish()
                     }
                 }

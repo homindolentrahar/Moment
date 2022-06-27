@@ -15,11 +15,13 @@ import com.homindolentrahar.moment.R
 import com.homindolentrahar.moment.databinding.ActivitySignUpBinding
 import com.homindolentrahar.moment.features.auth.presentation.sign_in.SignInActivity
 import com.homindolentrahar.moment.features.auth.util.RegexPattern
+import com.homindolentrahar.moment.features.transaction.presentation.transaction_home.TransactionHomeActivity
+import dagger.hilt.android.AndroidEntryPoint
 import dagger.hilt.android.HiltAndroidApp
 import es.dmoral.toasty.Toasty
 import kotlinx.coroutines.launch
 
-@HiltAndroidApp
+@AndroidEntryPoint
 class SignUpActivity : AppCompatActivity() {
     private lateinit var binding: ActivitySignUpBinding
     private val viewModel: SignUpViewModel by viewModels()
@@ -46,6 +48,17 @@ class SignUpActivity : AppCompatActivity() {
                 viewModel.state.collect { state ->
                     if (state.loading) {
                         Log.d(TAG, "Loading...")
+
+                        Toasty.custom(
+                            this@SignUpActivity,
+                            "Registering User",
+                            R.drawable.loading,
+                            R.color.black,
+                            Toast.LENGTH_LONG,
+                            true,
+                            true
+                        )
+                            .show()
                     } else if (state.error.isNotBlank()) {
                         Log.d(TAG, "Error: ${state.error}")
 
@@ -59,7 +72,12 @@ class SignUpActivity : AppCompatActivity() {
                     } else {
                         Log.d(TAG, "Sign Up success!")
 
-                        startActivity(Intent(this@SignUpActivity, MainActivity::class.java))
+                        startActivity(
+                            Intent(
+                                this@SignUpActivity,
+                                TransactionHomeActivity::class.java
+                            )
+                        )
                         finish()
                     }
                 }

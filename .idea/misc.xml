@@ -3,15 +3,20 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Code_Work/Android/Moment/app/src/main/res/drawable/back.xml" value="0.1695" />
         <entry key="..\:/Code_Work/Android/Moment/app/src/main/res/drawable/btn_back_bf.xml" value="0.1" />
+        <entry key="..\:/Code_Work/Android/Moment/app/src/main/res/drawable/btn_back_bg.xml" value="0.1695" />
         <entry key="..\:/Code_Work/Android/Moment/app/src/main/res/drawable/button_back.xml" value="0.1" />
         <entry key="..\:/Code_Work/Android/Moment/app/src/main/res/drawable/google_icon.xml" value="0.1065" />
+        <entry key="..\:/Code_Work/Android/Moment/app/src/main/res/drawable/income_outcome_summary_bg.xml" value="0.1" />
+        <entry key="..\:/Code_Work/Android/Moment/app/src/main/res/drawable/proceed.xml" value="0.1695" />
         <entry key="..\:/Code_Work/Android/Moment/app/src/main/res/drawable/splash_background.xml" value="0.1" />
         <entry key="..\:/Code_Work/Android/Moment/app/src/main/res/drawable/splash_bg.xml" value="0.1" />
         <entry key="..\:/Code_Work/Android/Moment/app/src/main/res/layout/activity_forgot_password.xml" value="0.2" />
         <entry key="..\:/Code_Work/Android/Moment/app/src/main/res/layout/activity_sign_in.xml" value="0.20535714285714285" />
         <entry key="..\:/Code_Work/Android/Moment/app/src/main/res/layout/activity_sign_up.xml" value="0.2640625" />
         <entry key="..\:/Code_Work/Android/Moment/app/src/main/res/layout/activity_splash.xml" value="0.152" />
+        <entry key="..\:/Code_Work/Android/Moment/app/src/main/res/layout/activity_transaction_home.xml" value="0.2640625" />
       </map>
     </option>
   </component>

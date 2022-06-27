@@ -16,11 +16,13 @@ import arrow.core.Some
 import com.homindolentrahar.moment.MainActivity
 import com.homindolentrahar.moment.databinding.ActivitySplashBinding
 import com.homindolentrahar.moment.features.auth.presentation.sign_in.SignInActivity
+import com.homindolentrahar.moment.features.transaction.presentation.transaction_home.TransactionHomeActivity
+import dagger.hilt.android.AndroidEntryPoint
 import dagger.hilt.android.HiltAndroidApp
 import kotlinx.coroutines.launch
 
 @SuppressLint("CustomSplashScreen")
-@HiltAndroidApp
+@AndroidEntryPoint
 class SplashActivity : AppCompatActivity() {
     private val viewModel: SplashViewModel by viewModels()
 
@@ -42,7 +44,7 @@ class SplashActivity : AppCompatActivity() {
                             Intent(this@SplashActivity, SignInActivity::class.java)
                         }
                         is Some -> {
-                            Intent(this@SplashActivity, MainActivity::class.java)
+                            Intent(this@SplashActivity, TransactionHomeActivity::class.java)
                         }
                     }
 
