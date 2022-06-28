@@ -1,19 +1,15 @@
 package com.homindolentrahar.moment.features.transaction.presentation.transaction_home
 
-import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import com.homindolentrahar.moment.R
 import com.homindolentrahar.moment.databinding.ActivityTransactionHomeBinding
+import com.homindolentrahar.moment.features.transaction.presentation.TransactionsAdapter
 import dagger.hilt.android.AndroidEntryPoint
-import es.dmoral.toasty.Toasty
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
@@ -28,6 +24,8 @@ class TransactionHomeActivity : AppCompatActivity() {
         binding = ActivityTransactionHomeBinding.inflate(layoutInflater)
 
         setContentView(binding.root)
+
+//        val modalBottomSheet = BottomSheet()
 
         binding.selectDate.setOnClickListener {
 //            Show select date dialog
@@ -46,6 +44,12 @@ class TransactionHomeActivity : AppCompatActivity() {
                         Log.d(TAG, "Error: ${state.error}")
                     } else if (state.transactions.isNotEmpty()) {
                         Log.d(TAG, "Transactions: ${state.transactions.size}")
+
+                        val adapter = TransactionsAdapter { transaction ->
+//                            Show Transaction Item
+                        }
+
+                        binding.rvRecentTransaction.adapter = adapter
                     } else {
                         Log.d(TAG, "Success")
                     }

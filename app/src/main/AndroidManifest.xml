@@ -11,6 +11,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Moment">
         <activity
+            android:name=".features.transaction.presentation.transaction_list.TransactionListActivity"
+            android:exported="false" />
+        <activity
             android:name=".features.transaction.presentation.transaction_home.TransactionHomeActivity"
             android:exported="false" />
         <activity

@@ -1,0 +1,293 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingHorizontal="@dimen/spacing_l"
+    android:paddingVertical="@dimen/spacing_xl">
+
+    <RelativeLayout
+        android:id="@+id/sheet_header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/text_header"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:fontFamily="@font/inter_semibold"
+            android:text="New Transaction"
+            android:textColor="@color/dark"
+            android:textSize="16sp" />
+
+        <ImageButton
+            android:id="@+id/btn_close"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:background="@drawable/btn_back_bg"
+            android:src="@drawable/close" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/forms"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="@dimen/spacing_xl"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/sheet_header">
+
+        <RelativeLayout
+            android:id="@+id/type_container"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <com.google.android.material.chip.ChipGroup
+                android:id="@+id/chips_type"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:chipSpacingHorizontal="@dimen/spacing_s"
+                app:selectionRequired="true"
+                app:singleSelection="true">
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_expense"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checked="true"
+                    android:fontFamily="@font/inter_semibold"
+                    android:text="Expense"
+                    android:textColor="@color/gray"
+                    android:textSize="14sp"
+                    app:chipBackgroundColor="@color/field_bg"
+                    app:chipCornerRadius="8dp"
+                    app:chipEndPadding="@dimen/spacing_m"
+                    app:chipMinHeight="40dp"
+                    app:chipStartPadding="@dimen/spacing_m" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_income"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/inter_semibold"
+                    android:text="Income"
+                    android:textColor="@color/gray"
+                    android:textSize="14sp"
+                    app:chipBackgroundColor="@color/field_bg"
+                    app:chipCornerRadius="8dp"
+                    app:chipEndPadding="@dimen/spacing_m"
+                    app:chipMinHeight="40dp"
+                    app:chipStartPadding="@dimen/spacing_m" />
+
+            </com.google.android.material.chip.ChipGroup>
+
+        </RelativeLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/edit_layout_name"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/type_container"
+            android:layout_marginTop="@dimen/spacing_l"
+            android:textColorHint="@color/gray"
+            app:hintAnimationEnabled="false"
+            app:hintTextAppearance="@style/EditHint">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edit_text_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/field_bg"
+                android:fontFamily="@font/inter_medium"
+                android:hint="Name"
+                android:inputType="text"
+                android:padding="@dimen/spacing"
+                android:textColor="@color/black" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/edit_layout_desc"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/edit_layout_name"
+            android:layout_marginTop="@dimen/spacing_l"
+            android:textColorHint="@color/gray"
+            app:hintAnimationEnabled="false"
+            app:hintTextAppearance="@style/EditHint">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edit_text_desc"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/field_bg"
+                android:fontFamily="@font/inter_medium"
+                android:hint="Description"
+                android:inputType="text"
+                android:padding="@dimen/spacing"
+                android:textColor="@color/black" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/amount_category_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/edit_layout_desc"
+            android:layout_marginTop="@dimen/spacing_l">
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/edit_layout_amount"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginEnd="@dimen/spacing_s"
+                android:textColorHint="@color/gray"
+                app:hintAnimationEnabled="false"
+                app:hintTextAppearance="@style/EditHint"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/select_category"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/edit_text_amount"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/field_bg"
+                    android:fontFamily="@font/inter_medium"
+                    android:hint="Amount"
+                    android:inputType="number"
+                    android:padding="@dimen/spacing"
+                    android:textColor="@color/black" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/select_category"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/spacing_s"
+                android:background="@drawable/select_category_bg"
+                android:padding="@dimen/spacing"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/edit_layout_amount">
+
+                <ImageView
+                    android:id="@+id/img_icon_categories"
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:src="@drawable/categories"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/text_categories"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/spacing"
+                    android:fontFamily="@font/inter"
+                    android:text="Category"
+                    android:textColor="@color/gray"
+                    android:textSize="14sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/img_icon_caret_down"
+                    app:layout_constraintStart_toEndOf="@id/img_icon_categories"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageView
+                    android:id="@+id/img_icon_caret_down"
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:src="@drawable/caret_down"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/text_categories"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:tint="@color/gray" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <RelativeLayout
+            android:id="@+id/pick_date_container"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/amount_category_container"
+            android:layout_marginTop="@dimen/spacing_l">
+
+            <RelativeLayout
+                android:id="@+id/pick_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/select_date_bg">
+
+                <ImageView
+                    android:id="@+id/img_icon_pick_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/select_date" />
+
+                <TextView
+                    android:id="@+id/text_select_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="@dimen/spacing_s"
+                    android:layout_toEndOf="@id/img_icon_pick_date"
+                    android:fontFamily="@font/inter_semibold"
+                    android:text="Pick Date"
+                    android:textColor="@color/light"
+                    android:textSize="14sp" />
+
+            </RelativeLayout>
+
+            <TextView
+                android:id="@+id/tv_pick_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="@dimen/spacing"
+                android:layout_toEndOf="@id/pick_date"
+                android:fontFamily="@font/inter_medium"
+                android:text="No Date Picked"
+                android:textColor="@color/black"
+                android:textSize="14sp" />
+
+        </RelativeLayout>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_sign_in"
+            style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/pick_date_container"
+            android:layout_marginTop="@dimen/spacing_xl"
+            android:elevation="0dp"
+            android:fontFamily="@font/inter_bold"
+            android:padding="@dimen/spacing"
+            android:text="Save"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            app:cornerRadius="8dp"
+            app:elevation="0dp" />
+
+    </RelativeLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

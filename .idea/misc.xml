@@ -7,16 +7,23 @@
         <entry key="..\:/Code_Work/Android/Moment/app/src/main/res/drawable/btn_back_bf.xml" value="0.1" />
         <entry key="..\:/Code_Work/Android/Moment/app/src/main/res/drawable/btn_back_bg.xml" value="0.1695" />
         <entry key="..\:/Code_Work/Android/Moment/app/src/main/res/drawable/button_back.xml" value="0.1" />
+        <entry key="..\:/Code_Work/Android/Moment/app/src/main/res/drawable/chip_type_bg.xml" value="0.1" />
         <entry key="..\:/Code_Work/Android/Moment/app/src/main/res/drawable/google_icon.xml" value="0.1065" />
+        <entry key="..\:/Code_Work/Android/Moment/app/src/main/res/drawable/icon_container_bg.xml" value="0.1" />
         <entry key="..\:/Code_Work/Android/Moment/app/src/main/res/drawable/income_outcome_summary_bg.xml" value="0.1" />
         <entry key="..\:/Code_Work/Android/Moment/app/src/main/res/drawable/proceed.xml" value="0.1695" />
+        <entry key="..\:/Code_Work/Android/Moment/app/src/main/res/drawable/select_category_bg.xml" value="0.1245" />
+        <entry key="..\:/Code_Work/Android/Moment/app/src/main/res/drawable/select_date_bg.xml" value="0.1" />
         <entry key="..\:/Code_Work/Android/Moment/app/src/main/res/drawable/splash_background.xml" value="0.1" />
         <entry key="..\:/Code_Work/Android/Moment/app/src/main/res/drawable/splash_bg.xml" value="0.1" />
         <entry key="..\:/Code_Work/Android/Moment/app/src/main/res/layout/activity_forgot_password.xml" value="0.2" />
-        <entry key="..\:/Code_Work/Android/Moment/app/src/main/res/layout/activity_sign_in.xml" value="0.20535714285714285" />
+        <entry key="..\:/Code_Work/Android/Moment/app/src/main/res/layout/activity_sign_in.xml" value="0.1503267973856209" />
         <entry key="..\:/Code_Work/Android/Moment/app/src/main/res/layout/activity_sign_up.xml" value="0.2640625" />
         <entry key="..\:/Code_Work/Android/Moment/app/src/main/res/layout/activity_splash.xml" value="0.152" />
         <entry key="..\:/Code_Work/Android/Moment/app/src/main/res/layout/activity_transaction_home.xml" value="0.2640625" />
+        <entry key="..\:/Code_Work/Android/Moment/app/src/main/res/layout/activity_transaction_list.xml" value="0.2640625" />
+        <entry key="..\:/Code_Work/Android/Moment/app/src/main/res/layout/add_transaction_sheet.xml" value="0.16071428571428573" />
+        <entry key="..\:/Code_Work/Android/Moment/app/src/main/res/layout/transaction_list_item.xml" value="0.17197452229299362" />
       </map>
     </option>
   </component>
