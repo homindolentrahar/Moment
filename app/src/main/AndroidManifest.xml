@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.homindolentrahar.moment">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:name=".MomentApplication"
         android:allowBackup="true"
@@ -24,8 +26,7 @@
             android:exported="false" />
         <activity
             android:name=".core.presentation.splash.SplashActivity"
-            android:exported="true"
-            android:theme="@style/SplashScreen">
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

@@ -88,7 +88,7 @@ class SignInActivity : AppCompatActivity() {
 
                         Toasty.error(this@SignInActivity, "Login Failed", Toast.LENGTH_LONG, true)
                             .show()
-                    } else {
+                    } else if (!state.loading && state.error.isNotBlank()) {
                         Log.d(TAG, "Login success!")
 
                         startActivity(

@@ -1,6 +1,6 @@
 package com.homindolentrahar.moment.features.transaction.domain.model
 
-import java.time.LocalDateTime
+import java.util.*
 
 enum class TransactionType(name: String) {
     ALL("all"),
@@ -9,13 +9,11 @@ enum class TransactionType(name: String) {
 }
 
 data class Transaction(
-    val id: String,
+    var id: String = "",
     val name: String,
     val desc: String,
     val type: TransactionType,
     val amount: Double,
-    val category: TransactionCategory,
-    val account: TransactionAccount,
-    val createdAt: LocalDateTime,
-    val updatedAt: LocalDateTime
+    val category: String,
+    val timestamp: Date
 )

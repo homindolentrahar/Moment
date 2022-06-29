@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
@@ -41,9 +42,12 @@ class SplashActivity : AppCompatActivity() {
                 viewModel.state.collect { option ->
                     val intent = when (option) {
                         is None -> {
-                            Intent(this@SplashActivity, SignInActivity::class.java)
+                            Log.d(SplashActivity::class.java.simpleName, "Unauthenticated")
+//                            Intent(this@SplashActivity, SignInActivity::class.java)
+                            Intent(this@SplashActivity, TransactionHomeActivity::class.java)
                         }
                         is Some -> {
+                            Log.d(SplashActivity::class.java.simpleName, "Authenticated")
                             Intent(this@SplashActivity, TransactionHomeActivity::class.java)
                         }
                     }

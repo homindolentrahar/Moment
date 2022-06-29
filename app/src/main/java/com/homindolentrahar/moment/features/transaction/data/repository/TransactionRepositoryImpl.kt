@@ -2,6 +2,7 @@ package com.homindolentrahar.moment.features.transaction.data.repository
 
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.homindolentrahar.moment.core.util.Constants
 import com.homindolentrahar.moment.features.transaction.data.mapper.toDocumentSnapshot
 import com.homindolentrahar.moment.features.transaction.data.mapper.toTransaction
 import com.homindolentrahar.moment.features.transaction.data.remote.dto.TransactionDto
@@ -16,21 +17,27 @@ class TransactionRepositoryImpl @Inject constructor(
 ) : TransactionRepository {
     override suspend fun getAllTransactions(): List<Transaction> {
         val currentUser = auth.currentUser!!
+
         val querySnapshot = firestore
-            .document(currentUser.uid)
-            .collection(TransactionDto.COLLECTION)
+            .collection(Constants.TRANSACTIONS_COLLECTION)
+//            .document(currentUser.uid)
+//            .collection(Constants.DATA_COLLECTION)
             .get()
             .await()
-        val transactions = querySnapshot.toObjects(TransactionDto::class.java)
+        val transactions = querySnapshot.map { query ->
+            TransactionDto.fromDocumentSnapshot(query.id, query.data)
+        }
 
-        return transactions.map { it.toTransaction() }
+        return transactions.map { tr -> tr.toTransaction() }
     }
 
     override suspend fun getSingleTransaction(id: String): Transaction? {
         val currentUser = auth.currentUser!!
+
         val documentSnapshot = firestore
-            .document(currentUser.uid)
-            .collection(TransactionDto.COLLECTION)
+            .collection(Constants.TRANSACTIONS_COLLECTION)
+//            .document(currentUser.uid)
+//            .collection(Constants.DATA_COLLECTION)
             .document(id)
             .get()
             .await()
@@ -44,10 +51,10 @@ class TransactionRepositoryImpl @Inject constructor(
         val transactionDto = TransactionDto.fromTransaction(transaction)
 
         firestore
-            .document(currentUser.uid)
-            .collection(TransactionDto.COLLECTION)
-            .document(transactionDto.id)
-            .set(transactionDto.toDocumentSnapshot())
+            .collection(Constants.TRANSACTIONS_COLLECTION)
+//            .document(currentUser.uid)
+//            .collection(Constants.DATA_COLLECTION)
+            .add(transactionDto.toDocumentSnapshot())
             .await()
     }
 
@@ -59,8 +66,9 @@ class TransactionRepositoryImpl @Inject constructor(
         val transactionDto = TransactionDto.fromTransaction(transaction)
 
         firestore
-            .document(currentUser.uid)
-            .collection(TransactionDto.COLLECTION)
+            .collection(Constants.TRANSACTIONS_COLLECTION)
+//            .document(currentUser.uid)
+//            .collection(Constants.DATA_COLLECTION)
             .document(id)
             .update(transactionDto.toDocumentSnapshot())
             .await()
@@ -70,8 +78,9 @@ class TransactionRepositoryImpl @Inject constructor(
         val currentUser = auth.currentUser!!
 
         firestore
-            .document(currentUser.uid)
-            .collection(TransactionDto.COLLECTION)
+            .collection(Constants.TRANSACTIONS_COLLECTION)
+//            .document(currentUser.uid)
+//            .collection(Constants.DATA_COLLECTION)
             .document(id)
             .delete()
             .await()

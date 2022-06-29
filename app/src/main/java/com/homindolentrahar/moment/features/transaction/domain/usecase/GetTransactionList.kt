@@ -5,7 +5,7 @@ import com.homindolentrahar.moment.features.transaction.domain.model.Transaction
 import com.homindolentrahar.moment.features.transaction.domain.repository.TransactionRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
-import java.time.LocalDateTime
+import java.util.*
 import javax.inject.Inject
 
 class GetTransactionList @Inject constructor(
@@ -14,14 +14,14 @@ class GetTransactionList @Inject constructor(
 
     suspend operator fun invoke(
         type: TransactionType = TransactionType.ALL,
-        categoryId: String = "",
-        date: LocalDateTime = LocalDateTime.now(),
+        category: String = "",
+        date: Date = Date(),
         query: String = "",
     ): Flow<List<Transaction>> = flow {
         val filteredTransactions = repository.getAllTransactions()
             .filter { if (type == TransactionType.ALL) true else it.type == type }
-            .filter { if (categoryId.isEmpty()) true else it.category.id == categoryId }
-            .filter { it.createdAt.month == date.month }
+            .filter { if (category.isEmpty()) true else it.category == category }
+            .filter { it.timestamp.month == date.month }
             .filter { it.name.contains(query) }
 
         emit(filteredTransactions)

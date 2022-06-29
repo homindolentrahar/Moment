@@ -1,8 +1,7 @@
 package com.homindolentrahar.moment.features.transaction.data.remote.dto
 
-import com.homindolentrahar.moment.features.transaction.data.mapper.toDocumentSnapshot
+import com.google.firebase.Timestamp
 import com.homindolentrahar.moment.features.transaction.domain.model.Transaction
-import java.time.ZoneOffset
 
 data class TransactionDto(
     val id: String,
@@ -10,10 +9,8 @@ data class TransactionDto(
     val desc: String,
     val type: String,
     val amount: Double,
-    val category: Map<String, Any>,
-    val account: Map<String, Any>,
-    val createdAt: Long,
-    val updatedAt: Long,
+    val category: String,
+    val timestamp: Timestamp
 ) {
     companion object {
         const val COLLECTION = "transactions"
@@ -25,12 +22,20 @@ data class TransactionDto(
                 desc = transaction.desc,
                 type = transaction.type.name,
                 amount = transaction.amount,
-                category = TransactionCategoryDto.fromTransactionCategory(transaction.category)
-                    .toDocumentSnapshot(),
-                account = TransactionAccountDto.fromTransactionAccount(transaction.account)
-                    .toDocumentSnapshot(),
-                createdAt = transaction.createdAt.toEpochSecond(ZoneOffset.UTC),
-                updatedAt = transaction.updatedAt.toEpochSecond(ZoneOffset.UTC),
+                category = transaction.category,
+                timestamp = Timestamp(transaction.timestamp)
+            )
+        }
+
+        fun fromDocumentSnapshot(id: String, data: Map<String, Any>): TransactionDto {
+            return TransactionDto(
+                id = id,
+                name = data["name"] as String,
+                desc = data["desc"] as String,
+                type = data["type"] as String,
+                amount = data["amount"] as Double,
+                category = data["category"] as String,
+                timestamp = data["timestamp"] as Timestamp
             )
         }
     }

@@ -1,284 +1,296 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:paddingHorizontal="@dimen/spacing_l"
-    android:paddingVertical="@dimen/spacing_2xl"
-    tools:context=".features.transaction.presentation.transaction_home.TransactionHomeActivity">
-
-    <RelativeLayout
-        android:id="@+id/header"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <RelativeLayout
-            android:id="@+id/select_date"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true">
-
-            <TextView
-                android:id="@+id/tv_month"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/inter_semibold"
-                android:textColor="@color/black"
-                android:textSize="16sp"
-                tools:text="June 2022" />
-
-            <ImageView
-                android:id="@+id/img_caret_down"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:layout_marginStart="@dimen/spacing_xs"
-                android:layout_toEndOf="@id/tv_month"
-                android:src="@drawable/caret_down" />
-
-        </RelativeLayout>
-
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/img_profile"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:layout_alignParentEnd="true"
-            tools:src="@color/primary" />
-
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:id="@+id/balance_summary"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/spacing_l"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/header">
-
-        <TextView
-            android:id="@+id/text_balance"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/inter_semibold"
-            android:text="Your Balance"
-            android:textColor="@color/gray" />
-
-        <TextView
-            android:id="@+id/tv_balance"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/text_balance"
-            android:fontFamily="@font/inter_bold"
-            android:textColor="@color/black"
-            android:textSize="32sp"
-            tools:text="Rp 200.000" />
-
-    </RelativeLayout>
+    android:layout_height="match_parent">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/income_outcome_summary"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/spacing_xl"
-        app:layout_constraintTop_toBottomOf="@id/balance_summary">
+        android:layout_height="match_parent"
+        android:paddingHorizontal="@dimen/spacing_l"
+        android:paddingVertical="@dimen/spacing_xl"
+        tools:context=".features.transaction.presentation.transaction_home.TransactionHomeActivity">
 
         <RelativeLayout
-            android:id="@+id/income_container"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/spacing_s"
-            android:background="@drawable/income_outcome_summary_bg"
-            android:paddingHorizontal="@dimen/spacing_s"
-            android:paddingVertical="@dimen/spacing_m"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/outcome_container"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <RelativeLayout
-                android:id="@+id/income_container_left"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
-
-                <LinearLayout
-                    android:id="@+id/income_container_left_top"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/income" />
-
-                    <TextView
-                        android:id="@+id/text_income"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/spacing_s"
-                        android:fontFamily="@font/inter_medium"
-                        android:text="Income"
-                        android:textColor="@color/green_fg" />
-
-                </LinearLayout>
-
-
-                <TextView
-                    android:id="@+id/tv_income"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/income_container_left_top"
-                    android:layout_marginTop="@dimen/spacing_s"
-                    android:fontFamily="@font/inter_bold"
-                    android:textColor="@color/black"
-                    android:textSize="24sp"
-                    tools:text="Rp 400.000" />
-
-            </RelativeLayout>
-
-            <ImageButton
-                android:id="@+id/income_btn_continue"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignEnd="@id/income_container_left"
-                android:layout_centerVertical="true"
-                android:background="@drawable/btn_back_bg"
-                android:src="@drawable/proceed" />
-
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:id="@+id/outcome_container"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/spacing_s"
-            android:background="@drawable/income_outcome_summary_bg"
-            android:paddingHorizontal="@dimen/spacing_s"
-            android:paddingVertical="@dimen/spacing_m"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/income_container"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <RelativeLayout
-                android:id="@+id/outcome_container_left"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
-
-                <LinearLayout
-                    android:id="@+id/outcome_container_left_top"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/outcome" />
-
-                    <TextView
-                        android:id="@+id/text_outcome"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/spacing_s"
-                        android:fontFamily="@font/inter_medium"
-                        android:text="Outcome"
-                        android:textColor="@color/red_fg" />
-
-                </LinearLayout>
-
-
-                <TextView
-                    android:id="@+id/tv_outcome"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/outcome_container_left_top"
-                    android:layout_marginTop="@dimen/spacing_s"
-                    android:fontFamily="@font/inter_bold"
-                    android:textColor="@color/black"
-                    android:textSize="24sp"
-                    tools:text="Rp 400.000" />
-
-            </RelativeLayout>
-
-            <ImageButton
-                android:id="@+id/outcome_btn_continue"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignEnd="@id/outcome_container_left"
-                android:layout_centerVertical="true"
-                android:background="@drawable/btn_back_bg"
-                android:src="@drawable/proceed" />
-
-        </RelativeLayout>
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/recent_transaction"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginTop="@dimen/spacing_xl"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/income_outcome_summary">
-
-        <RelativeLayout
-            android:id="@+id/transaction_header"
+            android:id="@+id/header"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-            <TextView
-                android:id="@+id/text_recent_transaction"
+            <RelativeLayout
+                android:id="@+id/select_date"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
-                android:fontFamily="@font/inter_semibold"
-                android:text="Recent Transaction"
-                android:textColor="@color/dark" />
+                android:layout_centerVertical="true">
 
-            <TextView
-                android:id="@+id/tv_btn_view_all_transaction"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                <TextView
+                    android:id="@+id/tv_month"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/inter_semibold"
+                    android:textColor="@color/black"
+                    android:textSize="14sp"
+                    tools:text="June 2022" />
+
+                <ImageView
+                    android:id="@+id/img_caret_down"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_marginStart="@dimen/spacing_xs"
+                    android:layout_toEndOf="@id/tv_month"
+                    android:src="@drawable/caret_down" />
+
+            </RelativeLayout>
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/img_profile"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
                 android:layout_alignParentEnd="true"
-                android:fontFamily="@font/inter_bold"
-                android:text="View All"
-                android:textColor="@color/primary" />
+                tools:src="@color/primary" />
 
         </RelativeLayout>
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_recent_transaction"
+        <RelativeLayout
+            android:id="@+id/balance_summary"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_l"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/header">
+
+            <TextView
+                android:id="@+id/text_balance"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/inter_semibold"
+                android:text="Your Balance"
+                android:textColor="@color/gray"
+                android:textSize="12sp" />
+
+            <TextView
+                android:id="@+id/tv_balance"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/text_balance"
+                android:fontFamily="@font/inter_bold"
+                android:textColor="@color/black"
+                android:textSize="32sp"
+                tools:text="Rp 200.000" />
+
+        </RelativeLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/income_outcome_summary"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_xl"
+            app:layout_constraintTop_toBottomOf="@id/balance_summary">
+
+            <RelativeLayout
+                android:id="@+id/income_container"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/spacing_s"
+                android:background="@drawable/income_outcome_summary_bg"
+                android:paddingHorizontal="@dimen/spacing_s"
+                android:paddingVertical="@dimen/spacing_m"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/outcome_container"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <RelativeLayout
+                    android:id="@+id/income_container_left"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <LinearLayout
+                        android:id="@+id/income_container_left_top"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/income" />
+
+                        <TextView
+                            android:id="@+id/text_income"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/spacing_s"
+                            android:fontFamily="@font/inter_medium"
+                            android:text="Income"
+                            android:textColor="@color/green_fg"
+                            android:textSize="12sp" />
+
+                    </LinearLayout>
+
+
+                    <TextView
+                        android:id="@+id/tv_income"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/income_container_left_top"
+                        android:layout_marginTop="@dimen/spacing_s"
+                        android:fontFamily="@font/inter_bold"
+                        android:textColor="@color/black"
+                        android:textSize="20sp"
+                        tools:text="Rp 400.000" />
+
+                </RelativeLayout>
+
+                <ImageButton
+                    android:id="@+id/income_btn_continue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignEnd="@id/income_container_left"
+                    android:layout_centerVertical="true"
+                    android:background="@drawable/btn_back_bg"
+                    android:src="@drawable/proceed" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/outcome_container"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/spacing_s"
+                android:background="@drawable/income_outcome_summary_bg"
+                android:paddingHorizontal="@dimen/spacing_s"
+                android:paddingVertical="@dimen/spacing_m"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/income_container"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <RelativeLayout
+                    android:id="@+id/outcome_container_left"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <LinearLayout
+                        android:id="@+id/outcome_container_left_top"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/outcome" />
+
+                        <TextView
+                            android:id="@+id/text_outcome"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/spacing_s"
+                            android:fontFamily="@font/inter_medium"
+                            android:text="Outcome"
+                            android:textColor="@color/red_fg"
+                            android:textSize="12sp" />
+
+                    </LinearLayout>
+
+
+                    <TextView
+                        android:id="@+id/tv_outcome"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/outcome_container_left_top"
+                        android:layout_marginTop="@dimen/spacing_s"
+                        android:fontFamily="@font/inter_bold"
+                        android:textColor="@color/black"
+                        android:textSize="20sp"
+                        tools:text="Rp 400.000" />
+
+                </RelativeLayout>
+
+                <ImageButton
+                    android:id="@+id/outcome_btn_continue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignEnd="@id/outcome_container_left"
+                    android:layout_centerVertical="true"
+                    android:background="@drawable/btn_back_bg"
+                    android:src="@drawable/proceed" />
+
+            </RelativeLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/recent_transaction"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_marginTop="@dimen/spacing"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            android:layout_marginTop="@dimen/spacing_xl"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/transaction_header" />
+            app:layout_constraintTop_toBottomOf="@id/income_outcome_summary">
+
+            <RelativeLayout
+                android:id="@+id/transaction_header"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <TextView
+                    android:id="@+id/text_recent_transaction"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:fontFamily="@font/inter_semibold"
+                    android:text="Recent Transaction"
+                    android:textColor="@color/dark"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:id="@+id/tv_btn_view_all_transaction"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:fontFamily="@font/inter_bold"
+                    android:text="View All"
+                    android:textColor="@color/primary"
+                    android:textSize="12sp" />
+
+            </RelativeLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_recent_transaction"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginTop="@dimen/spacing"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/transaction_header"
+                tools:listitem="@layout/transaction_list_item" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab_add"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="Add New Transaction"
+            android:elevation="0dp"
+            android:src="@drawable/fab_add"
+            android:tint="@color/white"
+            app:backgroundTint="@color/primary"
+            app:elevation="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab_add"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:contentDescription="Add New Transaction"
-        android:elevation="0dp"
-        android:src="@drawable/fab_add"
-        android:tint="@color/white"
-        app:backgroundTint="@color/primary"
-        app:elevation="0dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

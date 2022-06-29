@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:padding="@dimen/spacing">
 
     <ImageView
         android:id="@+id/img_icon"
@@ -33,7 +34,7 @@
             android:fontFamily="@font/inter_semibold"
             android:maxLines="1"
             android:textColor="@color/black"
-            android:textSize="16sp"
+            android:textSize="14sp"
             tools:text="Magelangan" />
 
         <TextView
@@ -42,7 +43,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/tv_transaction_name"
             android:layout_marginTop="@dimen/spacing_xs"
-            android:fontFamily="@font/inter_medium"
+            android:fontFamily="@font/inter"
             android:textColor="@color/gray"
             android:textSize="12sp"
             tools:text="Today, 14:00" />

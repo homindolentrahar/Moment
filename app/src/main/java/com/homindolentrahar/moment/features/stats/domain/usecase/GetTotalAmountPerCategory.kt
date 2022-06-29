@@ -5,6 +5,7 @@ import com.homindolentrahar.moment.features.transaction.domain.repository.Transa
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import java.time.LocalDateTime
+import java.util.*
 import javax.inject.Inject
 
 class GetTotalAmountPerCategory @Inject constructor(
@@ -12,14 +13,14 @@ class GetTotalAmountPerCategory @Inject constructor(
 ) {
 
     suspend operator fun invoke(
-        date: LocalDateTime,
+        date: Date,
         type: TransactionType
     ): Flow<List<Map<String, Any>>> =
         flow {
             val perCategory = repository.getAllTransactions()
-                .filter { it.createdAt.month == date.month }
+                .filter { it.timestamp.month == date.month }
                 .filter { it.type == type }
-                .groupBy { it.category.id }
+                .groupBy { it.category }
                 .map { entry ->
                     mapOf(
                         "category" to entry.key,

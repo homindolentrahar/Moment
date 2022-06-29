@@ -6,6 +6,7 @@ import com.homindolentrahar.moment.features.transaction.domain.model.Transaction
 import com.homindolentrahar.moment.features.transaction.domain.usecase.RemoveTransaction
 import com.homindolentrahar.moment.features.transaction.domain.usecase.UpdateTransaction
 import com.homindolentrahar.moment.features.transaction.domain.usecase.GetSingleTransaction
+import com.homindolentrahar.moment.features.transaction.domain.usecase.SaveTransaction
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -17,6 +18,7 @@ import javax.inject.Inject
 @HiltViewModel
 class TransactionDetailViewModel @Inject constructor(
     private val getSingleTransaction: GetSingleTransaction,
+    private val saveTransaction: SaveTransaction,
     private val updateTransaction: UpdateTransaction,
     private val removeTransaction: RemoveTransaction
 ) : ViewModel() {
@@ -43,6 +45,29 @@ class TransactionDetailViewModel @Inject constructor(
                     _state.value = _state.value.copy(
                         error = "",
                         transaction = transaction,
+                        loading = false,
+                    )
+                }
+        }
+    }
+
+    fun save(transaction: Transaction) {
+        viewModelScope.launch {
+            saveTransaction(transaction)
+                .onStart {
+                    _state.value = _state.value.copy(
+                        loading = true
+                    )
+                }
+                .catch { error ->
+                    _state.value = _state.value.copy(
+                        error = error.localizedMessage!!.toString(),
+                        loading = false
+                    )
+                }
+                .collect {
+                    _state.value = _state.value.copy(
+                        error = "",
                         loading = false,
                     )
                 }

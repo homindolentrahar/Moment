@@ -8,6 +8,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import java.time.LocalDateTime
+import java.util.*
 import javax.inject.Inject
 
 @HiltViewModel
@@ -26,7 +27,7 @@ class TransactionListViewModel @Inject constructor(
     fun transactionList(
         type: TransactionType = TransactionType.ALL,
         categoryId: String = "",
-        date: LocalDateTime = LocalDateTime.now(),
+        date: Date = Date(),
         query: String = "",
     ) {
         viewModelScope.launch {

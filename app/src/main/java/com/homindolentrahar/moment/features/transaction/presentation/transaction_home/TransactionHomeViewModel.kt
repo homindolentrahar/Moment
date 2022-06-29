@@ -48,7 +48,7 @@ class TransactionHomeViewModel @Inject constructor(
                 }
                 .catch { error ->
                     _state.value = _state.value.copy(
-                        error = error.localizedMessage!!.toString(),
+                        error = error.localizedMessage?.toString() ?: "Unexpected error",
                         loading = false
                     )
                 }

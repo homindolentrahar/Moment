@@ -1,0 +1,303 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/frame_sheet"
+    style="@style/Widget.MaterialComponents.BottomSheet.Modal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:layout_behavior="@string/bottom_sheet_behavior">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        style="@style/Widget.MaterialComponents.BottomSheet.Modal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="@dimen/spacing_l"
+        android:paddingVertical="@dimen/spacing_xl">
+
+        <RelativeLayout
+            android:id="@+id/sheet_header"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/text_header"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+                android:fontFamily="@font/inter_semibold"
+                android:textColor="@color/dark"
+                android:textSize="14sp"
+                tools:text="New Transaction" />
+
+            <ImageButton
+                android:id="@+id/btn_delete"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:background="@drawable/btn_delete_bg"
+                android:padding="@dimen/spacing_s"
+                android:src="@drawable/delete"
+                android:visibility="gone" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/forms"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="@dimen/spacing_xl"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/sheet_header">
+
+            <RelativeLayout
+                android:id="@+id/type_container"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <com.google.android.material.chip.ChipGroup
+                    android:id="@+id/chips_type"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:chipSpacingHorizontal="@dimen/spacing_s"
+                    app:selectionRequired="true"
+                    app:singleSelection="true">
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/chip_expense"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checkable="true"
+                        android:checked="true"
+                        android:elevation="0dp"
+                        android:fontFamily="@font/inter_semibold"
+                        android:text="Expense"
+                        android:textColor="@color/chip_type_fg"
+                        android:textSize="12sp"
+                        app:checkedIconVisible="false"
+                        app:chipBackgroundColor="@color/chip_type_bg"
+                        app:chipCornerRadius="8dp"
+                        app:chipEndPadding="@dimen/spacing"
+                        app:chipMinHeight="40dp"
+                        app:chipStartPadding="@dimen/spacing" />
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/chip_income"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checkable="true"
+                        android:elevation="0dp"
+                        android:fontFamily="@font/inter_semibold"
+                        android:text="Income"
+                        android:textColor="@color/chip_type_fg"
+                        android:textSize="12sp"
+                        app:checkedIconVisible="false"
+                        app:chipBackgroundColor="@color/chip_type_bg"
+                        app:chipCornerRadius="8dp"
+                        app:chipEndPadding="@dimen/spacing"
+                        app:chipMinHeight="40dp"
+                        app:chipStartPadding="@dimen/spacing" />
+
+                </com.google.android.material.chip.ChipGroup>
+
+            </RelativeLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/edit_layout_name"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/type_container"
+                android:layout_marginTop="@dimen/spacing_l"
+                android:animateLayoutChanges="false"
+                app:boxCornerRadiusBottomEnd="8dp"
+                app:boxCornerRadiusBottomStart="8dp"
+                app:boxCornerRadiusTopEnd="8dp"
+                app:boxCornerRadiusTopStart="8dp"
+                app:hintAnimationEnabled="false"
+                app:hintEnabled="false"
+                app:hintTextAppearance="@style/EditHint">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/edit_text_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/field_bg"
+                    android:fontFamily="@font/inter"
+                    android:hint="Name"
+                    android:inputType="text"
+                    android:padding="@dimen/spacing"
+                    android:textColor="@color/black"
+                    android:textColorHint="@color/gray"
+                    android:textSize="12sp" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/edit_layout_desc"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/edit_layout_name"
+                android:layout_marginTop="@dimen/spacing_l"
+                android:textColorHint="@color/gray"
+                app:boxCornerRadiusBottomEnd="8dp"
+                app:boxCornerRadiusBottomStart="8dp"
+                app:boxCornerRadiusTopEnd="8dp"
+                app:boxCornerRadiusTopStart="8dp"
+                app:hintAnimationEnabled="false"
+                app:hintEnabled="false"
+                app:hintTextAppearance="@style/EditHint">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/edit_text_desc"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/field_bg"
+                    android:fontFamily="@font/inter"
+                    android:hint="Description"
+                    android:inputType="text"
+                    android:padding="@dimen/spacing"
+                    android:textColor="@color/black"
+                    android:textSize="12sp" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/amount_category_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/edit_layout_desc"
+                android:layout_marginTop="@dimen/spacing_l">
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/edit_layout_amount"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginEnd="@dimen/spacing_s"
+                    android:textColorHint="@color/gray"
+                    app:boxCornerRadiusBottomEnd="8dp"
+                    app:boxCornerRadiusBottomStart="8dp"
+                    app:boxCornerRadiusTopEnd="8dp"
+                    app:boxCornerRadiusTopStart="8dp"
+                    app:hintAnimationEnabled="false"
+                    app:hintEnabled="false"
+                    app:hintTextAppearance="@style/EditHint"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/select_category"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/edit_text_amount"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/field_bg"
+                        android:fontFamily="@font/inter"
+                        android:hint="Amount"
+                        android:inputType="number"
+                        android:padding="@dimen/spacing"
+                        android:textColor="@color/black"
+                        android:textSize="12sp" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.skydoves.powerspinner.PowerSpinnerView
+                    android:id="@+id/select_category"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/select_category_bg"
+                    android:hint="Select Category"
+                    android:padding="@dimen/spacing_m"
+                    android:textColorHint="@color/gray"
+                    android:textSize="12sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/edit_layout_amount"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:spinner_arrow_drawable="@drawable/caret_down"
+                    app:spinner_arrow_gravity="end"
+                    app:spinner_popup_animation="dropdown"
+                    app:spinner_popup_background="@color/white"
+                    app:spinner_popup_elevation="8dp" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <RelativeLayout
+                android:id="@+id/pick_date_container"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/amount_category_container"
+                android:layout_marginTop="@dimen/spacing_l">
+
+                <RelativeLayout
+                    android:id="@+id/pick_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/select_date_bg">
+
+                    <ImageView
+                        android:id="@+id/img_icon_pick_date"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentStart="true"
+                        android:layout_centerVertical="true"
+                        android:src="@drawable/select_date" />
+
+                    <TextView
+                        android:id="@+id/text_select_date"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="@dimen/spacing_s"
+                        android:layout_toEndOf="@id/img_icon_pick_date"
+                        android:fontFamily="@font/inter_semibold"
+                        android:text="Pick Date"
+                        android:textColor="@color/light"
+                        android:textSize="12sp" />
+
+                </RelativeLayout>
+
+                <TextView
+                    android:id="@+id/tv_pick_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="@dimen/spacing"
+                    android:layout_toEndOf="@id/pick_date"
+                    android:fontFamily="@font/inter"
+                    android:text="No Date Picked"
+                    android:textColor="@color/gray"
+                    android:textSize="12sp" />
+
+            </RelativeLayout>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_primary_action"
+                style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/pick_date_container"
+                android:layout_marginTop="@dimen/spacing_xl"
+                android:elevation="0dp"
+                android:fontFamily="@font/inter_semibold"
+                android:padding="@dimen/spacing"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textSize="16sp"
+                app:cornerRadius="8dp"
+                app:elevation="0dp"
+                tools:text="Save" />
+
+        </RelativeLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</FrameLayout>
