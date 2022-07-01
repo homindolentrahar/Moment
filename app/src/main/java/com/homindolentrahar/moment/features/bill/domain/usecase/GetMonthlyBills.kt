@@ -1,5 +1,6 @@
 package com.homindolentrahar.moment.features.bill.domain.usecase
 
+import com.google.android.gms.common.api.ApiException
 import com.homindolentrahar.moment.features.bill.domain.model.Bill
 import com.homindolentrahar.moment.features.bill.domain.repository.BillRepository
 import kotlinx.coroutines.flow.Flow
@@ -12,9 +13,13 @@ class GetMonthlyBills @Inject constructor(
 ) {
     suspend operator fun invoke(date: LocalDateTime): Flow<List<Bill>> =
         flow {
-            val filteredBills = repository.getAllBills()
-                .filter { bill -> bill.timestamp.month == date.month }
+            try {
+                val filteredBills = repository.getAllBills()
+                    .filter { bill -> bill.timestamp.month == date.month }
 
-            emit(filteredBills)
+                emit(filteredBills)
+            } catch (exception: ApiException) {
+                throw exception
+            }
         }
 }

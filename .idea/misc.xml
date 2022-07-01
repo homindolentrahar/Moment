@@ -11,6 +11,7 @@
         <entry key="..\:/Code_Work/Android/Moment/app/src/main/res/drawable/chip_type_bg.xml" value="0.1" />
         <entry key="..\:/Code_Work/Android/Moment/app/src/main/res/drawable/delete.xml" value="0.1695" />
         <entry key="..\:/Code_Work/Android/Moment/app/src/main/res/drawable/field_bg.xml" value="0.1" />
+        <entry key="..\:/Code_Work/Android/Moment/app/src/main/res/drawable/filter.xml" value="0.1695" />
         <entry key="..\:/Code_Work/Android/Moment/app/src/main/res/drawable/google_icon.xml" value="0.1065" />
         <entry key="..\:/Code_Work/Android/Moment/app/src/main/res/drawable/icon_container_bg.xml" value="0.1" />
         <entry key="..\:/Code_Work/Android/Moment/app/src/main/res/drawable/income_outcome_summary_bg.xml" value="0.1" />
@@ -29,6 +30,7 @@
         <entry key="..\:/Code_Work/Android/Moment/app/src/main/res/layout/add_edit_transaction_sheet.xml" value="0.2" />
         <entry key="..\:/Code_Work/Android/Moment/app/src/main/res/layout/add_transaction_sheet.xml" value="0.264" />
         <entry key="..\:/Code_Work/Android/Moment/app/src/main/res/layout/add_update_transaction_sheet.xml" value="0.1" />
+        <entry key="..\:/Code_Work/Android/Moment/app/src/main/res/layout/no_transaction_container.xml" value="0.26197916666666665" />
         <entry key="..\:/Code_Work/Android/Moment/app/src/main/res/layout/transaction_list_item.xml" value="0.17197452229299362" />
       </map>
     </option>

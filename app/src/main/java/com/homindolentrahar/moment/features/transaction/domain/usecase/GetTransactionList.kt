@@ -1,5 +1,6 @@
 package com.homindolentrahar.moment.features.transaction.domain.usecase
 
+import com.google.android.gms.common.api.ApiException
 import com.homindolentrahar.moment.features.transaction.domain.model.Transaction
 import com.homindolentrahar.moment.features.transaction.domain.model.TransactionType
 import com.homindolentrahar.moment.features.transaction.domain.repository.TransactionRepository
@@ -13,18 +14,22 @@ class GetTransactionList @Inject constructor(
 ) {
 
     suspend operator fun invoke(
-        type: TransactionType = TransactionType.ALL,
-        category: String = "",
-        date: Date = Date(),
-        query: String = "",
+        type: TransactionType,
+        category: String,
+        date: Date,
+//        query: String,
     ): Flow<List<Transaction>> = flow {
-        val filteredTransactions = repository.getAllTransactions()
-            .filter { if (type == TransactionType.ALL) true else it.type == type }
-            .filter { if (category.isEmpty()) true else it.category == category }
-            .filter { it.timestamp.month == date.month }
-            .filter { it.name.contains(query) }
+        try {
+            val filteredTransactions = repository.getAllTransactions()
+                .filter { if (type == TransactionType.ALL) true else it.type == type }
+                .filter { if (category.isEmpty()) true else it.category == category }
+                .filter { it.createdAt.month == date.month }
+//                .filter { it.name.contains(query) }
 
-        emit(filteredTransactions)
+            emit(filteredTransactions)
+        } catch (exception: ApiException) {
+            throw exception
+        }
     }
 
 }

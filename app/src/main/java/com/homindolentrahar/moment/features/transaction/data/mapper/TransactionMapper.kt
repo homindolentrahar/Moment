@@ -11,7 +11,8 @@ fun TransactionDto.toDocumentSnapshot(): Map<String, Any> {
         "type" to type,
         "amount" to amount,
         "category" to category,
-        "timestamp" to timestamp
+        "created_at" to createdAt,
+        "updated_at" to updatedAt
     )
 }
 
@@ -20,9 +21,10 @@ fun TransactionDto.toTransaction(): Transaction {
         id = id,
         name = name,
         desc = desc,
-        type = TransactionType.valueOf(type),
+        type = TransactionType.valueOf(type.uppercase()),
         amount = amount,
         category = category,
-        timestamp = timestamp.toDate()
+        createdAt = createdAt.toDate(),
+        updatedAt = updatedAt.toDate(),
     )
 }

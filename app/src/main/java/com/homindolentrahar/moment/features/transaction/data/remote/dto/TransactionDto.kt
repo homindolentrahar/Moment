@@ -10,20 +10,20 @@ data class TransactionDto(
     val type: String,
     val amount: Double,
     val category: String,
-    val timestamp: Timestamp
+    val createdAt: Timestamp,
+    val updatedAt: Timestamp,
 ) {
     companion object {
-        const val COLLECTION = "transactions"
-
         fun fromTransaction(transaction: Transaction): TransactionDto {
             return TransactionDto(
                 id = transaction.id,
                 name = transaction.name,
                 desc = transaction.desc,
-                type = transaction.type.name,
+                type = transaction.type.value,
                 amount = transaction.amount,
                 category = transaction.category,
-                timestamp = Timestamp(transaction.timestamp)
+                createdAt = Timestamp(transaction.createdAt),
+                updatedAt = Timestamp(transaction.updatedAt)
             )
         }
 
@@ -35,7 +35,8 @@ data class TransactionDto(
                 type = data["type"] as String,
                 amount = data["amount"] as Double,
                 category = data["category"] as String,
-                timestamp = data["timestamp"] as Timestamp
+                createdAt = data["created_at"] as Timestamp,
+                updatedAt = data["updated_at"] as Timestamp
             )
         }
     }

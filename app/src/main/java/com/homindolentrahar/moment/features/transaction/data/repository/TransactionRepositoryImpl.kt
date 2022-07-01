@@ -16,7 +16,7 @@ class TransactionRepositoryImpl @Inject constructor(
     private val auth: FirebaseAuth
 ) : TransactionRepository {
     override suspend fun getAllTransactions(): List<Transaction> {
-        val currentUser = auth.currentUser!!
+//        val currentUser = auth.currentUser!!
 
         val querySnapshot = firestore
             .collection(Constants.TRANSACTIONS_COLLECTION)
@@ -32,7 +32,7 @@ class TransactionRepositoryImpl @Inject constructor(
     }
 
     override suspend fun getSingleTransaction(id: String): Transaction? {
-        val currentUser = auth.currentUser!!
+//        val currentUser = auth.currentUser!!
 
         val documentSnapshot = firestore
             .collection(Constants.TRANSACTIONS_COLLECTION)
@@ -47,7 +47,7 @@ class TransactionRepositoryImpl @Inject constructor(
     }
 
     override suspend fun addTransaction(transaction: Transaction) {
-        val currentUser = auth.currentUser!!
+//        val currentUser = auth.currentUser!!
         val transactionDto = TransactionDto.fromTransaction(transaction)
 
         firestore
@@ -62,7 +62,7 @@ class TransactionRepositoryImpl @Inject constructor(
         id: String,
         transaction: Transaction
     ) {
-        val currentUser = auth.currentUser!!
+//        val currentUser = auth.currentUser!!
         val transactionDto = TransactionDto.fromTransaction(transaction)
 
         firestore
@@ -75,7 +75,7 @@ class TransactionRepositoryImpl @Inject constructor(
     }
 
     override suspend fun deleteTransaction(id: String) {
-        val currentUser = auth.currentUser!!
+//        val currentUser = auth.currentUser!!
 
         firestore
             .collection(Constants.TRANSACTIONS_COLLECTION)

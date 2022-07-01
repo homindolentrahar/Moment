@@ -18,7 +18,7 @@ class GetTotalAmountPerCategory @Inject constructor(
     ): Flow<List<Map<String, Any>>> =
         flow {
             val perCategory = repository.getAllTransactions()
-                .filter { it.timestamp.month == date.month }
+                .filter { it.createdAt.month == date.month }
                 .filter { it.type == type }
                 .groupBy { it.category }
                 .map { entry ->

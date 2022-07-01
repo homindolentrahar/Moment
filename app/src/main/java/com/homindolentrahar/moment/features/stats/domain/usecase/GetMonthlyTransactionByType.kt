@@ -14,7 +14,7 @@ class GetMonthlyTransactionByType @Inject constructor(
 
     suspend operator fun invoke(date: Date, type: TransactionType): Flow<Double> = flow {
         val result = repository.getAllTransactions()
-            .filter { it.timestamp.month == date.month }
+            .filter { it.createdAt.month == date.month }
             .filter { it.type == type }
             .sumOf { it.amount }
 

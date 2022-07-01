@@ -27,15 +27,13 @@ class TransactionListViewModel @Inject constructor(
     fun transactionList(
         type: TransactionType = TransactionType.ALL,
         categoryId: String = "",
-        date: Date = Date(),
-        query: String = "",
+        date: Date = Calendar.getInstance().time,
     ) {
         viewModelScope.launch {
             getTransactionList(
                 type,
                 categoryId,
                 date,
-                query
             )
                 .onStart {
                     _state.value = _state.value.copy(
@@ -44,7 +42,7 @@ class TransactionListViewModel @Inject constructor(
                 }
                 .catch { error ->
                     _state.value = _state.value.copy(
-                        error = error.localizedMessage!!.toString(),
+                        error = error.localizedMessage?.toString() ?: "Unexpected error",
                         loading = false
                     )
                 }

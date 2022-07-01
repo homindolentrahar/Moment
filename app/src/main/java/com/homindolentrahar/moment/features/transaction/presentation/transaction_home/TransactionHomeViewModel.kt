@@ -2,17 +2,16 @@ package com.homindolentrahar.moment.features.transaction.presentation.transactio
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.homindolentrahar.moment.features.transaction.domain.model.Transaction
 import com.homindolentrahar.moment.features.transaction.domain.usecase.*
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
+import java.util.*
 import javax.inject.Inject
 
 @HiltViewModel
 class TransactionHomeViewModel @Inject constructor(
     private val getMonthlyTransactions: GetMonthlyTransactions,
-    private val saveTransaction: SaveTransaction,
     private val getExpenses: GetExpenses,
     private val getIncome: GetIncome
 ) : ViewModel() {
@@ -25,21 +24,21 @@ class TransactionHomeViewModel @Inject constructor(
         allTransactions()
     }
 
-    fun allTransactions() {
+    fun allTransactions(date: Date = Calendar.getInstance().time) {
         viewModelScope.launch {
-            getMonthlyTransactions()
+            getMonthlyTransactions(date)
                 .onStart {
                     _state.value = _state.value.copy(
                         loading = true
                     )
                 }
-                .zip(getExpenses()) { monthly, expenses ->
+                .zip(getExpenses(date)) { monthly, expenses ->
                     hashMapOf(
                         "monthly" to monthly,
                         "expenses" to expenses,
                     )
                 }
-                .zip(getIncome()) { pair, income ->
+                .zip(getIncome(date)) { pair, income ->
                     hashMapOf(
                         "income" to income,
                         pair.map { it.toPair() }.first(),
@@ -47,6 +46,8 @@ class TransactionHomeViewModel @Inject constructor(
                     )
                 }
                 .catch { error ->
+                    error.printStackTrace()
+
                     _state.value = _state.value.copy(
                         error = error.localizedMessage?.toString() ?: "Unexpected error",
                         loading = false
@@ -59,29 +60,6 @@ class TransactionHomeViewModel @Inject constructor(
                         expenses = data["expenses"] ?: emptyList(),
                         income = data["income"] ?: emptyList(),
                         loading = false,
-                    )
-                }
-        }
-    }
-
-    fun save(transaction: Transaction) {
-        viewModelScope.launch {
-            saveTransaction(transaction)
-                .onStart {
-                    _state.value = _state.value.copy(
-                        loading = true
-                    )
-                }
-                .catch { error ->
-                    _state.value = _state.value.copy(
-                        error = error.localizedMessage!!.toString(),
-                        loading = false
-                    )
-                }
-                .collect {
-                    _state.value = _state.value.copy(
-                        error = "",
-                        loading = false
                     )
                 }
         }

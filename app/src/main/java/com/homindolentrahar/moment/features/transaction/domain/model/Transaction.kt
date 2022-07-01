@@ -2,10 +2,10 @@ package com.homindolentrahar.moment.features.transaction.domain.model
 
 import java.util.*
 
-enum class TransactionType(name: String) {
-    ALL("all"),
-    INCOME("income"),
-    EXPENSE("expense")
+enum class TransactionType(val value: String) {
+    ALL(""),
+    INCOME("Income"),
+    EXPENSE("Expense")
 }
 
 data class Transaction(
@@ -15,5 +15,6 @@ data class Transaction(
     val type: TransactionType,
     val amount: Double,
     val category: String,
-    val timestamp: Date
+    val createdAt: Date,
+    val updatedAt: Date
 )

@@ -5,16 +5,13 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageButton
 import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import com.google.android.material.button.MaterialButton
-import com.google.android.material.textfield.TextInputEditText
+import com.google.android.material.datepicker.MaterialDatePicker
 import com.homindolentrahar.moment.R
 import com.homindolentrahar.moment.databinding.AddEditTransactionSheetBinding
 import com.homindolentrahar.moment.features.transaction.domain.model.Transaction
@@ -23,20 +20,22 @@ import com.homindolentrahar.moment.features.transaction.presentation.transaction
 import dagger.hilt.android.AndroidEntryPoint
 import es.dmoral.toasty.Toasty
 import kotlinx.coroutines.launch
+import java.text.SimpleDateFormat
 import java.util.*
 
-enum class AddEditTransactionSheetType(name: String) {
+enum class AddEditTransactionSheetType(val value: String) {
     ADD("add"), EDIT("edit")
 }
 
 @AndroidEntryPoint
-class AddEditTransactionSheet() : BottomSheetDialogFragment() {
+class AddEditTransactionSheet : BottomSheetDialogFragment() {
     private lateinit var binding: AddEditTransactionSheetBinding
     private val viewModel: TransactionDetailViewModel by viewModels()
-    private val args = arguments
+    private var selectedCategory = ""
+    private var date = ""
 
     companion object {
-        val TAG = AddEditTransactionSheet::class.java.simpleName
+        val TAG: String = AddEditTransactionSheet::class.java.simpleName
     }
 
     override fun onCreateView(
@@ -86,9 +85,48 @@ class AddEditTransactionSheet() : BottomSheetDialogFragment() {
             }
         }
 
-        val type = arguments?.getString("type") ?: AddEditTransactionSheetType.ADD.name
+        val type = arguments?.getString("type") ?: AddEditTransactionSheetType.ADD.value
+        val transactionId = arguments?.getString("id") ?: ""
+        val datePicker = MaterialDatePicker.Builder.datePicker()
+            .setTitleText("Pick transaction date")
+            .setPositiveButtonText("Pick")
+            .setNegativeButtonText("Cancel")
+            .build()
 
-        binding.chipsType.setOnCheckedStateChangeListener { group, checkedIds ->
+        if (type == AddEditTransactionSheetType.EDIT.name) {
+            binding.textHeader.text = "Edit Transaction"
+            binding.btnPrimaryAction.text = "Update"
+            binding.btnDelete.visibility = View.VISIBLE
+
+            viewModel.singleTransaction(transactionId)
+        } else {
+            binding.textHeader.text = "New Transaction"
+            binding.btnPrimaryAction.text = "Save"
+            binding.btnDelete.visibility = View.GONE
+        }
+
+        datePicker.apply {
+            addOnPositiveButtonClickListener { timestamp ->
+                date = SimpleDateFormat("dd MMMM yyyy").format(Date(timestamp))
+                binding.tvPickDate.text = date
+            }
+            addOnNegativeButtonClickListener {
+                dismiss()
+            }
+        }
+
+        binding.selectCategory.apply {
+            setOnSpinnerItemSelectedListener<String> { _, _, _, newItem ->
+                selectedCategory = newItem
+            }
+            setItems(
+                resources.getStringArray(R.array.expense_categories).toList()
+            )
+            setOnSpinnerOutsideTouchListener { _, _ ->
+                dismiss()
+            }
+        }
+        binding.chipsType.setOnCheckedStateChangeListener { _, checkedIds ->
             val categories = when (checkedIds.first()) {
                 R.id.chip_expense -> {
                     resources.getStringArray(R.array.expense_categories).toList()
@@ -102,57 +140,99 @@ class AddEditTransactionSheet() : BottomSheetDialogFragment() {
             }
 
             binding.selectCategory.setItems(categories)
+            binding.selectCategory.clearSelectedItem()
         }
-
-        if (type == AddEditTransactionSheetType.EDIT.name) {
-            val id = arguments?.getString("id")
-
-            id?.let {
-                viewModel.singleTransaction(it)
-            }
-
-            binding.textHeader.text = "Edit Transaction"
-            binding.btnPrimaryAction.text = "Update"
-        } else {
-            binding.textHeader.text = "New Transaction"
-            binding.btnPrimaryAction.text = "Save"
+        binding.pickDate.setOnClickListener {
+            datePicker
+                .show(parentFragmentManager, AddEditTransactionSheet::class.java.simpleName)
         }
-
         binding.btnDelete.setOnClickListener {
-            arguments?.let { bundle ->
-                bundle.getString("id")?.let { id ->
-                    viewModel.remove(id)
-                }
+            if (transactionId.isNotEmpty()) {
+                viewModel.remove(transactionId)
             }
         }
-
         binding.btnPrimaryAction.setOnClickListener {
             val name = binding.editTextName.text.toString()
             val desc = binding.editTextDesc.text.toString()
             val amount = binding.editTextAmount.text.toString().toDouble()
+            val category = selectedCategory
+            val transactionType =
+                if (binding.chipsType.checkedChipId == R.id.chip_expense) TransactionType.valueOf("EXPENSE")
+                else TransactionType.valueOf("INCOME")
+            val pickedDate = binding.tvPickDate.text.toString()
 
-            if (type == AddEditTransactionSheetType.ADD.name) {
-//                val transaction = Transaction(
-//                    name = name,
-//                    desc = desc,
-//                    type = TransactionType.valueOf(type),
-//                    amount = amount,
-//                    category =,
-//                    timestamp = Date()
-//                )
-            } else {
+            if (name.isEmpty()) {
+                binding.editTextName.error = "Name cannot be empty!"
+            }
+            if (amount <= 0.0) {
+                binding.editTextAmount.error = "Amount cannot be zero or less!"
+            }
+            if (selectedCategory.isEmpty()) {
+                binding.selectCategory.error = "Select a category!"
+            }
+            if (pickedDate.isEmpty()) {
+                binding.tvPickDate.apply {
+                    text = "Pick transaction date!"
+                    setTextColor(R.color.red_fg)
+                }
+            }
 
+            if (name.isNotEmpty() && amount > 0 && selectedCategory.isNotEmpty() && pickedDate.isNotEmpty()) {
+                if (type == AddEditTransactionSheetType.ADD.name) {
+                    val transaction = Transaction(
+                        name = name,
+                        desc = desc,
+                        type = transactionType,
+                        amount = amount,
+                        category = category,
+                        createdAt = SimpleDateFormat("dd MMMM yyyy").parse(pickedDate)
+                            ?: Calendar.getInstance().time,
+                        updatedAt = Calendar.getInstance().time
+                    )
+
+                    viewModel.save(transaction)
+                } else {
+                    val transaction = Transaction(
+                        name = name,
+                        desc = desc,
+                        type = transactionType,
+                        amount = amount,
+                        category = category,
+                        createdAt = SimpleDateFormat("dd MMMM yyyy").parse(pickedDate)
+                            ?: Calendar.getInstance().time,
+                        updatedAt = Calendar.getInstance().time
+                    )
+
+                    viewModel.update(transactionId, transaction)
+                }
             }
         }
     }
 
     private fun populateData(transaction: Transaction) {
-        val editName = requireView().findViewById<TextInputEditText>(R.id.edit_text_name)
-        val editDesc = requireView().findViewById<TextInputEditText>(R.id.edit_text_desc)
-        val editAmount = requireView().findViewById<TextInputEditText>(R.id.edit_text_amount)
+        val typeId =
+            if (transaction.type == TransactionType.INCOME) R.id.chip_income else R.id.chip_expense
+        val categoryIndex = when (transaction.type) {
+            TransactionType.INCOME -> {
+                val categories = resources.getStringArray(R.array.income_categories).toList()
 
-        editName.setText(transaction.name)
-        editDesc.setText(transaction.desc)
-        editAmount.setText(transaction.amount.toString())
+                categories.indexOf(transaction.category)
+            }
+            TransactionType.EXPENSE -> {
+                val categories = resources.getStringArray(R.array.expense_categories).toList()
+
+                categories.indexOf(transaction.category)
+            }
+            else -> {
+                -1
+            }
+        }
+
+        binding.chipsType.check(typeId)
+        binding.editTextName.setText(transaction.name)
+        binding.editTextDesc.setText(transaction.desc)
+        binding.editTextAmount.setText(transaction.amount.toString())
+        binding.selectCategory.selectItemByIndex(categoryIndex)
+        binding.tvPickDate.text = SimpleDateFormat("dd MMMM yyyy").format(transaction.createdAt)
     }
 }
