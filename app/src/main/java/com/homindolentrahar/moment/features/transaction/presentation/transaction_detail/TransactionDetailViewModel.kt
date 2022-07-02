@@ -27,6 +27,14 @@ class TransactionDetailViewModel @Inject constructor(
     val state: StateFlow<TransactionDetailState>
         get() = _state
 
+    fun clearState() {
+        _state.value = _state.value.copy(
+            error = "",
+            loading = false,
+            transaction = null
+        )
+    }
+
     fun singleTransaction(id: String) {
         viewModelScope.launch {
             getSingleTransaction(id)
@@ -55,6 +63,8 @@ class TransactionDetailViewModel @Inject constructor(
         viewModelScope.launch {
             saveTransaction(transaction)
                 .onStart {
+                    clearState()
+
                     _state.value = _state.value.copy(
                         loading = true
                     )
@@ -78,6 +88,8 @@ class TransactionDetailViewModel @Inject constructor(
         viewModelScope.launch {
             updateTransaction(id, transaction)
                 .onStart {
+                    clearState()
+
                     _state.value = _state.value.copy(
                         loading = true
                     )
@@ -101,6 +113,8 @@ class TransactionDetailViewModel @Inject constructor(
         viewModelScope.launch {
             removeTransaction(id)
                 .onStart {
+                    clearState()
+
                     _state.value = _state.value.copy(
                         loading = true
                     )

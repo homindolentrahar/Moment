@@ -6,8 +6,12 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.homindolentrahar.moment.R
+import com.homindolentrahar.moment.core.util.Constants
 import com.homindolentrahar.moment.databinding.TransactionListItemBinding
 import com.homindolentrahar.moment.features.transaction.domain.model.Transaction
+import com.homindolentrahar.moment.features.transaction.domain.model.TransactionType
+import java.text.SimpleDateFormat
 import java.time.LocalDateTime
 
 class TransactionsAdapter(
@@ -19,7 +23,25 @@ class TransactionsAdapter(
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(item: Transaction) {
+            val transactionDate = SimpleDateFormat("dd MMMM yyyy").format(item.createdAt)
+
             binding.tvTransactionName.text = item.name
+            binding.tvTransactionAmount.text = "${item.amount.toInt()}"
+            when (item.type) {
+                TransactionType.INCOME -> {
+                    binding.tvTransactionAmount.setTextColor(R.color.green_fg)
+                }
+                TransactionType.EXPENSE -> {
+                    binding.tvTransactionAmount.setTextColor(R.color.red_fg)
+                }
+                else -> {
+                    binding.tvTransactionAmount.setTextColor(R.color.black)
+                }
+            }
+            binding.tvTransactionTime.text = transactionDate
+            binding.imgIcon.setImageResource(
+                Constants.categoryIcons[item.category] ?: R.drawable.categories
+            )
         }
 
         companion object {

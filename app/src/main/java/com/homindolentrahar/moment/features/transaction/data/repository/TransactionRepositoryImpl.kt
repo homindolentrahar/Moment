@@ -8,6 +8,9 @@ import com.homindolentrahar.moment.features.transaction.data.mapper.toTransactio
 import com.homindolentrahar.moment.features.transaction.data.remote.dto.TransactionDto
 import com.homindolentrahar.moment.features.transaction.domain.model.Transaction
 import com.homindolentrahar.moment.features.transaction.domain.repository.TransactionRepository
+import kotlinx.coroutines.channels.awaitClose
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 
@@ -15,6 +18,22 @@ class TransactionRepositoryImpl @Inject constructor(
     private val firestore: FirebaseFirestore,
     private val auth: FirebaseAuth
 ) : TransactionRepository {
+    override suspend fun listenAllTransactions(): Flow<List<Transaction>> = callbackFlow {
+        firestore
+            .collection(Constants.TRANSACTIONS_COLLECTION)
+            .addSnapshotListener { snapshot, exception ->
+                if (exception != null) close(exception)
+
+                val transactions = snapshot?.documents?.map { document ->
+                    TransactionDto.fromDocumentSnapshot(document.id, document.data!!)
+                }?.map { dto -> dto.toTransaction() } ?: emptyList()
+
+                trySend(transactions)
+            }
+
+        awaitClose()
+    }
+
     override suspend fun getAllTransactions(): List<Transaction> {
 //        val currentUser = auth.currentUser!!
 

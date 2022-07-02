@@ -11,6 +11,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.homindolentrahar.moment.R
+import com.homindolentrahar.moment.core.util.Resource
 import com.homindolentrahar.moment.databinding.ActivityTransactionListBinding
 import com.homindolentrahar.moment.features.transaction.domain.model.TransactionType
 import com.homindolentrahar.moment.features.transaction.presentation.TransactionsAdapter
@@ -77,7 +78,7 @@ class TransactionListActivity : AppCompatActivity() {
             }
         }
         binding.btnFilter.setOnClickListener {
-            viewModel.transactionList(
+            viewModel.listenTransactions(
                 type = if (selectedType.isEmpty()) TransactionType.ALL else TransactionType.valueOf(
                     selectedType.uppercase()
                 ),
@@ -87,58 +88,120 @@ class TransactionListActivity : AppCompatActivity() {
 
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.CREATED) {
-                viewModel.state.collect { state ->
-                    if (state.loading) {
-                        Log.d(TAG, "Loading...")
+                viewModel.uiState.collect { state ->
+                    when (state) {
+                        is Resource.Error -> {
+                            Log.d(TAG, "Error: ${state.message}")
 
-                        Toasty.custom(
-                            this@TransactionListActivity,
-                            "Loading Data",
-                            R.drawable.loading,
-                            R.color.black,
-                            Toast.LENGTH_LONG,
-                            true,
-                            true
-                        )
-                            .show()
-                    } else if (state.error.isNotBlank()) {
-                        Log.d(TAG, "Error: ${state.error}")
+                            Toasty.error(
+                                this@TransactionListActivity,
+                                state.message ?: "Unexpected error",
+                                Toast.LENGTH_LONG,
+                                true
+                            )
+                                .show()
+                        }
+                        is Resource.Loading -> {
+                            Log.d(TAG, "Loading...")
 
-                        Toasty.error(
-                            this@TransactionListActivity,
-                            state.error,
-                            Toast.LENGTH_LONG,
-                            true
-                        )
-                            .show()
-                    } else {
-                        Log.d(TAG, "Transactions: ${state.transactions.size}")
-
-                        val adapter = TransactionsAdapter { transaction ->
+                            Toasty.custom(
+                                this@TransactionListActivity,
+                                "Loading Data",
+                                R.drawable.loading,
+                                R.color.black,
+                                Toast.LENGTH_LONG,
+                                true,
+                                true
+                            )
+                                .show()
+                        }
+                        is Resource.Success -> {
+                            val adapter = TransactionsAdapter { transaction ->
 //                            Show Transaction Item
-                            modalBottomSheet.arguments = bundleOf(
-                                "type" to AddEditTransactionSheetType.EDIT
-                            )
-                            modalBottomSheet.show(
-                                supportFragmentManager,
-                                AddEditTransactionSheet.TAG
-                            )
+                                modalBottomSheet.arguments = bundleOf(
+                                    "id" to transaction.id,
+                                    "type" to AddEditTransactionSheetType.EDIT
+                                )
+                                modalBottomSheet.show(
+                                    supportFragmentManager,
+                                    AddEditTransactionSheet.TAG
+                                )
+                            }
+
+                            adapter.submitList(state.data ?: emptyList())
+
+                            state.data?.let {
+                                if (it.isNotEmpty()) {
+                                    binding.noTransactionContainer.root.visibility = View.GONE
+                                    binding.rvRecentTransaction.visibility = View.VISIBLE
+                                } else {
+                                    binding.noTransactionContainer.root.visibility = View.VISIBLE
+                                    binding.rvRecentTransaction.visibility = View.GONE
+                                }
+                            }
+
+                            binding.rvRecentTransaction.adapter = adapter
                         }
-
-                        adapter.submitList(state.transactions)
-
-                        if (state.transactions.isNotEmpty()) {
-                            binding.noTransactionContainer.root.visibility = View.GONE
-                            binding.rvRecentTransaction.visibility = View.VISIBLE
-                        } else {
-                            binding.noTransactionContainer.root.visibility = View.VISIBLE
-                            binding.rvRecentTransaction.visibility = View.GONE
-                        }
-
-                        binding.rvRecentTransaction.adapter = adapter
+                        else -> {}
                     }
                 }
             }
         }
+
+//        lifecycleScope.launch {
+//            repeatOnLifecycle(Lifecycle.State.CREATED) {
+//                viewModel.state.collect { state ->
+//                    if (state.loading) {
+//                        Log.d(TAG, "Loading...")
+//
+//                        Toasty.custom(
+//                            this@TransactionListActivity,
+//                            "Loading Data",
+//                            R.drawable.loading,
+//                            R.color.black,
+//                            Toast.LENGTH_LONG,
+//                            true,
+//                            true
+//                        )
+//                            .show()
+//                    } else if (state.error.isNotBlank()) {
+//                        Log.d(TAG, "Error: ${state.error}")
+//
+//                        Toasty.error(
+//                            this@TransactionListActivity,
+//                            state.error,
+//                            Toast.LENGTH_LONG,
+//                            true
+//                        )
+//                            .show()
+//                    } else {
+//                        Log.d(TAG, "Transactions: ${state.transactions.size}")
+//
+//                        val adapter = TransactionsAdapter { transaction ->
+////                            Show Transaction Item
+//                            modalBottomSheet.arguments = bundleOf(
+//                                "type" to AddEditTransactionSheetType.EDIT
+//                            )
+//                            modalBottomSheet.show(
+//                                supportFragmentManager,
+//                                AddEditTransactionSheet.TAG
+//                            )
+//                        }
+//
+//                        adapter.submitList(state.transactions)
+//
+//                        if (state.transactions.isNotEmpty()) {
+//                            binding.noTransactionContainer.root.visibility = View.GONE
+//                            binding.rvRecentTransaction.visibility = View.VISIBLE
+//                        } else {
+//                            binding.noTransactionContainer.root.visibility = View.VISIBLE
+//                            binding.rvRecentTransaction.visibility = View.GONE
+//                        }
+//
+//                        binding.rvRecentTransaction.adapter = adapter
+//                    }
+//                }
+//            }
+//        }
     }
 }

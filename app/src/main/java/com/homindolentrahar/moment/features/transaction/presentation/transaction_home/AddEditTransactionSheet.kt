@@ -59,7 +59,7 @@ class AddEditTransactionSheet : BottomSheetDialogFragment() {
 
                         Toasty.custom(
                             requireContext(),
-                            "Signing In",
+                            "Processing",
                             R.drawable.loading,
                             R.color.black,
                             Toast.LENGTH_LONG,
@@ -76,7 +76,7 @@ class AddEditTransactionSheet : BottomSheetDialogFragment() {
                         dismiss()
                     } else if (state.transaction != null) {
                         populateData(state.transaction)
-                    } else if (!state.loading && state.error.isNotBlank()) {
+                    } else  {
                         Log.d(TAG, "Operation success success!")
 
                         dismiss()
@@ -93,7 +93,7 @@ class AddEditTransactionSheet : BottomSheetDialogFragment() {
             .setNegativeButtonText("Cancel")
             .build()
 
-        if (type == AddEditTransactionSheetType.EDIT.name) {
+        if (type == AddEditTransactionSheetType.EDIT.value) {
             binding.textHeader.text = "Edit Transaction"
             binding.btnPrimaryAction.text = "Update"
             binding.btnDelete.visibility = View.VISIBLE
