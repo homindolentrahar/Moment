@@ -1,6 +1,8 @@
 package com.homindolentrahar.moment.features.transaction.presentation.transaction_detail
 
 import android.util.Log
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.homindolentrahar.moment.core.util.Resource
@@ -22,37 +24,28 @@ class TransactionDetailViewModel @Inject constructor(
     private val removeTransaction: RemoveTransaction
 ) : ViewModel() {
 
-    private val _uiState = MutableStateFlow<Resource<Transaction>>(Resource.Initial())
-    val uiState: StateFlow<Resource<Transaction>>
+    private val _uiState = MutableStateFlow<Resource<Unit>>(Resource.Initial())
+    val uiState: StateFlow<Resource<Unit>>
         get() = _uiState
 
-    fun getTransaction(id: String) {
-        Log.d(TransactionDetailViewModel::class.java.simpleName, "Get Transction called")
-        viewModelScope.launch {
-            getSingleTransaction(id)
-                .onStart {
-                    _uiState.value = Resource.Loading()
-                }
-                .catch { error ->
-                    _uiState.value = Resource.Error(error.message ?: "Unexpected error")
-                }
-                .collect { transaction ->
-                    _uiState.value = Resource.Success(transaction)
-                }
-        }
-    }
+    private val _state = MutableLiveData<Resource<Unit>>(Resource.Initial())
+    val state: LiveData<Resource<Unit>>
+        get() = _state
 
     fun save(transaction: Transaction) {
         viewModelScope.launch {
             saveTransaction(transaction)
                 .onStart {
                     _uiState.value = Resource.Loading()
+                    _state.value = Resource.Loading()
                 }
                 .catch { error ->
                     _uiState.value = Resource.Error(error.message ?: "Unexpected error")
+                    _state.value = Resource.Error(error.message ?: "Unexpected error")
                 }
                 .collect {
-                    _uiState.value = Resource.Success(null)
+                    _uiState.value = Resource.Success(Unit)
+                    _state.value = Resource.Success(Unit)
                 }
         }
     }
@@ -67,7 +60,7 @@ class TransactionDetailViewModel @Inject constructor(
                     _uiState.value = Resource.Error(error.message ?: "Unexpected error")
                 }
                 .collect {
-                    _uiState.value = Resource.Success(null)
+                    _uiState.value = Resource.Success(Unit)
                 }
         }
     }
@@ -82,7 +75,7 @@ class TransactionDetailViewModel @Inject constructor(
                     _uiState.value = Resource.Error(error.message ?: "Unexpected error")
                 }
                 .collect {
-                    _uiState.value = Resource.Success(null)
+                    _uiState.value = Resource.Success(Unit)
                 }
         }
     }

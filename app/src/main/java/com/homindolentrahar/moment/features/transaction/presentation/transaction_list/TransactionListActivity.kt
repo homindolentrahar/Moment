@@ -1,5 +1,6 @@
 package com.homindolentrahar.moment.features.transaction.presentation.transaction_list
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -15,6 +16,7 @@ import com.homindolentrahar.moment.core.util.Resource
 import com.homindolentrahar.moment.databinding.ActivityTransactionListBinding
 import com.homindolentrahar.moment.features.transaction.domain.model.TransactionType
 import com.homindolentrahar.moment.features.transaction.presentation.TransactionsAdapter
+import com.homindolentrahar.moment.features.transaction.presentation.transaction_detail.TransactionDetailActivity
 import com.homindolentrahar.moment.features.transaction.presentation.transaction_home.AddEditTransactionSheet
 import com.homindolentrahar.moment.features.transaction.presentation.transaction_home.AddEditTransactionSheetType
 import dagger.hilt.android.AndroidEntryPoint
@@ -27,7 +29,7 @@ class TransactionListActivity : AppCompatActivity() {
     private val viewModel: TransactionListViewModel by viewModels()
     private val TAG = TransactionListActivity::class.java.simpleName
     private var selectedCategory: String = ""
-    private var selectedType: String = TransactionType.INCOME.name
+    private var selectedType: String = TransactionType.ALL.name
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,24 +38,24 @@ class TransactionListActivity : AppCompatActivity() {
 
         setContentView(binding.root)
 
-        val modalBottomSheet = AddEditTransactionSheet()
-        val types = TransactionType.values().toList().map { it.value }
+        val types =
+            TransactionType.values().toList().map { it.value }
 
         binding.btnBack.setOnClickListener {
             finish()
         }
         binding.spinnerType.apply {
             setItems(types)
-//            selectItemByIndex(0)
+            selectItemByIndex(0)
             setOnSpinnerOutsideTouchListener { _, _ ->
                 dismiss()
             }
             setOnSpinnerItemSelectedListener<String> { _, _, newIndex, newText ->
                 val categories = when (newIndex) {
-                    0 -> {
+                    1 -> {
                         resources.getStringArray(R.array.income_categories).toList()
                     }
-                    1 -> {
+                    2 -> {
                         resources.getStringArray(R.array.expense_categories).toList()
                     }
                     else -> {
@@ -67,9 +69,6 @@ class TransactionListActivity : AppCompatActivity() {
             }
         }
         binding.spinnerCategory.apply {
-//            setItems(
-//                resources.getStringArray(R.array.income_categories).toList()
-//            )
             setOnSpinnerOutsideTouchListener { _, _ ->
                 dismiss()
             }
@@ -85,6 +84,20 @@ class TransactionListActivity : AppCompatActivity() {
                 categoryId = selectedCategory,
             )
         }
+
+        intent.getStringExtra("type")?.let { type ->
+            selectedType = type
+
+            val index = when (selectedType) {
+                TransactionType.ALL.name -> 0
+                TransactionType.INCOME.name -> 1
+                TransactionType.EXPENSE.name -> 2
+                else -> 0
+            }
+            binding.spinnerType.selectItemByIndex(index)
+        }
+
+        viewModel.listenTransactions(type = TransactionType.valueOf(selectedType.uppercase()))
 
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.CREATED) {
@@ -117,15 +130,17 @@ class TransactionListActivity : AppCompatActivity() {
                         }
                         is Resource.Success -> {
                             val adapter = TransactionsAdapter { transaction ->
-//                            Show Transaction Item
-                                modalBottomSheet.arguments = bundleOf(
-                                    "id" to transaction.id,
-                                    "type" to AddEditTransactionSheetType.EDIT
+                                val intent = Intent(
+                                    this@TransactionListActivity,
+                                    TransactionDetailActivity::class.java
                                 )
-                                modalBottomSheet.show(
-                                    supportFragmentManager,
-                                    AddEditTransactionSheet.TAG
-                                )
+
+                                intent.apply {
+                                    putExtra("data", transaction)
+                                    putExtra("type", AddEditTransactionSheetType.EDIT.value)
+                                }
+
+                                startActivity(intent)
                             }
 
                             adapter.submitList(state.data ?: emptyList())
@@ -147,61 +162,5 @@ class TransactionListActivity : AppCompatActivity() {
                 }
             }
         }
-
-//        lifecycleScope.launch {
-//            repeatOnLifecycle(Lifecycle.State.CREATED) {
-//                viewModel.state.collect { state ->
-//                    if (state.loading) {
-//                        Log.d(TAG, "Loading...")
-//
-//                        Toasty.custom(
-//                            this@TransactionListActivity,
-//                            "Loading Data",
-//                            R.drawable.loading,
-//                            R.color.black,
-//                            Toast.LENGTH_LONG,
-//                            true,
-//                            true
-//                        )
-//                            .show()
-//                    } else if (state.error.isNotBlank()) {
-//                        Log.d(TAG, "Error: ${state.error}")
-//
-//                        Toasty.error(
-//                            this@TransactionListActivity,
-//                            state.error,
-//                            Toast.LENGTH_LONG,
-//                            true
-//                        )
-//                            .show()
-//                    } else {
-//                        Log.d(TAG, "Transactions: ${state.transactions.size}")
-//
-//                        val adapter = TransactionsAdapter { transaction ->
-////                            Show Transaction Item
-//                            modalBottomSheet.arguments = bundleOf(
-//                                "type" to AddEditTransactionSheetType.EDIT
-//                            )
-//                            modalBottomSheet.show(
-//                                supportFragmentManager,
-//                                AddEditTransactionSheet.TAG
-//                            )
-//                        }
-//
-//                        adapter.submitList(state.transactions)
-//
-//                        if (state.transactions.isNotEmpty()) {
-//                            binding.noTransactionContainer.root.visibility = View.GONE
-//                            binding.rvRecentTransaction.visibility = View.VISIBLE
-//                        } else {
-//                            binding.noTransactionContainer.root.visibility = View.VISIBLE
-//                            binding.rvRecentTransaction.visibility = View.GONE
-//                        }
-//
-//                        binding.rvRecentTransaction.adapter = adapter
-//                    }
-//                }
-//            }
-//        }
     }
 }

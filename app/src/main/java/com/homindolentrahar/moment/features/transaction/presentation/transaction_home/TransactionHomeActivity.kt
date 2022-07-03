@@ -8,7 +8,6 @@ import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
-import androidx.core.os.bundleOf
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
@@ -20,6 +19,7 @@ import com.homindolentrahar.moment.core.util.Resource
 import com.homindolentrahar.moment.databinding.ActivityTransactionHomeBinding
 import com.homindolentrahar.moment.features.transaction.domain.model.TransactionType
 import com.homindolentrahar.moment.features.transaction.presentation.TransactionsAdapter
+import com.homindolentrahar.moment.features.transaction.presentation.transaction_detail.TransactionDetailActivity
 import com.homindolentrahar.moment.features.transaction.presentation.transaction_list.TransactionListActivity
 import dagger.hilt.android.AndroidEntryPoint
 import es.dmoral.toasty.Toasty
@@ -40,7 +40,6 @@ class TransactionHomeActivity : AppCompatActivity() {
 
         setContentView(binding.root)
 
-        val modalBottomSheet = AddEditTransactionSheet()
         val now = Calendar.getInstance().time
         val dateConstraint = CalendarConstraints.Builder()
             .setValidator(DateValidatorPointBackward.now())
@@ -71,18 +70,41 @@ class TransactionHomeActivity : AppCompatActivity() {
         binding.selectDate.setOnClickListener {
             datePicker.show(supportFragmentManager, "DatePicker")
         }
-
+        binding.incomeBtnContinue.setOnClickListener {
+            Intent(this, TransactionListActivity::class.java)
+                .apply {
+                    putExtra("type", TransactionType.INCOME.name)
+                }
+                .also {
+                    startActivity(it)
+                }
+        }
+        binding.outcomeBtnContinue.setOnClickListener {
+            Intent(this, TransactionListActivity::class.java)
+                .apply {
+                    putExtra("type", TransactionType.EXPENSE.name)
+                }
+                .also {
+                    startActivity(it)
+                }
+        }
         binding.tvBtnViewAllTransaction.setOnClickListener {
             val intent = Intent(this, TransactionListActivity::class.java)
 
             startActivity(intent)
         }
-
         binding.fabAdd.setOnClickListener {
-            modalBottomSheet.arguments = bundleOf(
-                "type" to AddEditTransactionSheetType.ADD.name
-            )
-            modalBottomSheet.show(supportFragmentManager, AddEditTransactionSheet.TAG)
+//            modalBottomSheet.arguments = bundleOf(
+//                "type" to AddEditTransactionSheetType.ADD.value
+//            )
+//            modalBottomSheet.show(supportFragmentManager, AddEditTransactionSheet.TAG)
+            val intent = Intent(this, TransactionDetailActivity::class.java)
+
+            intent.apply {
+                putExtra("type", AddEditTransactionSheetType.ADD.value)
+            }
+
+            startActivity(intent)
         }
 
         lifecycleScope.launch {
@@ -116,14 +138,25 @@ class TransactionHomeActivity : AppCompatActivity() {
                         }
                         is Resource.Success -> {
                             val adapter = TransactionsAdapter { transaction ->
-                                modalBottomSheet.arguments = bundleOf(
-                                    "data" to transaction,
-                                    "type" to AddEditTransactionSheetType.EDIT.value,
+                                val intent = Intent(
+                                    this@TransactionHomeActivity,
+                                    TransactionDetailActivity::class.java
                                 )
-                                modalBottomSheet.show(
-                                    supportFragmentManager,
-                                    AddEditTransactionSheet.TAG
-                                )
+
+                                intent.apply {
+                                    putExtra("data", transaction)
+                                    putExtra("type", AddEditTransactionSheetType.EDIT.value)
+                                }
+
+                                startActivity(intent)
+//                                modalBottomSheet.arguments = bundleOf(
+//                                    "data" to transaction,
+//                                    "type" to AddEditTransactionSheetType.EDIT.value,
+//                                )
+//                                modalBottomSheet.show(
+//                                    supportFragmentManager,
+//                                    AddEditTransactionSheet.TAG
+//                                )
                             }
 
                             val income =

@@ -5,7 +5,7 @@ import kotlinx.parcelize.Parcelize
 import java.util.*
 
 enum class TransactionType(val value: String) {
-    ALL(""),
+    ALL("All"),
     INCOME("Income"),
     EXPENSE("Expense")
 }

@@ -21,14 +21,6 @@ class TransactionListViewModel @Inject constructor(
     val uiState: StateFlow<Resource<List<Transaction>>>
         get() = _uiState
 
-    private val _state = MutableStateFlow(TransactionListState())
-    val state: StateFlow<TransactionListState>
-        get() = _state
-
-    init {
-        listenTransactions()
-    }
-
     fun listenTransactions(
         type: TransactionType = TransactionType.ALL,
         categoryId: String = "",
