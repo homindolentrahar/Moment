@@ -7,7 +7,6 @@ import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
-import androidx.core.os.bundleOf
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
@@ -17,10 +16,10 @@ import com.homindolentrahar.moment.databinding.ActivityTransactionListBinding
 import com.homindolentrahar.moment.features.transaction.domain.model.TransactionType
 import com.homindolentrahar.moment.features.transaction.presentation.TransactionsAdapter
 import com.homindolentrahar.moment.features.transaction.presentation.transaction_detail.TransactionDetailActivity
-import com.homindolentrahar.moment.features.transaction.presentation.transaction_home.AddEditTransactionSheet
-import com.homindolentrahar.moment.features.transaction.presentation.transaction_home.AddEditTransactionSheetType
+import com.homindolentrahar.moment.features.transaction.presentation.transaction_detail.TransactionDetailType
 import dagger.hilt.android.AndroidEntryPoint
 import es.dmoral.toasty.Toasty
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
@@ -101,7 +100,7 @@ class TransactionListActivity : AppCompatActivity() {
 
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.CREATED) {
-                viewModel.uiState.collect { state ->
+                viewModel.uiState.collectLatest { state ->
                     when (state) {
                         is Resource.Error -> {
                             Log.d(TAG, "Error: ${state.message}")
@@ -137,7 +136,7 @@ class TransactionListActivity : AppCompatActivity() {
 
                                 intent.apply {
                                     putExtra("data", transaction)
-                                    putExtra("type", AddEditTransactionSheetType.EDIT.value)
+                                    putExtra("type", TransactionDetailType.EDIT.value)
                                 }
 
                                 startActivity(intent)

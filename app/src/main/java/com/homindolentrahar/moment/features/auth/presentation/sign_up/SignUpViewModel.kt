@@ -2,6 +2,7 @@ package com.homindolentrahar.moment.features.auth.presentation.sign_up
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.homindolentrahar.moment.core.util.Resource
 import com.homindolentrahar.moment.features.auth.domain.usecase.RegisterWithEmailAndPassword
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -16,30 +17,21 @@ class SignUpViewModel @Inject constructor(
     private val registerWithEmailAndPassword: RegisterWithEmailAndPassword
 ) : ViewModel() {
 
-    private val _state = MutableStateFlow(SignUpState())
-    val state: StateFlow<SignUpState>
+    private val _state = MutableStateFlow<Resource<Unit>>(Resource.Initial())
+    val state: StateFlow<Resource<Unit>>
         get() = _state
 
     fun register(name: String, email: String, password: String) {
         viewModelScope.launch {
             registerWithEmailAndPassword(name, email, password)
                 .onStart {
-                    _state.value = _state.value.copy(
-                        loading = true,
-                        error = ""
-                    )
+                    _state.value = Resource.Loading()
                 }
                 .catch { error ->
-                    _state.value = _state.value.copy(
-                        loading = false,
-                        error = error.localizedMessage!!.toString()
-                    )
+                    _state.value = Resource.Error(error.localizedMessage ?: "Unexpected error")
                 }
                 .collect {
-                    _state.value = _state.value.copy(
-                        loading = false,
-                        error = ""
-                    )
+                    _state.value = Resource.Success(Unit)
                 }
         }
     }

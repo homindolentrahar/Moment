@@ -14,18 +14,16 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import arrow.core.None
 import arrow.core.Some
-import com.homindolentrahar.moment.MainActivity
-import com.homindolentrahar.moment.databinding.ActivitySplashBinding
+import com.homindolentrahar.moment.core.presentation.AuthViewModel
 import com.homindolentrahar.moment.features.auth.presentation.sign_in.SignInActivity
 import com.homindolentrahar.moment.features.transaction.presentation.transaction_home.TransactionHomeActivity
 import dagger.hilt.android.AndroidEntryPoint
-import dagger.hilt.android.HiltAndroidApp
 import kotlinx.coroutines.launch
 
 @SuppressLint("CustomSplashScreen")
 @AndroidEntryPoint
 class SplashActivity : AppCompatActivity() {
-    private val viewModel: SplashViewModel by viewModels()
+    private val viewModel: AuthViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
@@ -39,12 +37,11 @@ class SplashActivity : AppCompatActivity() {
 
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.CREATED) {
-                viewModel.state.collect { option ->
+                viewModel.authState.collect { option ->
                     val intent = when (option) {
                         is None -> {
                             Log.d(SplashActivity::class.java.simpleName, "Unauthenticated")
-//                            Intent(this@SplashActivity, SignInActivity::class.java)
-                            Intent(this@SplashActivity, TransactionHomeActivity::class.java)
+                            Intent(this@SplashActivity, SignInActivity::class.java)
                         }
                         is Some -> {
                             Log.d(SplashActivity::class.java.simpleName, "Authenticated")

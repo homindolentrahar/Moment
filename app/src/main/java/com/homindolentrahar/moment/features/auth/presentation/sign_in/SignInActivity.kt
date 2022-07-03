@@ -7,7 +7,6 @@ import android.os.Bundle
 import android.util.Log
 import android.util.Patterns
 import android.widget.Toast
-import androidx.activity.result.IntentSenderRequest
 import androidx.activity.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -16,8 +15,8 @@ import com.google.android.gms.auth.api.identity.BeginSignInRequest
 import com.google.android.gms.auth.api.identity.SignInClient
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.common.api.CommonStatusCodes
-import com.homindolentrahar.moment.MainActivity
 import com.homindolentrahar.moment.R
+import com.homindolentrahar.moment.core.util.Resource
 import com.homindolentrahar.moment.databinding.ActivitySignInBinding
 import com.homindolentrahar.moment.features.auth.presentation.forgot_password.ForgotPasswordActivity
 import com.homindolentrahar.moment.features.auth.presentation.sign_up.SignUpActivity
@@ -27,7 +26,6 @@ import dagger.hilt.android.AndroidEntryPoint
 import es.dmoral.toasty.Toasty
 import kotlinx.coroutines.launch
 import javax.inject.Inject
-import kotlin.time.Duration
 
 @AndroidEntryPoint
 class SignInActivity : AppCompatActivity() {
@@ -70,34 +68,38 @@ class SignInActivity : AppCompatActivity() {
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.state.collect { state ->
-                    if (state.loading) {
-                        Log.d(TAG, "Loading...")
-
-                        Toasty.custom(
-                            this@SignInActivity,
-                            "Signing In",
-                            R.drawable.loading,
-                            R.color.black,
-                            Toast.LENGTH_LONG,
-                            true,
-                            true
-                        )
-                            .show()
-                    } else if (state.error.isNotBlank()) {
-                        Log.d(TAG, "Error: ${state.error}")
-
-                        Toasty.error(this@SignInActivity, "Login Failed", Toast.LENGTH_LONG, true)
-                            .show()
-                    } else if (!state.loading && state.error.isNotBlank()) {
-                        Log.d(TAG, "Login success!")
-
-                        startActivity(
-                            Intent(
+                    when (state) {
+                        is Resource.Error -> {
+                            Toasty.error(
                                 this@SignInActivity,
-                                TransactionHomeActivity::class.java
+                                "Login Failed",
+                                Toast.LENGTH_LONG,
+                                true
                             )
-                        )
-                        finish()
+                                .show()
+                        }
+                        is Resource.Loading -> {
+                            Toasty.custom(
+                                this@SignInActivity,
+                                "Signing In",
+                                R.drawable.loading,
+                                R.color.black,
+                                Toast.LENGTH_LONG,
+                                true,
+                                true
+                            )
+                                .show()
+                        }
+                        is Resource.Success -> {
+                            startActivity(
+                                Intent(
+                                    this@SignInActivity,
+                                    TransactionHomeActivity::class.java
+                                )
+                            )
+                            finish()
+                        }
+                        else -> {}
                     }
                 }
             }

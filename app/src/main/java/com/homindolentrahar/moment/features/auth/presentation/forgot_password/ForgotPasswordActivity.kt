@@ -10,6 +10,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.homindolentrahar.moment.R
+import com.homindolentrahar.moment.core.util.Resource
 import com.homindolentrahar.moment.databinding.ActivityForgotPasswordBinding
 import dagger.hilt.android.AndroidEntryPoint
 import dagger.hilt.android.HiltAndroidApp
@@ -41,38 +42,37 @@ class ForgotPasswordActivity : AppCompatActivity() {
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.CREATED) {
                 viewModel.state.collect { state ->
-                    if (state.loading) {
-                        Log.d(TAG, "Loading...")
-
-                        Toasty.custom(
-                            this@ForgotPasswordActivity,
-                            "Sending Reset Email",
-                            R.drawable.loading,
-                            R.color.black,
-                            Toast.LENGTH_LONG,
-                            true,
-                            true
-                        )
-                            .show()
-                    } else if (state.error.isNotBlank()) {
-                        Log.d(TAG, "Error: ${state.error}")
-
-                        Toasty.error(
-                            this@ForgotPasswordActivity,
-                            "Failed to send reset password email",
-                            Toast.LENGTH_LONG,
-                            true
-                        )
-                            .show()
-                    } else {
-                        Log.d(TAG, "Email sent")
-
-                        Toasty.success(
-                            this@ForgotPasswordActivity,
-                            "Reset Password has been sent to your email",
-                            Toast.LENGTH_LONG,
-                            true
-                        )
+                    when (state) {
+                        is Resource.Error -> {
+                            Toasty.error(
+                                this@ForgotPasswordActivity,
+                                "Failed to send reset password email",
+                                Toast.LENGTH_LONG,
+                                true
+                            )
+                                .show()
+                        }
+                        is Resource.Loading -> {
+                            Toasty.custom(
+                                this@ForgotPasswordActivity,
+                                "Sending Reset Email",
+                                R.drawable.loading,
+                                R.color.black,
+                                Toast.LENGTH_LONG,
+                                true,
+                                true
+                            )
+                                .show()
+                        }
+                        is Resource.Success -> {
+                            Toasty.success(
+                                this@ForgotPasswordActivity,
+                                "Reset Password has been sent to your email",
+                                Toast.LENGTH_LONG,
+                                true
+                            )
+                        }
+                        else -> {}
                     }
                 }
             }

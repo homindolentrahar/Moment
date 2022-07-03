@@ -9,7 +9,6 @@ import com.homindolentrahar.moment.features.transaction.data.mapper.toTransactio
 import com.homindolentrahar.moment.features.transaction.data.remote.dto.TransactionDto
 import com.homindolentrahar.moment.features.transaction.domain.model.Transaction
 import com.homindolentrahar.moment.features.transaction.domain.repository.TransactionRepository
-import com.homindolentrahar.moment.features.transaction.domain.usecase.ListenMonthlyTransactions
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
@@ -21,8 +20,12 @@ class TransactionRepositoryImpl @Inject constructor(
     private val auth: FirebaseAuth
 ) : TransactionRepository {
     override suspend fun listenAllTransactions(): Flow<List<Transaction>> = callbackFlow {
+        val currentUser = auth.currentUser!!
+
         firestore
             .collection(Constants.TRANSACTIONS_COLLECTION)
+            .document(currentUser.uid)
+            .collection(Constants.DATA_COLLECTION)
             .addSnapshotListener { snapshot, exception ->
                 if (exception != null) close(exception)
 
@@ -41,29 +44,13 @@ class TransactionRepositoryImpl @Inject constructor(
         awaitClose()
     }
 
-    override suspend fun getAllTransactions(): List<Transaction> {
-//        val currentUser = auth.currentUser!!
-
-        val querySnapshot = firestore
-            .collection(Constants.TRANSACTIONS_COLLECTION)
-//            .document(currentUser.uid)
-//            .collection(Constants.DATA_COLLECTION)
-            .get()
-            .await()
-        val transactions = querySnapshot.map { query ->
-            TransactionDto.fromDocumentSnapshot(query.id, query.data)
-        }
-
-        return transactions.map { tr -> tr.toTransaction() }
-    }
-
     override suspend fun getSingleTransaction(id: String): Transaction {
-//        val currentUser = auth.currentUser!!
+        val currentUser = auth.currentUser!!
 
         val documentSnapshot = firestore
             .collection(Constants.TRANSACTIONS_COLLECTION)
-//            .document(currentUser.uid)
-//            .collection(Constants.DATA_COLLECTION)
+            .document(currentUser.uid)
+            .collection(Constants.DATA_COLLECTION)
             .document(id)
             .get()
             .await()
@@ -74,13 +61,13 @@ class TransactionRepositoryImpl @Inject constructor(
     }
 
     override suspend fun addTransaction(transaction: Transaction) {
-//        val currentUser = auth.currentUser!!
+        val currentUser = auth.currentUser!!
         val transactionDto = TransactionDto.fromTransaction(transaction)
 
         firestore
             .collection(Constants.TRANSACTIONS_COLLECTION)
-//            .document(currentUser.uid)
-//            .collection(Constants.DATA_COLLECTION)
+            .document(currentUser.uid)
+            .collection(Constants.DATA_COLLECTION)
             .add(transactionDto.toDocumentSnapshot())
             .await()
     }
@@ -89,25 +76,25 @@ class TransactionRepositoryImpl @Inject constructor(
         id: String,
         transaction: Transaction
     ) {
-//        val currentUser = auth.currentUser!!
+        val currentUser = auth.currentUser!!
         val transactionDto = TransactionDto.fromTransaction(transaction)
 
         firestore
             .collection(Constants.TRANSACTIONS_COLLECTION)
-//            .document(currentUser.uid)
-//            .collection(Constants.DATA_COLLECTION)
+            .document(currentUser.uid)
+            .collection(Constants.DATA_COLLECTION)
             .document(id)
             .update(transactionDto.toDocumentSnapshot())
             .await()
     }
 
     override suspend fun deleteTransaction(id: String) {
-//        val currentUser = auth.currentUser!!
+        val currentUser = auth.currentUser!!
 
         firestore
             .collection(Constants.TRANSACTIONS_COLLECTION)
-//            .document(currentUser.uid)
-//            .collection(Constants.DATA_COLLECTION)
+            .document(currentUser.uid)
+            .collection(Constants.DATA_COLLECTION)
             .document(id)
             .delete()
             .await()

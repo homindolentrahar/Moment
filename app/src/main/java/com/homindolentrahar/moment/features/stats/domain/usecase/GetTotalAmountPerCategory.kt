@@ -12,24 +12,24 @@ class GetTotalAmountPerCategory @Inject constructor(
     private val repository: TransactionRepository,
 ) {
 
-    suspend operator fun invoke(
-        date: Date,
-        type: TransactionType
-    ): Flow<List<Map<String, Any>>> =
-        flow {
-            val perCategory = repository.getAllTransactions()
-                .filter { it.createdAt.month == date.month }
-                .filter { it.type == type }
-                .groupBy { it.category }
-                .map { entry ->
-                    mapOf(
-                        "category" to entry.key,
-                        "total" to entry.value.sumOf { it.amount }
-                    )
-                }
-
-
-            emit(perCategory)
-        }
+//    suspend operator fun invoke(
+//        date: Date,
+//        type: TransactionType
+//    ): Flow<List<Map<String, Any>>> =
+//        flow {
+//            val perCategory = repository.getAllTransactions()
+//                .filter { it.createdAt.month == date.month }
+//                .filter { it.type == type }
+//                .groupBy { it.category }
+//                .map { entry ->
+//                    mapOf(
+//                        "category" to entry.key,
+//                        "total" to entry.value.sumOf { it.amount }
+//                    )
+//                }
+//
+//
+//            emit(perCategory)
+//        }
 
 }

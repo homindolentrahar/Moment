@@ -17,13 +17,15 @@ import com.homindolentrahar.moment.core.util.Resource
 import com.homindolentrahar.moment.databinding.ActivityTransactionDetailBinding
 import com.homindolentrahar.moment.features.transaction.domain.model.Transaction
 import com.homindolentrahar.moment.features.transaction.domain.model.TransactionType
-import com.homindolentrahar.moment.features.transaction.presentation.transaction_home.AddEditTransactionSheet
-import com.homindolentrahar.moment.features.transaction.presentation.transaction_home.AddEditTransactionSheetType
 import dagger.hilt.android.AndroidEntryPoint
 import es.dmoral.toasty.Toasty
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.*
+
+enum class TransactionDetailType(val value: String) {
+    ADD("Add"), EDIT("Edit")
+}
 
 @AndroidEntryPoint
 class TransactionDetailActivity : AppCompatActivity() {
@@ -97,7 +99,7 @@ class TransactionDetailActivity : AppCompatActivity() {
         }
         binding.pickDate.setOnClickListener {
             datePicker
-                .show(supportFragmentManager, AddEditTransactionSheet::class.java.simpleName)
+                .show(supportFragmentManager, TransactionDetailActivity::class.java.simpleName)
         }
         binding.btnDelete.setOnClickListener {
             data?.let {
@@ -131,7 +133,7 @@ class TransactionDetailActivity : AppCompatActivity() {
             }
 
             if (name.isNotEmpty() && amount > 0 && selectedCategory.isNotEmpty() && pickedDate.isNotEmpty()) {
-                if (type == AddEditTransactionSheetType.ADD.value) {
+                if (type == TransactionDetailType.ADD.value) {
                     val transaction = Transaction(
                         name = name,
                         desc = desc,
@@ -161,13 +163,13 @@ class TransactionDetailActivity : AppCompatActivity() {
             }
         }
 
-        if (type == AddEditTransactionSheetType.EDIT.value) {
+        if (type == TransactionDetailType.EDIT.value) {
             binding.textHeader.text = "Edit Transaction"
             binding.btnPrimaryAction.text = "Update"
             binding.btnDelete.visibility = View.VISIBLE
 
             data?.let {
-                Log.d(AddEditTransactionSheet.TAG, it.toString())
+                Log.d(TransactionDetailActivity::class.java.simpleName, it.toString())
 
                 populateData(it)
             }

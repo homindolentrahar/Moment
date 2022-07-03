@@ -50,6 +50,7 @@
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 android:layout_alignParentEnd="true"
+                android:src="@color/primary"
                 tools:src="@color/primary" />
 
         </RelativeLayout>
@@ -84,7 +85,7 @@
         </RelativeLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/income_outcome_summary"
+            android:id="@+id/income_expense_summary"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/spacing_xl"
@@ -99,7 +100,7 @@
                 android:paddingHorizontal="@dimen/spacing_s"
                 android:paddingVertical="@dimen/spacing_m"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@id/outcome_container"
+                app:layout_constraintEnd_toStartOf="@id/expense_container"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
@@ -157,7 +158,7 @@
             </RelativeLayout>
 
             <RelativeLayout
-                android:id="@+id/outcome_container"
+                android:id="@+id/expense_container"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/spacing_s"
@@ -170,12 +171,12 @@
                 app:layout_constraintTop_toTopOf="parent">
 
                 <RelativeLayout
-                    android:id="@+id/outcome_container_left"
+                    android:id="@+id/expense_container_left"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content">
 
                     <LinearLayout
-                        android:id="@+id/outcome_container_left_top"
+                        android:id="@+id/expense_container_left_top"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal">
@@ -186,12 +187,12 @@
                             android:src="@drawable/outcome" />
 
                         <TextView
-                            android:id="@+id/text_outcome"
+                            android:id="@+id/text_expense"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="@dimen/spacing_s"
                             android:fontFamily="@font/inter_medium"
-                            android:text="Outcome"
+                            android:text="Expense"
                             android:textColor="@color/red_fg"
                             android:textSize="12sp" />
 
@@ -199,10 +200,10 @@
 
 
                     <TextView
-                        android:id="@+id/tv_outcome"
+                        android:id="@+id/tv_expense"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_below="@id/outcome_container_left_top"
+                        android:layout_below="@id/expense_container_left_top"
                         android:layout_marginTop="@dimen/spacing_s"
                         android:fontFamily="@font/inter_bold"
                         android:textColor="@color/black"
@@ -212,10 +213,10 @@
                 </RelativeLayout>
 
                 <ImageButton
-                    android:id="@+id/outcome_btn_continue"
+                    android:id="@+id/expense_btn_continue"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignEnd="@id/outcome_container_left"
+                    android:layout_alignEnd="@id/expense_container_left"
                     android:layout_centerVertical="true"
                     android:background="@drawable/btn_back_bg"
                     android:src="@drawable/proceed" />
@@ -232,7 +233,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/income_outcome_summary">
+            app:layout_constraintTop_toBottomOf="@id/income_expense_summary">
 
             <RelativeLayout
                 android:id="@+id/transaction_header"

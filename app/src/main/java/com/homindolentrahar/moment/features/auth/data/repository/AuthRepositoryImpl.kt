@@ -72,12 +72,7 @@ class AuthRepositoryImpl @Inject constructor(
     }
 
     override suspend fun signOut() {
-        auth.currentUser?.apply {
-            delete().await()
-
-            auth.signOut()
-
-        }
+        auth.signOut()
     }
 
     override fun getCurrentUser(): Option<AuthUser> {

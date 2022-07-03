@@ -3,21 +3,19 @@ package com.homindolentrahar.moment.features.auth.presentation.sign_up
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.util.Patterns
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import com.homindolentrahar.moment.MainActivity
 import com.homindolentrahar.moment.R
+import com.homindolentrahar.moment.core.util.Resource
 import com.homindolentrahar.moment.databinding.ActivitySignUpBinding
 import com.homindolentrahar.moment.features.auth.presentation.sign_in.SignInActivity
 import com.homindolentrahar.moment.features.auth.util.RegexPattern
 import com.homindolentrahar.moment.features.transaction.presentation.transaction_home.TransactionHomeActivity
 import dagger.hilt.android.AndroidEntryPoint
-import dagger.hilt.android.HiltAndroidApp
 import es.dmoral.toasty.Toasty
 import kotlinx.coroutines.launch
 
@@ -46,39 +44,38 @@ class SignUpActivity : AppCompatActivity() {
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.state.collect { state ->
-                    if (state.loading) {
-                        Log.d(TAG, "Loading...")
-
-                        Toasty.custom(
-                            this@SignUpActivity,
-                            "Registering User",
-                            R.drawable.loading,
-                            R.color.black,
-                            Toast.LENGTH_LONG,
-                            true,
-                            true
-                        )
-                            .show()
-                    } else if (state.error.isNotBlank()) {
-                        Log.d(TAG, "Error: ${state.error}")
-
-                        Toasty.error(
-                            this@SignUpActivity,
-                            "Sign Up Failed",
-                            Toast.LENGTH_LONG,
-                            true
-                        )
-                            .show()
-                    } else {
-                        Log.d(TAG, "Sign Up success!")
-
-                        startActivity(
-                            Intent(
+                    when (state) {
+                        is Resource.Error -> {
+                            Toasty.error(
                                 this@SignUpActivity,
-                                TransactionHomeActivity::class.java
+                                "Sign Up Failed",
+                                Toast.LENGTH_LONG,
+                                true
                             )
-                        )
-                        finish()
+                                .show()
+                        }
+                        is Resource.Loading -> {
+                            Toasty.custom(
+                                this@SignUpActivity,
+                                "Registering User",
+                                R.drawable.loading,
+                                R.color.black,
+                                Toast.LENGTH_LONG,
+                                true,
+                                true
+                            )
+                                .show()
+                        }
+                        is Resource.Success -> {
+                            startActivity(
+                                Intent(
+                                    this@SignUpActivity,
+                                    TransactionHomeActivity::class.java
+                                )
+                            )
+                            finish()
+                        }
+                        else -> {}
                     }
                 }
             }
