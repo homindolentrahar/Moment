@@ -27,10 +27,10 @@ data class TransactionDto(
             )
         }
 
-        fun fromDocumentSnapshot(id: String, data: Map<String, Any>): TransactionDto {
+        fun fromDocumentSnapshot(id: String, data: Map<String, Any>?): TransactionDto {
             return TransactionDto(
                 id = id,
-                name = data["name"] as String,
+                name = data?.get("name") as String,
                 desc = data["desc"] as String,
                 type = data["type"] as String,
                 amount = data["amount"] as Double,

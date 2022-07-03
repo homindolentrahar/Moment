@@ -133,6 +133,7 @@
                     android:hint="Name"
                     android:inputType="text"
                     android:padding="@dimen/spacing"
+                    android:saveEnabled="false"
                     android:textColor="@color/black"
                     android:textColorHint="@color/gray"
                     android:textSize="12sp" />
@@ -164,6 +165,7 @@
                     android:hint="Description"
                     android:inputType="text"
                     android:padding="@dimen/spacing"
+                    android:saveEnabled="false"
                     android:textColor="@color/black"
                     android:textSize="12sp" />
 
@@ -204,6 +206,7 @@
                         android:hint="Amount"
                         android:inputType="number"
                         android:padding="@dimen/spacing"
+                        android:saveEnabled="false"
                         android:textColor="@color/black"
                         android:textSize="12sp" />
 

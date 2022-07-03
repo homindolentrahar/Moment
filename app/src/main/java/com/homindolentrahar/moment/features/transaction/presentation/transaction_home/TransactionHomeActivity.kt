@@ -18,6 +18,7 @@ import com.google.android.material.datepicker.MaterialDatePicker
 import com.homindolentrahar.moment.R
 import com.homindolentrahar.moment.core.util.Resource
 import com.homindolentrahar.moment.databinding.ActivityTransactionHomeBinding
+import com.homindolentrahar.moment.features.transaction.domain.model.TransactionType
 import com.homindolentrahar.moment.features.transaction.presentation.TransactionsAdapter
 import com.homindolentrahar.moment.features.transaction.presentation.transaction_list.TransactionListActivity
 import dagger.hilt.android.AndroidEntryPoint
@@ -66,7 +67,6 @@ class TransactionHomeActivity : AppCompatActivity() {
             }
         }
 
-//        Populate initial data
         binding.tvMonth.text = formattedNow
         binding.selectDate.setOnClickListener {
             datePicker.show(supportFragmentManager, "DatePicker")
@@ -79,7 +79,6 @@ class TransactionHomeActivity : AppCompatActivity() {
         }
 
         binding.fabAdd.setOnClickListener {
-//            Show add transaction bottom sheet
             modalBottomSheet.arguments = bundleOf(
                 "type" to AddEditTransactionSheetType.ADD.name
             )
@@ -117,9 +116,8 @@ class TransactionHomeActivity : AppCompatActivity() {
                         }
                         is Resource.Success -> {
                             val adapter = TransactionsAdapter { transaction ->
-//                            Show Transaction Item
                                 modalBottomSheet.arguments = bundleOf(
-                                    "id" to transaction.id,
+                                    "data" to transaction,
                                     "type" to AddEditTransactionSheetType.EDIT.value,
                                 )
                                 modalBottomSheet.show(
@@ -128,23 +126,28 @@ class TransactionHomeActivity : AppCompatActivity() {
                                 )
                             }
 
-                            val balance = state.data?.transactions?.sumOf { it.amount } ?: 0
-                            val income = CompactDecimalFormat.getInstance(
+                            val income =
+                                (state.data?.filter { it.type == TransactionType.INCOME }
+                                    ?.sumOf { it.amount } ?: 0).toDouble()
+                            val outcome =
+                                (state.data?.filter { it.type == TransactionType.EXPENSE }
+                                    ?.sumOf { it.amount } ?: 0).toDouble()
+                            val incomeText = CompactDecimalFormat.getInstance(
                                 Locale.US,
                                 CompactDecimalFormat.CompactStyle.SHORT
                             )
-                                .format(state.data?.income?.sumOf { it.amount } ?: 0)
-                                .toString()
-                            val outcome = CompactDecimalFormat.getInstance(
+                                .format(income)
+                            val outcomeText = CompactDecimalFormat.getInstance(
                                 Locale.US,
                                 CompactDecimalFormat.CompactStyle.SHORT
                             )
-                                .format(state.data?.expense?.sumOf { it.amount } ?: 0)
-                                .toString()
+                                .format(outcome)
+                            val balance = CompactDecimalFormat.getInstance()
+                                .format(income - outcome)
 
-                            adapter.submitList(state.data?.transactions ?: emptyList())
+                            adapter.submitList(state.data ?: emptyList())
 
-                            state.data?.transactions?.let {
+                            state.data?.let {
                                 if (it.isNotEmpty()) {
                                     binding.noTransactionContainer.root.visibility = View.GONE
                                     binding.rvRecentTransaction.visibility = View.VISIBLE
@@ -154,9 +157,9 @@ class TransactionHomeActivity : AppCompatActivity() {
                                 }
                             }
 
-                            binding.tvBalance.text = "Rp ${balance.toInt()}"
-                            binding.tvIncome.text = income
-                            binding.tvOutcome.text = outcome
+                            binding.tvBalance.text = "Rp $balance"
+                            binding.tvIncome.text = incomeText
+                            binding.tvOutcome.text = outcomeText
                             binding.rvRecentTransaction.adapter = adapter
                         }
                         else -> {}
@@ -164,79 +167,5 @@ class TransactionHomeActivity : AppCompatActivity() {
                 }
             }
         }
-
-//        lifecycleScope.launch {
-//            repeatOnLifecycle(Lifecycle.State.CREATED) {
-//                viewModel.state.collect { state ->
-//                    if (state.loading) {
-//                        Log.d(TAG, "Loading")
-//
-//                        Toasty.custom(
-//                            this@TransactionHomeActivity,
-//                            "Loading Data",
-//                            R.drawable.loading,
-//                            R.color.black,
-//                            Toast.LENGTH_LONG,
-//                            true,
-//                            true
-//                        )
-//                            .show()
-//                    } else if (state.error.isNotEmpty()) {
-//                        Log.d(TAG, "Error: ${state.error}")
-//
-//                        Toasty.error(
-//                            this@TransactionHomeActivity,
-//                            state.error,
-//                            Toast.LENGTH_LONG,
-//                            true
-//                        )
-//                            .show()
-//                    } else {
-//                        Log.d(TAG, "Transactions: ${state.transactions.size}")
-//
-//                        val adapter = TransactionsAdapter { transaction ->
-////                            Show Transaction Item
-//                            modalBottomSheet.arguments = bundleOf(
-//                                "id" to transaction.id,
-//                                "type" to AddEditTransactionSheetType.EDIT.value,
-//                            )
-//                            modalBottomSheet.show(
-//                                supportFragmentManager,
-//                                AddEditTransactionSheet.TAG
-//                            )
-//                        }
-//
-//                        val balance = state.transactions.sumOf { it.amount }
-//                        val income = CompactDecimalFormat.getInstance(
-//                            Locale.US,
-//                            CompactDecimalFormat.CompactStyle.SHORT
-//                        )
-//                            .format(state.income.sumOf { it.amount })
-//                            .toString()
-//                        val outcome = CompactDecimalFormat.getInstance(
-//                            Locale.US,
-//                            CompactDecimalFormat.CompactStyle.SHORT
-//                        )
-//                            .format(state.expenses.sumOf { it.amount })
-//                            .toString()
-//
-//                        adapter.submitList(state.transactions)
-//
-//                        if (state.transactions.isNotEmpty()) {
-//                            binding.noTransactionContainer.root.visibility = View.GONE
-//                            binding.rvRecentTransaction.visibility = View.VISIBLE
-//                        } else {
-//                            binding.noTransactionContainer.root.visibility = View.VISIBLE
-//                            binding.rvRecentTransaction.visibility = View.GONE
-//                        }
-//
-//                        binding.tvBalance.text = "Rp ${balance.toInt()}"
-//                        binding.tvIncome.text = income
-//                        binding.tvOutcome.text = outcome
-//                        binding.rvRecentTransaction.adapter = adapter
-//                    }
-//                }
-//            }
-//        }
     }
 }

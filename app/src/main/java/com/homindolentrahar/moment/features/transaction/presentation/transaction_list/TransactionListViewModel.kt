@@ -14,7 +14,6 @@ import javax.inject.Inject
 
 @HiltViewModel
 class TransactionListViewModel @Inject constructor(
-    private val getTransactionList: GetTransactionList,
     private val listenTransactionList: ListenTransactionList
 ) : ViewModel() {
 
@@ -27,7 +26,6 @@ class TransactionListViewModel @Inject constructor(
         get() = _state
 
     init {
-//        transactionList()
         listenTransactions()
     }
 
@@ -40,56 +38,12 @@ class TransactionListViewModel @Inject constructor(
             listenTransactionList(type, categoryId, date)
                 .onStart {
                     _uiState.value = Resource.Loading()
-//                    _state.value = _state.value.copy(
-//                        loading = true
-//                    )
                 }
                 .catch { error ->
                     _uiState.value = Resource.Error(error.localizedMessage ?: "Unexpected error")
-//                    _state.value = _state.value.copy(
-//                        error = error.localizedMessage?.toString() ?: "Unexpected error",
-//                        loading = false
-//                    )
                 }
                 .collect { transactions ->
                     _uiState.value = Resource.Success(transactions)
-//                    _state.value = _state.value.copy(
-//                        error = "",
-//                        transactions = transactions,
-//                        loading = false,
-//                    )
-                }
-        }
-    }
-
-    fun transactionList(
-        type: TransactionType = TransactionType.ALL,
-        categoryId: String = "",
-        date: Date = Calendar.getInstance().time,
-    ) {
-        viewModelScope.launch {
-            getTransactionList(
-                type,
-                categoryId,
-                date,
-            )
-                .onStart {
-                    _state.value = _state.value.copy(
-                        loading = true
-                    )
-                }
-                .catch { error ->
-                    _state.value = _state.value.copy(
-                        error = error.localizedMessage?.toString() ?: "Unexpected error",
-                        loading = false
-                    )
-                }
-                .collect { transactions ->
-                    _state.value = _state.value.copy(
-                        error = "",
-                        transactions = transactions,
-                        loading = false,
-                    )
                 }
         }
     }

@@ -1,17 +1,16 @@
 package com.homindolentrahar.moment.features.transaction.presentation.transaction_detail
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.homindolentrahar.moment.core.util.Resource
 import com.homindolentrahar.moment.features.transaction.domain.model.Transaction
 import com.homindolentrahar.moment.features.transaction.domain.usecase.RemoveTransaction
 import com.homindolentrahar.moment.features.transaction.domain.usecase.UpdateTransaction
 import com.homindolentrahar.moment.features.transaction.domain.usecase.GetSingleTransaction
 import com.homindolentrahar.moment.features.transaction.domain.usecase.SaveTransaction
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.onStart
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -23,38 +22,22 @@ class TransactionDetailViewModel @Inject constructor(
     private val removeTransaction: RemoveTransaction
 ) : ViewModel() {
 
-    private val _state = MutableStateFlow(TransactionDetailState())
-    val state: StateFlow<TransactionDetailState>
-        get() = _state
+    private val _uiState = MutableStateFlow<Resource<Transaction>>(Resource.Initial())
+    val uiState: StateFlow<Resource<Transaction>>
+        get() = _uiState
 
-    fun clearState() {
-        _state.value = _state.value.copy(
-            error = "",
-            loading = false,
-            transaction = null
-        )
-    }
-
-    fun singleTransaction(id: String) {
+    fun getTransaction(id: String) {
+        Log.d(TransactionDetailViewModel::class.java.simpleName, "Get Transction called")
         viewModelScope.launch {
             getSingleTransaction(id)
                 .onStart {
-                    _state.value = _state.value.copy(
-                        loading = true
-                    )
+                    _uiState.value = Resource.Loading()
                 }
                 .catch { error ->
-                    _state.value = _state.value.copy(
-                        error = error.localizedMessage!!.toString(),
-                        loading = false
-                    )
+                    _uiState.value = Resource.Error(error.message ?: "Unexpected error")
                 }
                 .collect { transaction ->
-                    _state.value = _state.value.copy(
-                        error = "",
-                        transaction = transaction,
-                        loading = false,
-                    )
+                    _uiState.value = Resource.Success(transaction)
                 }
         }
     }
@@ -63,23 +46,13 @@ class TransactionDetailViewModel @Inject constructor(
         viewModelScope.launch {
             saveTransaction(transaction)
                 .onStart {
-                    clearState()
-
-                    _state.value = _state.value.copy(
-                        loading = true
-                    )
+                    _uiState.value = Resource.Loading()
                 }
                 .catch { error ->
-                    _state.value = _state.value.copy(
-                        error = error.localizedMessage!!.toString(),
-                        loading = false
-                    )
+                    _uiState.value = Resource.Error(error.message ?: "Unexpected error")
                 }
                 .collect {
-                    _state.value = _state.value.copy(
-                        error = "",
-                        loading = false,
-                    )
+                    _uiState.value = Resource.Success(null)
                 }
         }
     }
@@ -88,23 +61,13 @@ class TransactionDetailViewModel @Inject constructor(
         viewModelScope.launch {
             updateTransaction(id, transaction)
                 .onStart {
-                    clearState()
-
-                    _state.value = _state.value.copy(
-                        loading = true
-                    )
+                    _uiState.value = Resource.Loading()
                 }
                 .catch { error ->
-                    _state.value = _state.value.copy(
-                        error = error.localizedMessage!!.toString(),
-                        loading = false
-                    )
+                    _uiState.value = Resource.Error(error.message ?: "Unexpected error")
                 }
                 .collect {
-                    _state.value = _state.value.copy(
-                        error = "",
-                        loading = false,
-                    )
+                    _uiState.value = Resource.Success(null)
                 }
         }
     }
@@ -113,23 +76,13 @@ class TransactionDetailViewModel @Inject constructor(
         viewModelScope.launch {
             removeTransaction(id)
                 .onStart {
-                    clearState()
-
-                    _state.value = _state.value.copy(
-                        loading = true
-                    )
+                    _uiState.value = Resource.Loading()
                 }
                 .catch { error ->
-                    _state.value = _state.value.copy(
-                        error = error.localizedMessage!!.toString(),
-                        loading = false
-                    )
+                    _uiState.value = Resource.Error(error.message ?: "Unexpected error")
                 }
                 .collect {
-                    _state.value = _state.value.copy(
-                        error = "",
-                        loading = false,
-                    )
+                    _uiState.value = Resource.Success(null)
                 }
         }
     }

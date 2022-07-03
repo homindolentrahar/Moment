@@ -1,5 +1,6 @@
 package com.homindolentrahar.moment.features.transaction.data.repository
 
+import android.util.Log
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.homindolentrahar.moment.core.util.Constants
@@ -8,6 +9,7 @@ import com.homindolentrahar.moment.features.transaction.data.mapper.toTransactio
 import com.homindolentrahar.moment.features.transaction.data.remote.dto.TransactionDto
 import com.homindolentrahar.moment.features.transaction.domain.model.Transaction
 import com.homindolentrahar.moment.features.transaction.domain.repository.TransactionRepository
+import com.homindolentrahar.moment.features.transaction.domain.usecase.ListenMonthlyTransactions
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
@@ -27,6 +29,11 @@ class TransactionRepositoryImpl @Inject constructor(
                 val transactions = snapshot?.documents?.map { document ->
                     TransactionDto.fromDocumentSnapshot(document.id, document.data!!)
                 }?.map { dto -> dto.toTransaction() } ?: emptyList()
+
+                Log.d(
+                    TransactionRepositoryImpl::class.java.simpleName,
+                    "Data: ${transactions.map { it.id }}, ${transactions.map { it.type }}"
+                )
 
                 trySend(transactions)
             }
@@ -50,7 +57,7 @@ class TransactionRepositoryImpl @Inject constructor(
         return transactions.map { tr -> tr.toTransaction() }
     }
 
-    override suspend fun getSingleTransaction(id: String): Transaction? {
+    override suspend fun getSingleTransaction(id: String): Transaction {
 //        val currentUser = auth.currentUser!!
 
         val documentSnapshot = firestore
@@ -60,9 +67,10 @@ class TransactionRepositoryImpl @Inject constructor(
             .document(id)
             .get()
             .await()
-        val transaction = documentSnapshot.toObject(TransactionDto::class.java)
+        val transaction =
+            TransactionDto.fromDocumentSnapshot(documentSnapshot.id, documentSnapshot.data)
 
-        return transaction?.toTransaction()
+        return transaction.toTransaction()
     }
 
     override suspend fun addTransaction(transaction: Transaction) {

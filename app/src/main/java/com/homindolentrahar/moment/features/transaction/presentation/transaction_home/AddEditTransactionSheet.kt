@@ -11,8 +11,11 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import com.google.android.material.datepicker.CalendarConstraints
+import com.google.android.material.datepicker.DateValidatorPointBackward
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.homindolentrahar.moment.R
+import com.homindolentrahar.moment.core.util.Resource
 import com.homindolentrahar.moment.databinding.AddEditTransactionSheetBinding
 import com.homindolentrahar.moment.features.transaction.domain.model.Transaction
 import com.homindolentrahar.moment.features.transaction.domain.model.TransactionType
@@ -51,59 +54,21 @@ class AddEditTransactionSheet : BottomSheetDialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.RESUMED) {
-                viewModel.state.collect { state ->
-                    if (state.loading) {
-                        Log.d(TAG, "Loading...")
-
-                        Toasty.custom(
-                            requireContext(),
-                            "Processing",
-                            R.drawable.loading,
-                            R.color.black,
-                            Toast.LENGTH_LONG,
-                            true,
-                            true
-                        )
-                            .show()
-                    } else if (state.error.isNotBlank()) {
-                        Log.d(TAG, "Error: ${state.error}")
-
-                        Toasty.error(requireContext(), state.error, Toast.LENGTH_LONG, true)
-                            .show()
-
-                        dismiss()
-                    } else if (state.transaction != null) {
-                        populateData(state.transaction)
-                    } else  {
-                        Log.d(TAG, "Operation success success!")
-
-                        dismiss()
-                    }
-                }
-            }
-        }
-
         val type = arguments?.getString("type") ?: AddEditTransactionSheetType.ADD.value
-        val transactionId = arguments?.getString("id") ?: ""
+        val data = arguments?.get("data") as Transaction?
+//        val transactionId = arguments?.getString("id") ?: ""
+
+        val dateConstraint = CalendarConstraints.Builder()
+            .setValidator(DateValidatorPointBackward.now())
+            .setEnd(MaterialDatePicker.todayInUtcMilliseconds())
+            .build()
         val datePicker = MaterialDatePicker.Builder.datePicker()
-            .setTitleText("Pick transaction date")
+            .setTitleText("Pick transaction month")
             .setPositiveButtonText("Pick")
             .setNegativeButtonText("Cancel")
+            .setSelection(MaterialDatePicker.todayInUtcMilliseconds())
+            .setCalendarConstraints(dateConstraint)
             .build()
-
-        if (type == AddEditTransactionSheetType.EDIT.value) {
-            binding.textHeader.text = "Edit Transaction"
-            binding.btnPrimaryAction.text = "Update"
-            binding.btnDelete.visibility = View.VISIBLE
-
-            viewModel.singleTransaction(transactionId)
-        } else {
-            binding.textHeader.text = "New Transaction"
-            binding.btnPrimaryAction.text = "Save"
-            binding.btnDelete.visibility = View.GONE
-        }
 
         datePicker.apply {
             addOnPositiveButtonClickListener { timestamp ->
@@ -147,8 +112,8 @@ class AddEditTransactionSheet : BottomSheetDialogFragment() {
                 .show(parentFragmentManager, AddEditTransactionSheet::class.java.simpleName)
         }
         binding.btnDelete.setOnClickListener {
-            if (transactionId.isNotEmpty()) {
-                viewModel.remove(transactionId)
+            data?.let {
+                viewModel.remove(it.id)
             }
         }
         binding.btnPrimaryAction.setOnClickListener {
@@ -203,7 +168,67 @@ class AddEditTransactionSheet : BottomSheetDialogFragment() {
                         updatedAt = Calendar.getInstance().time
                     )
 
-                    viewModel.update(transactionId, transaction)
+                    viewModel.update(data?.id.toString(), transaction)
+                }
+            }
+        }
+
+        if (type == AddEditTransactionSheetType.EDIT.value) {
+            binding.textHeader.text = "Edit Transaction"
+            binding.btnPrimaryAction.text = "Update"
+            binding.btnDelete.visibility = View.VISIBLE
+
+            data?.let {
+                Log.d(TAG, it.toString())
+
+                populateData(it)
+            }
+        } else {
+            binding.textHeader.text = "New Transaction"
+            binding.btnPrimaryAction.text = "Save"
+            binding.btnDelete.visibility = View.GONE
+        }
+
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.RESUMED) {
+                viewModel.uiState.collect { state ->
+                    when (state) {
+                        is Resource.Error -> {
+                            Toasty.error(
+                                requireContext(),
+                                state.message.toString(),
+                                Toast.LENGTH_LONG,
+                                true
+                            )
+                                .show()
+
+                            dismiss()
+
+                        }
+                        is Resource.Loading -> {
+                            Toasty.custom(
+                                requireContext(),
+                                "Processing your request",
+                                R.drawable.loading,
+                                R.color.black,
+                                Toast.LENGTH_LONG,
+                                true,
+                                true
+                            )
+                                .show()
+                        }
+                        is Resource.Success -> {
+                            Toasty.success(
+                                requireContext(),
+                                "Process success",
+                                Toast.LENGTH_LONG,
+                                true,
+                            )
+
+                            dismiss()
+                        }
+                        else -> {}
+                    }
                 }
             }
         }

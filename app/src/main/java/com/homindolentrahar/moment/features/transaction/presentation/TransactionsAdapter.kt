@@ -3,6 +3,7 @@ package com.homindolentrahar.moment.features.transaction.presentation
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -29,10 +30,20 @@ class TransactionsAdapter(
             binding.tvTransactionAmount.text = "${item.amount.toInt()}"
             when (item.type) {
                 TransactionType.INCOME -> {
-                    binding.tvTransactionAmount.setTextColor(R.color.green_fg)
+                    binding.tvTransactionAmount.setTextColor(
+                        ContextCompat.getColor(
+                            binding.root.context,
+                            R.color.green_fg
+                        )
+                    )
                 }
                 TransactionType.EXPENSE -> {
-                    binding.tvTransactionAmount.setTextColor(R.color.red_fg)
+                    binding.tvTransactionAmount.setTextColor(
+                        ContextCompat.getColor(
+                            binding.root.context,
+                            R.color.red_fg
+                        )
+                    )
                 }
                 else -> {
                     binding.tvTransactionAmount.setTextColor(R.color.black)
